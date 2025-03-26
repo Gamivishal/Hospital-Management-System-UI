@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule} from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
-
+import { BaseService } from './services/base.service';
 const routes: Routes = [
   {
     path: '',
@@ -52,7 +53,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes),HttpClientModule],
+  exports: [RouterModule],
+  providers: [BaseService]
 })
 export class AppRoutingModule {}

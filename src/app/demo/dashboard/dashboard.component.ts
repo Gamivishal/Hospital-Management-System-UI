@@ -19,6 +19,7 @@ import '../../../assets/charts/amchart/worldLow.js';
 
 import dataJson from 'src/fake-data/map_data';
 import mapColor from 'src/fake-data/map-color-data.json';
+import { BaseService } from 'src/app/services/base.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,8 +28,30 @@ import mapColor from 'src/fake-data/map-color-data.json';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  constructor(private baseService: BaseService) {}
   // life cycle event
   ngOnInit() {
+
+    this.baseService.GET("https://jsonplaceholder.typicode.com/todos/1").subscribe(response=>{
+      console.log("GET Response:", response);
+    });
+    // POST request
+    this.baseService.POST("https://jsonplaceholder.typicode.com/posts", { title: 'foo', body: 'bar', userId: 1 })
+      .subscribe(response => {
+        console.log("POST Response:", response);
+      });
+
+    // PUT request
+    this.baseService.PUT("https://jsonplaceholder.typicode.com/posts/1", { id: 1, title: 'updated', body: 'updated content', userId: 1 })
+      .subscribe(response => {
+        console.log("PUT Response:", response);
+      });
+
+    //  DELETE request
+    this.baseService.DELETE("https://jsonplaceholder.typicode.com/posts/1")
+      .subscribe(response => {
+        console.log("DELETE Response:", response);
+      });
     setTimeout(() => {
       const latlong = dataJson;
 
