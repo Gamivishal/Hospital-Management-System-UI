@@ -85,6 +85,7 @@ export  class hospitaltypeComponent implements OnInit {
        this.isShowList = true; // Switch to list view
       });
 
+
   }
 
 

@@ -20,17 +20,12 @@ const routes: Routes = [
       },
       {
         path: 'hospitaltype',
-       // loadComponent: () => import('./demo/hospitaltype/hospitaltype.component').then((c) =>c.hospitaltypeComponent)
        loadComponent : () => import('./demo/hospitaltype/hospitaltype.component').then((c) => c.hospitaltypeComponent)
       },
       {
         path: 'basic',
         loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then((m) => m.UiBasicModule)
       },
-      // {
-      //   path: 'hospitaltype',
-      //   loadChildren: () => import('./demo/hospitaltypes2/hospitaltypes2.component').then((m) =>m.hospitaltypeComponent)
-      // },
       {
         path: 'forms',
         loadChildren: () => import('./demo/pages/form-elements/form-elements.module').then((m) => m.FormElementsModule)
