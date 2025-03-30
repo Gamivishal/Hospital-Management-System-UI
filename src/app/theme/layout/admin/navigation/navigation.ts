@@ -83,6 +83,23 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+//new start
+{
+  id: 'master',
+  title: 'Master',
+  type: 'group',
+  icon: 'icon-navigation',
+  children: [
+    {
+      id: 'hospitaltype',
+      title: 'hospitaltype',
+      type: 'item',
+      url: '/hospitaltype',
+      icon: 'feather icon-home',
+      classes: 'nav-item'
+    }
+  ]
+},
   {
     id: 'forms',
     title: 'Forms & Tables',
