@@ -32,6 +32,22 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
   {
+    id: 'master',
+    title: 'Master',
+    type: 'group',
+    icon: 'icon-navigation',
+    children: [
+      {
+        id: 'shift',
+        title: 'shift',
+        type: 'item',
+        url: '/shift',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      }
+    ]
+  },
+  {
     id: 'ui-element',
     title: 'UI ELEMENT',
     type: 'group',
@@ -78,6 +94,30 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Typography',
             type: 'item',
             url: '/basic/typography'
+          }
+        ]
+      }
+    ]
+  },
+
+  // new data insert
+  {
+    id: 'hospital',
+    title: 'HOSPITAL MANAGEMENT',
+    type: 'group',
+    icon: 'icon-ui',
+    children: [
+      {
+        id: 'basic1',
+        title: 'Master',
+        type: 'collapse',
+        icon: 'feather icon-box',
+        children: [
+          {
+            id: 'employeeshift',
+            title: 'Employee Shift',
+            type: 'item',
+            url: '/master/Employee-Shift'
           }
         ]
       }

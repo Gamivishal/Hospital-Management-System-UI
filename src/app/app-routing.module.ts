@@ -19,6 +19,10 @@ const routes: Routes = [
         loadComponent: () => import('./demo/dashboard/dashboard.component').then((c) => c.DashboardComponent)
       },
       {
+        path: 'shift',
+        loadComponent: () => import('./demo/shift/shift.component').then((c) => c.shiftComponent)
+      },
+      {
         path: 'roomtype',
         loadComponent: () => import('./demo/roomtype/roomtype.component').then((c) => c.RoomTypesComponent)
       },
