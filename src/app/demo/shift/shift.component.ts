@@ -16,6 +16,8 @@ import { CommonModule } from '@angular/common';
 export class shiftComponent implements OnInit {
   constructor(private baseService: BaseService) {}
   isShowList:boolean=true;
+  paginatedList: any[] = []; // Paginated data
+
 
   hopitaltypepost : any ={
     "createBy": 0,
@@ -36,6 +38,7 @@ export class shiftComponent implements OnInit {
       this.createFormGroup();
       this.getShifts();
       this.addShifts();
+      //this.onDelete();
       
       // this.shiftfmGroup.patchValue({
       //   HospitalType:'Naitik',
@@ -44,6 +47,11 @@ export class shiftComponent implements OnInit {
      
     }
     shiftfmGroup:FormGroup;
+    currentPage: number = 1; //currect page number
+    itemsPerPage: number = 5; //total data in page
+    totalPages: number = 0; //total page
+    pageNumbers: number[] = [];//list
+
 
     createFormGroup()
     {
@@ -74,6 +82,9 @@ export class shiftComponent implements OnInit {
       this.baseService.GET<any>("https://localhost:7272/api/TblShift/GetAll").subscribe(response=>{
         console.log("GET Response:", response);
         this.objshift = response.data;
+        this.totalPages = Math.ceil(this.objshift.length / this.itemsPerPage); // FIX: Update total pages
+        this. Paginationrecord();//update list
+        this.PageNumber(); // FIX: Update page numbers
       });
     }
 
@@ -90,4 +101,39 @@ export class shiftComponent implements OnInit {
         });
   
     }
+    onDelete(shiftId: number){
+      this.baseService.DELETE("https://localhost:7272/api/TblShift/Delete?id=" + shiftId).subscribe(response => {
+        console.log("DELETE Response:", response);
+        this.getShifts();
+        this.isShowList = true;
+      });
+    }
+
+
+
+    //record for the page
+Paginationrecord() {
+  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  const endIndex = startIndex + this.itemsPerPage;
+  this.paginatedList = this.objshift.slice(startIndex, endIndex);
 }
+
+//page number
+PageNumber() {
+  this.pageNumbers = [];
+  for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
+    this.pageNumbers.push(i);
+  }
+}
+//change page
+nextpage(page: number) {
+  if (page >= 1 && page <= this.totalPages) {
+    this.currentPage = page;
+    this. Paginationrecord();
+  }
+}
+
+}
+
+
+

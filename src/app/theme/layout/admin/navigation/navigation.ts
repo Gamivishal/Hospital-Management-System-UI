@@ -38,22 +38,6 @@ export const NavigationItems: NavigationItem[] = [
     icon: 'icon-navigation',
     children: [
       {
-        id: 'medicinetype',
-        title: 'Medicine Type',
-        type: 'item',
-        url: '/medicinetype',
-        icon: 'feather icon-home',
-        classes: 'nav-item'
-      }
-    ]
-  },
-  {
-    id: 'master',
-    title: 'Master',
-    type: 'group',
-    icon: 'icon-navigation',
-    children: [
-      {
         id: 'shift',
         title: 'shift',
         type: 'item',
@@ -74,6 +58,14 @@ export const NavigationItems: NavigationItem[] = [
         title: 'hospitaltype',
         type: 'item',
         url: '/hospitaltype',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
+        id: 'medicinetype',
+        title: 'Medicine Type',
+        type: 'item',
+        url: '/medicinetype',
         icon: 'feather icon-home',
         classes: 'nav-item'
       }
@@ -131,48 +123,6 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
-
-
-<<<<<<< Updated upstream
-{
-  id: 'master',
-  title: 'Master',
-  type: 'group',
-  icon: 'icon-navigation',
-  children: [
-    {
-      id: 'room type',
-      title: 'Room Type',
-      type: 'item',
-      url: '/roomtype',
-      icon: 'feather icon-home',
-      classes: 'nav-item'
-    }
-  ]
-},
-
-// end
-
-
-//new start
-=======
->>>>>>> Stashed changes
-{
-  id: 'master',
-  title: 'Master',
-  type: 'group',
-  icon: 'icon-navigation',
-  children: [
-    {
-      id: 'hospitaltype',
-      title: 'hospitaltype',
-      type: 'item',
-      url: '/hospitaltype',
-      icon: 'feather icon-home',
-      classes: 'nav-item'
-    }
-  ]
-},
 //  END
   {
     id: 'forms',
