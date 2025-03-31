@@ -19,7 +19,7 @@ export class MedicineTypeComponent implements OnInit{
   medicinetypelist:any[]=[];
   paginatedList: any[] = []; // Paginated data
   isShowList:boolean=true;
-  
+  selectedmedicineTypeId: number | null = null;  // Store selected hospital ID for update
   // medicinetypepost:any={
   //   "createBy":0,
   //   "cretedOn":"",
@@ -45,7 +45,7 @@ export class MedicineTypeComponent implements OnInit{
     medicineTypeFormGroup:FormGroup
     // Pagination properties
     currentPage: number = 1; //currect page number
-    itemsPerPage: number = 7; //total data in page
+    itemsPerPage: number = 5; //total data in page
     totalPages: number = 0; //total page
     pageNumbers: number[] = [];//list
 
@@ -92,6 +92,29 @@ export class MedicineTypeComponent implements OnInit{
     });
 
   }
+  editMedicineTypes(medicinetype: any) {
+    this.selectedmedicineTypeId = medicinetype.medicineTypeID;
+    this.isShowList = false; //showList
+    this.medicineTypeFormGroup.patchValue({
+      MedicineTypeID: medicinetype.medicineTypeID, // ID
+      typeName: medicinetype.typeName      // NAME
+    });
+  }
+
+
+  updateMedicineTypes() {
+    this.baseService.PUT("https://localhost:7272/api/TblMedicineType/Update",this.medicineTypeFormGroup.getRawValue())// No ID in the URL
+      .subscribe({
+        next: response => {
+          console.log("PUT Response:", response);
+          this. getMedicineTypes();
+          this.isShowList = true;
+          // this.selectedHospitalId = null;
+        },
+
+      });
+    }
+
 //record for the page
 Paginationrecord() {
   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
