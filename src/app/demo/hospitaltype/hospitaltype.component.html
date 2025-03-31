@@ -1,0 +1,67 @@
+<div class="row" *ngIf="hospitallist">
+
+    @if(isShowList){
+    <div class="col-xl-12">
+        <div>
+            <button type="button" (click)="isShowList=false;" class="btn btn-primary" style="color: black;">Add Hospital</button>
+        </div>
+        <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+
+                            <th>Hospital Type</th>
+                            <th>Created By</th>
+                            <th>Created On</th>
+                            <th>Updated By</th>
+                            <th>Updated On</th>
+                            <th>Status</th>
+                            <th>Version No</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of hospitallist">
+                            <td>{{ item.hospitalType }}</td>
+                            <td>{{ item.createBy }}</td>
+                            <td>{{ item.createdOn | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ item.updateBy }}</td>
+                            <td>{{ item.updateOn | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
+                            <td>{{ item.versionNo }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </app-card>
+    </div>
+    } @if(!isShowList){
+
+    <div class="col-sm-12">
+        <app-card cardTitle="Basic Component" [options]="false">
+            <h5>Form controls</h5>
+            <hr />
+            <div class="row">
+
+                <div class="col-md-6">
+                    <form [formGroup]="hospitalTypefmGroup" action="javascript:">
+
+                        <div class="form-group">
+                            <label for="hospitalType">Hospital Type</label>
+                            <input type="text" formControlName="HospitalType" name="hospitalType" class="form-control" placeholder="Enter Hospital Type" required/>
+                            <span *ngIf="checkRequired('HospitalType')" class="error-span">This Field Is Required</span><br>
+                            <span *ngIf="checkminlength('HospitalType')" class="error-span">Minimum 3 character required</span>
+
+                            <span class="error-span">Minimum 3 character required</span>
+                        </div>
+                        <div class="mt-3">
+
+                            <button type="button" class="btn btn-primary" [disabled]="hospitalTypefmGroup.invalid" (click)="addHospital()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </app-card>
+    </div>
+    }
