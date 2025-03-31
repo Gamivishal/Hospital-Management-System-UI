@@ -83,6 +83,30 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+
+
+
+
+{
+  id: 'navigation',
+  title: 'Navigation',
+  type: 'group',
+  icon: 'icon-navigation',
+  children: [
+    {
+      id: 'room type',
+      title: 'Room Type',
+      type: 'item',
+      url: '/roomtype',
+      icon: 'feather icon-home',
+      classes: 'nav-item'
+    }
+  ]
+},
+
+// end
+
+
 //new start
 {
   id: 'master',

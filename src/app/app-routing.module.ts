@@ -19,6 +19,11 @@ const routes: Routes = [
         loadComponent: () => import('./demo/dashboard/dashboard.component').then((c) => c.DashboardComponent)
       },
       {
+        path: 'roomtype',
+        loadComponent: () => import('./demo/roomtype/roomtype.component').then((c) => c.RoomTypesComponent)
+      },
+
+      {
         path: 'hospitaltype',
        loadComponent : () => import('./demo/hospitaltype/hospitaltype.component').then((c) => c.hospitaltypeComponent)
       },
