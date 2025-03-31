@@ -1,9 +1,8 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component,inject,OnInit } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
-import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
@@ -16,21 +15,22 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./hospitaltype.component.scss']
 })
 export  class hospitaltypeComponent implements OnInit {
-[x: string]: any;
-  hospitallist: any [] = [];
-  isShowList:boolean=true;
- hopitaltypepost : any ={
-  "createBy": 0,
-  "createdOn": "",
-  "updateBy": 0,
-  "updateOn": "",
-  "isActive": true,
-  "versionNo": 0,
-  "hospitalTypeID": 0,
-  "hospitalType": ""
 
- }
-  http=inject(HttpClient)
+  hospitallist: any [] = [];
+  paginatedList: any[] = [];
+  isShowList:boolean=true;
+//  hopitaltypepost : any ={
+//   "createBy": 0,
+//   "createdOn": "",
+//   "updateBy": 0,
+//   "updateOn": "",
+//   "isActive": true,
+//   "versionNo": 0,
+//   "hospitalTypeID": 0,
+//   "hospitalType": ""
+
+//  }
+
 
   constructor(private baseService: BaseService) {}
 
@@ -45,6 +45,7 @@ export  class hospitaltypeComponent implements OnInit {
      }
 
      hospitalTypefmGroup:FormGroup;
+
 
 
      createFormGroup()
@@ -73,8 +74,10 @@ export  class hospitaltypeComponent implements OnInit {
   gethospitaltypelist(){     this.baseService.GET<any>("https://localhost:7272/api/TblHospitalType/GetAll").subscribe(response=>{
     console.log("GET Response:", response);
     this.hospitallist = response.data || []
+
 });
   }
+
 
   addHospital() {
 
@@ -82,7 +85,8 @@ export  class hospitaltypeComponent implements OnInit {
       .subscribe(response => {
         console.log("POST Response:", response);
         this.gethospitaltypelist(); // Refresh list
-       this.isShowList = true; // Switch to list view
+       this.isShowList = true; // list view
+
       });
 
 
@@ -92,4 +96,6 @@ export  class hospitaltypeComponent implements OnInit {
 
 
 }
+
+
 

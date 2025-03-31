@@ -29,15 +29,10 @@
                             <td>{{ item.updateOn | date:'dd/MM/yyyy' }}</td>
                             <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
                             <td>{{ item.versionNo }}</td>
-
                         </tr>
-
-
                     </tbody>
                 </table>
             </div>
-
-
 
         </app-card>
     </div>
@@ -57,6 +52,8 @@
                             <input type="text" formControlName="HospitalType" name="hospitalType" class="form-control" placeholder="Enter Hospital Type" required/>
                             <span *ngIf="checkRequired('HospitalType')" class="error-span">This Field Is Required</span><br>
                             <span *ngIf="checkminlength('HospitalType')" class="error-span">Minimum 3 character required</span>
+
+                            <span class="error-span">Minimum 3 character required</span>
                         </div>
                         <div class="mt-3">
 
