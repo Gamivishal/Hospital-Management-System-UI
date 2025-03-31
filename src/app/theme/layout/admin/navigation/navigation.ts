@@ -60,6 +60,22 @@ export const NavigationItems: NavigationItem[] = [
         url: '/shift',
         icon: 'feather icon-home',
         classes: 'nav-item'
+      },
+      {
+        id: 'room type',
+        title: 'Room Type',
+        type: 'item',
+        url: '/roomtype',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
+        id: 'hospitaltype',
+        title: 'hospitaltype',
+        type: 'item',
+        url: '/hospitaltype',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
       }
     ]
   },
@@ -117,6 +133,7 @@ export const NavigationItems: NavigationItem[] = [
   },
 
 
+<<<<<<< Updated upstream
 {
   id: 'master',
   title: 'Master',
@@ -138,6 +155,8 @@ export const NavigationItems: NavigationItem[] = [
 
 
 //new start
+=======
+>>>>>>> Stashed changes
 {
   id: 'master',
   title: 'Master',
