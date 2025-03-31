@@ -19,6 +19,7 @@ export  class hospitaltypeComponent implements OnInit {
   hospitallist: any [] = [];
   paginatedList: any[] = []; // Paginated data
   isShowList:boolean=true;
+  selectedHospitalId: number | null = null;  // Store selected hospital ID for update
 //  hopitaltypepost : any ={
 //   "createBy": 0,
 //   "createdOn": "",
@@ -94,8 +95,43 @@ export  class hospitaltypeComponent implements OnInit {
         this.gethospitaltypelist(); // Refresh list
        this.isShowList = true; // list view
 
+
+      });
+
+
+    }
+    editHospital(hospital: any) {
+      this.selectedHospitalId = hospital.hospitalTypeID;
+      this.isShowList = false; //showList
+      this.hospitalTypefmGroup.patchValue({
+        HospitalTypeID: hospital.hospitalTypeID, // ID
+       HospitalType: hospital.hospitalType      // NAME
       });
     }
+
+    updateHospital() {
+
+
+      this.baseService.PUT("https://localhost:7272/api/TblHospitalType/Update",this.hospitalTypefmGroup.getRawValue()) // No ID in the URL
+        .subscribe({
+          next: response => {
+            console.log("PUT Response:", response);
+            this.gethospitaltypelist();
+            this.isShowList = true;
+            // this.selectedHospitalId = null;
+          },
+
+        });
+    }
+
+
+
+
+
+
+
+
+
 
 //record for the page
 Paginationrecord() {
@@ -118,5 +154,9 @@ nextpage(page: number) {
     this. Paginationrecord();
   }
 }
+
+
 }
+
+
 
