@@ -38,6 +38,22 @@ export const NavigationItems: NavigationItem[] = [
     icon: 'icon-navigation',
     children: [
       {
+        id: 'medicinetype',
+        title: 'Medicine Type',
+        type: 'item',
+        url: '/medicinetype',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      }
+    ]
+  },
+  {
+    id: 'master',
+    title: 'Master',
+    type: 'group',
+    icon: 'icon-navigation',
+    children: [
+      {
         id: 'shift',
         title: 'shift',
         type: 'item',
@@ -100,36 +116,10 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
 
-  // new data insert
-  {
-    id: 'hospital',
-    title: 'HOSPITAL MANAGEMENT',
-    type: 'group',
-    icon: 'icon-ui',
-    children: [
-      {
-        id: 'basic1',
-        title: 'Master',
-        type: 'collapse',
-        icon: 'feather icon-box',
-        children: [
-          {
-            id: 'employeeshift',
-            title: 'Employee Shift',
-            type: 'item',
-            url: '/master/Employee-Shift'
-          }
-        ]
-      }
-    ]
-  },
-
-
-
 
 {
-  id: 'navigation',
-  title: 'Navigation',
+  id: 'master',
+  title: 'Master',
   type: 'group',
   icon: 'icon-navigation',
   children: [
