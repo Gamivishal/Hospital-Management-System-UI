@@ -17,7 +17,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export  class hospitaltypeComponent implements OnInit {
 
   hospitallist: any [] = [];
-  paginatedList: any[] = [];
+  paginatedList: any[] = []; // Paginated data
   isShowList:boolean=true;
 //  hopitaltypepost : any ={
 //   "createBy": 0,
@@ -45,6 +45,11 @@ export  class hospitaltypeComponent implements OnInit {
      }
 
      hospitalTypefmGroup:FormGroup;
+   // Pagination properties
+   currentPage: number = 1; //currect page number
+   itemsPerPage: number = 7; //total data in page
+   totalPages: number = 0; //total page
+   pageNumbers: number[] = [];//list
 
 
 
@@ -74,7 +79,9 @@ export  class hospitaltypeComponent implements OnInit {
   gethospitaltypelist(){     this.baseService.GET<any>("https://localhost:7272/api/TblHospitalType/GetAll").subscribe(response=>{
     console.log("GET Response:", response);
     this.hospitallist = response.data || []
-
+    this.totalPages = Math.ceil(this.hospitallist.length / this.itemsPerPage); // FIX: Update total pages
+    this. Paginationrecord();//update list
+     this.PageNumber(); // FIX: Update page numbers
 });
   }
 
@@ -88,14 +95,28 @@ export  class hospitaltypeComponent implements OnInit {
        this.isShowList = true; // list view
 
       });
+    }
 
-
-  }
-
-
-
-
+//record for the page
+Paginationrecord() {
+  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  const endIndex = startIndex + this.itemsPerPage;
+  this.paginatedList = this.hospitallist.slice(startIndex, endIndex);
 }
 
-
+//page number
+PageNumber() {
+  this.pageNumbers = [];
+  for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
+    this.pageNumbers.push(i);
+  }
+}
+//change page
+nextpage(page: number) {
+  if (page >= 1 && page <= this.totalPages) {
+    this.currentPage = page;
+    this. Paginationrecord();
+  }
+}
+}
 
