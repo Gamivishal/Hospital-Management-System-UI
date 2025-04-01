@@ -97,23 +97,32 @@ export class MedicineTypeComponent implements OnInit{
     this.isShowList = false; //showList
     this.medicineTypeFormGroup.patchValue({
       MedicineTypeID: medicinetype.medicineTypeID, // ID
-      typeName: medicinetype.typeName      // NAME
+      typeName: medicinetype.typeName // NAME
     });
   }
 
 
   updateMedicineTypes() {
+    debugger
     this.baseService.PUT("https://localhost:7272/api/TblMedicineType/Update",this.medicineTypeFormGroup.getRawValue())// No ID in the URL
       .subscribe({
         next: response => {
           console.log("PUT Response:", response);
-          this. getMedicineTypes();
+          this.getMedicineTypes();
           this.isShowList = true;
           // this.selectedHospitalId = null;
         },
 
       });
     }
+    onDelete(medicineTypeID: number){
+      this.baseService.DELETE("https://localhost:7272/api/TblMedicineType/Delete?Id=" + medicineTypeID).subscribe(response => {
+        console.log("DELETE Response:", response);
+        this.getMedicineTypes();
+        this.isShowList = true;
+      });
+    }
+
 
 //record for the page
 Paginationrecord() {
