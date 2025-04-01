@@ -35,10 +35,16 @@ const routes: Routes = [
         path: 'hospitaltype',
        loadComponent : () => import('./demo/hospitaltype/hospitaltype.component').then((c) => c.hospitaltypeComponent)
       },
+
+      {
+        path: 'roles',
+        loadComponent : () => import('./demo/Roles/Roles.component').then((c) => c.rolesComponent)
+      },
       {
         path: 'basic',
         loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then((m) => m.UiBasicModule)
       },
+      
       {
         path: 'forms',
         loadChildren: () => import('./demo/pages/form-elements/form-elements.module').then((m) => m.FormElementsModule)

@@ -1,3 +1,5 @@
+
+
 export interface NavigationItem {
   id: string;
   title: string;
@@ -132,6 +134,89 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+ 
+
+
+{
+  id: 'master',
+  title: 'Master',
+  type: 'group',
+  icon: 'icon-navigation',
+  children: [
+    {
+      id: 'room type',
+      title: 'Room Type',
+      type: 'item',
+      url: '/roomtype',
+      icon: 'feather icon-home',
+      classes: 'nav-item'
+    }
+  ]
+},
+
+
+// end
+
+
+//new start
+{
+  id: 'master',
+  title: 'Master',
+  type: 'group',
+  icon: 'icon-navigation',
+  children: [
+    {
+      id: 'hospitaltype',
+      title: 'hospitaltype',
+      type: 'item',
+      url: '/hospitaltype',
+      icon: 'feather icon-home',
+      classes: 'nav-item'
+    }
+  ]
+},
+
+//New Start:
+
+{
+  id: 'master',
+  title: 'Master',
+  type: 'group',
+  icon: 'icon-navigation',
+  children: [
+    {
+      id: 'roles',
+      title: 'roles',
+      type: 'item',
+      url: '/roles',
+      icon: 'feather icon-home',
+      classes: 'nav-item'
+    }
+  ]
+},
+
+//New Start
+
+{
+  id: 'master',
+  title: 'master',
+  type: 'group',
+  icon: 'icon-navigation',
+  children: [
+    {
+      id: 'Roles',
+      title: 'roles',
+      type: 'item',
+      url: '/Roles',
+      icon: 'feather icon-home',
+      classes: 'nav-item'
+    }
+  ]
+},
+
+      
+    
+  
 //  END
   {
     id: 'forms',
@@ -232,4 +317,4 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   }
-];
+]
