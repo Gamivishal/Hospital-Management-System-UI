@@ -65,10 +65,19 @@ export const NavigationItems: NavigationItem[] = [
         id: 'medicinetype',
         title: 'Medicine Type',
         type: 'item',
+        url: '/hospitaldepartment',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
+        id: 'hospitaldepartment',
+        title: 'hospital department',
+        type: 'item',
         url: '/medicinetype',
         icon: 'feather icon-home',
         classes: 'nav-item'
       }
+
     ]
   },
   {
