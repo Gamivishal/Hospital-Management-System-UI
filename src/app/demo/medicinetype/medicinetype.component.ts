@@ -96,7 +96,7 @@ export class MedicineTypeComponent implements OnInit{
     this.selectedmedicineTypeId = medicinetype.medicineTypeID;
     this.isShowList = false; //showList
     this.medicineTypeFormGroup.patchValue({
-      MedicineTypeID: medicinetype.medicineTypeID, // ID
+      medicineTypeID: medicinetype.medicineTypeID, // ID
       typeName: medicinetype.typeName // NAME
     });
   }
