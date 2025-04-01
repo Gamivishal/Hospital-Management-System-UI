@@ -52,7 +52,7 @@ export class MedicineTypeComponent implements OnInit{
     createFormGroup(){
 
       this.medicineTypeFormGroup = new FormGroup({
-        MedicineTypeID:new FormControl(0,[Validators.required]),
+        medicineTypeID:new FormControl(0,[Validators.required]),
         typeName:new FormControl(null,[Validators.required,Validators.minLength(3)]),
 
 
@@ -92,29 +92,52 @@ export class MedicineTypeComponent implements OnInit{
     });
 
   }
+  // editMedicineTypes(medicinetype: any) {
+  //   this.selectedmedicineTypeId = medicinetype.medicineTypeID;
+  //   this.isShowList = false; //showList
+  //   this.medicineTypeFormGroup.patchValue({
+  //     medicineTypeID: medicinetype.medicineTypeID, // ID
+  //     typeName: medicinetype.typeName // NAME
+  //   });
+  // }
+
+
   editMedicineTypes(medicinetype: any) {
     this.selectedmedicineTypeId = medicinetype.medicineTypeID;
-    this.isShowList = false; //showList
+    this.isShowList = false; // show list
     this.medicineTypeFormGroup.patchValue({
       medicineTypeID: medicinetype.medicineTypeID, // ID
       typeName: medicinetype.typeName // NAME
     });
   }
+  
 
+  // updateMedicineTypes() {
+  
+  //   this.baseService.PUT("https://localhost:7272/api/TblMedicineType/Update",this.medicineTypeFormGroup.getRawValue())// No ID in the URL
+  //     .subscribe({
+  //       next: response => {
+  //         console.log("PUT Response:", response);
+  //         this.getMedicineTypes();
+  //         this.isShowList = true;
+  //         // this.selectedHospitalId = null;
+  //       },
+
+  //     });
+  //   }
 
   updateMedicineTypes() {
-    debugger
-    this.baseService.PUT("https://localhost:7272/api/TblMedicineType/Update",this.medicineTypeFormGroup.getRawValue())// No ID in the URL
+    this.baseService.PUT("https://localhost:7272/api/TblMedicineType/Update", this.medicineTypeFormGroup.getRawValue())
       .subscribe({
         next: response => {
           console.log("PUT Response:", response);
           this.getMedicineTypes();
           this.isShowList = true;
-          // this.selectedHospitalId = null;
         },
-
       });
-    }
+  }
+  
+
     onDelete(medicineTypeID: number){
       this.baseService.DELETE("https://localhost:7272/api/TblMedicineType/Delete?Id=" + medicineTypeID).subscribe(response => {
         console.log("DELETE Response:", response);

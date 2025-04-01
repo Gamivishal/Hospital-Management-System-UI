@@ -12,7 +12,7 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>MedicineTypeID</th>
+              <!-- <th>MedicineTypeID</th> -->
               <th>MedicineType</th>
               <th>Created By</th>
               <th>Created On</th>
@@ -26,7 +26,7 @@
           <tbody>
             <tr *ngFor= "let item of paginatedList">
               <!-- <th scope="row">1</th> -->
-              <td>{{ item.medicineTypeID}}</td>
+              <!-- <td>{{ item.medicineTypeID}}</td> -->
               <!-- <td>{{ item.typeName}}</td> -->
                <td>{{item.typeName}}</td>
               <td>{{ item.createBy }}</td>
@@ -89,7 +89,7 @@
 
                           <!-- <span *ngIf="medicineTypeFormGroup.controls['HospitalType'].errors['minlength']!==null" class="error-span">Minimum 3 character required</span> -->
                           <span *ngIf="checkminlength('typeName')" class="error-span">Minimum 3 characters required</span>
-
+                        
 
                       </div>
                       <div class="mt-3">
