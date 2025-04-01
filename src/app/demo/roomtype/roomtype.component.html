@@ -3,6 +3,8 @@
   <div class="col-xl-12">
       <div>
           <button type="button" (click)="isShowList=false;" class="btn btn-primary" style="color: black;">Add Room</button>
+          <!-- <input type="number" [(ngModel)]="roomTypeId" placeholder="Search by ID">
+                     <button (click)="getbyId(roomTypeId)">Get By ID</button> -->
       </div>
       <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
           <div class="table-responsive">
@@ -16,10 +18,13 @@
                         <th>Updated On</th>
                         <th>Status</th> 
                         <th>Version No</th>
+                        <th>
+                           action 
+                        </th>
                       </tr>
                   </thead>
                   <tbody>
-                      <tr *ngFor="let item of lstroomtype">
+                      <tr *ngFor="let item of paginatedList">
                           <td>{{ item.roomType }}</td>
                           <td>{{ item.createdBy }}</td>
                           <td>{{ item.createdOn | date:'dd/MM/yyyy' }}</td>
@@ -27,10 +32,47 @@
                           <td>{{ item.updateOn | date:'dd/MM/yyyy' }}</td>
                           <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
                           <td>{{ item.versionNo }}</td>
+
+                          <!-- <td>
+                            <button class="btn btn-sm btn-warning me-2">Edit</button>
+                            <button class="btn btn-sm btn-danger" (click)="onDelete(item.roomId)">Delete</button>
+                          </td> -->
+                          <td>
+                            <svg (click)="editRoom(item)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                              </svg>	
+
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
+                              width="24" height="24" class="main-grid-item-icon">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="15" x2="9" y1="9" y2="15" />
+                                <line x1="9" x2="15" y1="9" y2="15" />
+                            </svg>
+                            
+                        </td>
                       </tr>
+                      <!-- <button (click)="getbyId(roomTypefmGroup.get('roomTypeId')?.value || 1)">Get By ID</button> -->
+                      <!-- <button (click)="getbyId(0)">Getbyid</button> -->
+
+                      
                   </tbody>
               </table>
           </div>
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-end">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" href="javascript:void(0)" (click)="nextpage(currentPage - 1)">Previous</a>
+                </li>
+    
+                <li class="page-item" *ngFor="let page of pageNumbers">
+                    <a class="page-link" href="javascript:void(0)" (click)="nextpage(page)" [class.active]="currentPage === page">{{ page }}</a>
+                </li>
+    
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" href="javascript:void(0)" (click)="nextpage(currentPage + 1)">Next</a>
+                </li>
+            </ul>
+        </nav>
       </app-card>
   </div>
   } @if(!isShowList){
@@ -44,11 +86,11 @@
                   <form [formGroup]="roomTypefmGroup" action="javascript:">
 
                       <div class="form-group">
-                          <label for="roomType">Room Type {{roomTypefmGroup.controls['roomType'].errors['minlength']}}</label>
+                          <label for="roomType">Room Type</label>
                           
  
                           <input type="text" formControlName="roomType" name="roomType" class="form-control" placeholder="Enter Room  Type" required />
-                          <!-- <input type="text" formControlName="roomType" class="form-control" placeholder="Enter Room Type" required /> -->
+                          
 
                           <span *ngIf="checkRequired('roomType')" class="error-span">This Field Is Required</span><br>
 
@@ -59,7 +101,10 @@
                               
                       </div>
                       <div class="mt-3">
-                          <button type="button" class="btn btn-primary" (click)="AddRoomType()">Submit</button>
+                        <button *ngIf="!selectedRoomTypeId" type="button" class="btn btn-primary" [disabled]="roomTypefmGroup.invalid" (click)="AddRoomType()">Submit</button>
+                        <button *ngIf="selectedRoomTypeId" type="button" class="btn btn-success" [disabled]="roomTypefmGroup.invalid" (click)="updateRoom()">Update</button>
+                         
+
                           <!-- [disabled]="hospitalTypefmGroup.invalid" -->
                       </div>
                   </form>
