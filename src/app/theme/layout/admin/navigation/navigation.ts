@@ -73,7 +73,7 @@ export const NavigationItems: NavigationItem[] = [
         id: 'hospitaldepartment',
         title: 'hospital department',
         type: 'item',
-        url: '/medicinetype',
+        url: '/hospitaldepartment',
         icon: 'feather icon-home',
         classes: 'nav-item'
       }
