@@ -17,20 +17,22 @@ export class shiftComponent implements OnInit {
   constructor(private baseService: BaseService) {}
   isShowList:boolean=true;
   paginatedList: any[] = []; // Paginated data
+  selectedshiftId: number | null = null;  // Store selected hospital ID for update
 
 
-  hopitaltypepost : any ={
-    "createBy": 0,
-    "createdOn": "",
-    "updateBy": 0,
-    "updateOn": "",
-    "isActive": true,
-    "versionNo": 0,
-    "shiftId": 0,
-    "startTime": "",
-    "endTime": "",
-    "shiftname": ""
-   }
+
+  // hopitaltypepost : any ={
+  //   "createBy": 0,
+  //   "createdOn": "",
+  //   "updateBy": 0,
+  //   "updateOn": "",
+  //   "isActive": true,
+  //   "versionNo": 0,
+  //   "shiftId": 0,
+  //   "startTime": "",
+  //   "endTime": "",
+  //   "shiftname": ""
+  //  }
 
   objshift:any
     // life cycle event
@@ -67,13 +69,13 @@ export class shiftComponent implements OnInit {
 
     checkRequired(controlName:any)
     {
-      return this.shiftfmGroup.controls[controlName].errors['required'];
+      return this.shiftfmGroup.controls[controlName].errors?.['required'];
     }
 
 
     checkminlength(controlName:any)
     {
-       return this.shiftfmGroup.controls[controlName].errors['minlength']!=null;
+       return this.shiftfmGroup.controls[controlName].errors?.['minlength'];
     }
 
 
@@ -101,6 +103,30 @@ export class shiftComponent implements OnInit {
         });
   
     }
+    editshift(shift: any) {
+      this.selectedshiftId = shift.shiftId;
+      this.isShowList = false; //showList
+      this.shiftfmGroup.patchValue({
+        ShiftId: shift.shiftId, // ID
+        Shiftname: shift.shiftname      // NAME
+      });
+    }
+    updateshift() {
+
+
+      this.baseService.PUT("https://localhost:7272/api/TblShift/Update",this.shiftfmGroup.getRawValue()) // No ID in the URL
+        .subscribe({
+          next: response => {
+            console.log("PUT Response:", response);
+            this.getShifts();
+            this.isShowList = true;
+            // this.selectedHospitalId = null;
+          },
+
+        });
+    }
+
+
     onDelete(shiftId: number){
       this.baseService.DELETE("https://localhost:7272/api/TblShift/Delete?id=" + shiftId).subscribe(response => {
         console.log("DELETE Response:", response);
