@@ -82,40 +82,31 @@ export class RolesComponent implements OnInit {
 
   editRole(role: any) {
     this.selectedroleId = role.roleId;
-
-    this.baseService.GET("https://localhost:7272/api/TblRole/GetById?id=" + role.roleId)
-      .subscribe((response: { data: string }) => {
-        console.log(response);
-        this.isShowList = false;
-        this.roleData = response;
-        this.rolesfmGroup.patchValue({
-          roleId: role.roleId,
-          rolename: response.data // Extract the 'data' property
-        });
-      });
+    this.isShowList = false;
+    this.rolesfmGroup.patchValue({
+      roleId: role.roleId,
+      rolename: role.roleName
+    });
   }
 
-  updateRole(): void { 
-    if(this.rolesfmGroup.invalid) {
-      console.log("Form is invalid"); 
-      return;
-    }
-    let requstdata = {
-      roleId: this.rolesfmGroup.get('roleId')?.value,
-      rolename: this.rolesfmGroup.get('rolename')?.value 
-    };
-      this.baseService.PATCH("https://localhost:7272/api/TblRole/Update", requstdata)
-        .subscribe(response => {
+  updateRole() {
+
+
+    this.baseService.PUT("https://localhost:7272/api/TblRole/Update",this.rolesfmGroup.getRawValue()) // No ID in the URL
+      .subscribe({
+        next: response => {
           console.log("PUT Response:", response);
           this.getRoles();
           this.isShowList = true;
-          this.selectedroleId = null; 
-        });
+          },
+
+      });
   }
   
   onDelete(roleId: number) {
     // console.log(roleId);
-    this.baseService.DELETE(`https://localhost:7272/api/TblRole/delete?id=${roleId}`).subscribe(response => {
+    this.baseService.DELETE("https://localhost:7272/api/TblRole/delete?id=" + roleId).subscribe(response => {
+      console.log("DELETE Response:", response);
       this.getRoles();
       this.isShowList = true;
     });
