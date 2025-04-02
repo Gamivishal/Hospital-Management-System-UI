@@ -4,7 +4,8 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIfContext } from '@angular/common';
+
 
 
 
@@ -20,6 +21,9 @@ export class MedicineTypeComponent implements OnInit{
   paginatedList: any[] = []; // Paginated data
   isShowList:boolean=true;
   selectedmedicineTypeId: number | null = null;  // Store selected hospital ID for update
+  
+
+  
   // medicinetypepost:any={
   //   "createBy":0,
   //   "cretedOn":"",
@@ -52,7 +56,7 @@ export class MedicineTypeComponent implements OnInit{
     createFormGroup(){
 
       this.medicineTypeFormGroup = new FormGroup({
-        MedicineTypeID:new FormControl(0,[Validators.required]),
+        medicineTypeID:new FormControl(0,[Validators.required]),
         typeName:new FormControl(null,[Validators.required,Validators.minLength(3)]),
 
 
@@ -89,6 +93,16 @@ export class MedicineTypeComponent implements OnInit{
         console.log("POST Response:", response);
         this.getMedicineTypes();
         this.isShowList = true;
+
+        this.medicineTypeFormGroup.reset({
+          medicineTypeID: 0,
+          typeName: ''
+
+            })
+
+   this.currentPage = 1;
+
+     
     });
 
   }
