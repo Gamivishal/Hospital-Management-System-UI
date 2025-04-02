@@ -41,6 +41,10 @@ const routes: Routes = [
         loadComponent : () => import('./demo/Roles/Roles.component').then((c) => c.rolesComponent)
       },
       {
+        path: 'hospitaldepartment',
+       loadComponent : () => import('./demo/hospitaldepartment/hospitaldepartment.component').then((c) => c.hospitaldepartmentComponent)
+      },
+      {
         path: 'basic',
         loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then((m) => m.UiBasicModule)
       },
