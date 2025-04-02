@@ -112,7 +112,7 @@ export class RolesComponent implements OnInit {
           this.selectedroleId = null; 
         });
   }
-
+  
   onDelete(roleId: number) {
     // console.log(roleId);
     this.baseService.DELETE(`https://localhost:7272/api/TblRole/delete?id=${roleId}`).subscribe(response => {
