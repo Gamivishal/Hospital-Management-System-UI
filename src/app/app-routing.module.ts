@@ -38,7 +38,11 @@ const routes: Routes = [
 
       {
         path: 'roles',
-        loadComponent : () => import('./demo/Roles/Roles.component').then((c) => c.rolesComponent)
+        loadComponent : () => import('./demo/Roles/Roles.component').then((c) => c.RolesComponent)
+      },
+      {
+        path: 'hospitaldepartment',
+       loadComponent : () => import('./demo/hospitaldepartment/hospitaldepartment.component').then((c) => c.hospitaldepartmentComponent)
       },
       {
         path: 'hospitaldepartment',

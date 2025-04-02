@@ -1,124 +1,123 @@
-
-import { Component,inject,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
-import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-Role',
   standalone: true,
-  imports: [CommonModule,SharedModule],
+  imports: [CommonModule, SharedModule],
   templateUrl: './roles.component.html',
   styleUrls: ['./roles.component.scss']
 })
-export class rolesComponent implements OnInit {
-  objroles:any[]=[];
+export class RolesComponent implements OnInit {
+  lstrole: any[] = [];
   Roles: any[] = [];
- isShowList:boolean=true;
+  isShowList: boolean = true;
+  selectedroleId: number | null = null;
+  rolesfmGroup: FormGroup;
 
- selectedroleId: number | null = null;
-  // Addroles: any;
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  totalPages: number = 0;
+  pageNumbers: number[] = [];
 
-  // roletypepost : any ={
-  //   "createBy": 0,
-  //   "createdOn": "",
-  //   "updateBy": 0,
-  //   "updateOn": "",
-  //   "isActive": true,
-  //   "versionNo": 0,
-  //   "roleId": 0,
-  //   "rolename": ""
-  //  }
-   http=inject(HttpClient)
+  roleData :any
   constructor(private baseService: BaseService) {}
- 
-    // life cycle event
-    ngOnInit() {
-      this.createFormGroup();
-      this.getRoles();
-      this.AddRoles();
+
+  ngOnInit() {
+    this.createFormGroup();
+    this.getRoles();
+  }
+
+  createFormGroup() {
+    this.rolesfmGroup = new FormGroup({
+      roleId: new FormControl(0, [Validators.required]),
+      rolename: new FormControl(null, [Validators.required, Validators.minLength(3)]),
+    });
+  }
+
+  checkRequired(controlName: any) {
+    return this.rolesfmGroup.controls[controlName].errors?.['required'];
+  }
+
+  // Pagination logic
+  Rolerecord() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.Roles = this.lstrole.slice(startIndex, endIndex);
+  }
+
+  PageNumber() {
+    this.pageNumbers = [];
+    for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
+      this.pageNumbers.push(i);
     }
-    rolesfmGroup:FormGroup;
-    //Paginantion Properties 
-    currentPage: number = 1; //currect page number
-    itemsPerPage: number = 7; //total data in page
-    totalPages: number = 0; //total page
-    pageNumbers: number[] = [];//list
+  }
 
-    createFormGroup()
-    {
-     this.rolesfmGroup = new FormGroup({
-      RoleId: new FormControl(0, [Validators.required]),
-      Rolename: new FormControl(null, [Validators.required,Validators.minLength(4)]),
-      
-     })
+  nextpage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.Rolerecord();
     }
+  }
 
-    checkRequired(controlName:any)
-    {
-      return this.rolesfmGroup.controls[controlName].errors['required'];
-    }
+  getRoles() {
+    this.baseService.GET<any>("https://localhost:7272/api/TblRole/GetAll").subscribe(response => {
+      this.lstrole = response.data;
+      this.totalPages = Math.ceil(this.lstrole.length / this.itemsPerPage);
+      this.Rolerecord();
+      this.PageNumber();
+    });
+  }
 
-
-    checkminlength(controlName:any)
-    {
-       return this.rolesfmGroup.controls[controlName].errors['minlength']!=null;
-    }
-
-
-    getRoles()
-    {
-      this.baseService.GET<any>("https://localhost:7272/api/TblRole/GetAll").subscribe(response=>{
-        console.log("GET Response:", response);
-        this.objroles = response.data;
-        this.totalPages = Math.ceil(this.objroles.length / this.itemsPerPage); // FIX: Update total pages
-        this.AddRoles();//update list
-        this.PageNumber(); // FIX: Update page numbers
+  AddRoles() {
+    this.baseService.POST("https://localhost:7272/api/TblRole/Add", this.rolesfmGroup.getRawValue())
+      .subscribe(response => {
+        this.getRoles();
+        this.isShowList = true;
       });
-    }
+  }
 
-    // AddRoles() 
-    //   {
-    //    this.baseService.POST("https://localhost:7272/api/TblRole/Add", this.rolesfmGroup.getRawValue())
-    //    .subscribe(response => {
-    //     console.log("POST Response:", response);
-    //     this.getRoles(); // Refresh list
-    //     this.isShowList = true; 
-    //    });
-    AddRoles()
-      {
-        this.baseService.POST("https://localhost:7272/api/TblRole/Add",this.rolesfmGroup.getRawValue())
+  editRole(role: any) {
+    this.selectedroleId = role.roleId;
+
+    this.baseService.GET("https://localhost:7272/api/TblRole/GetById?id=" + role.roleId)
+      .subscribe((response: { data: string }) => {
+        console.log(response);
+        this.isShowList = false;
+        this.roleData = response;
+        this.rolesfmGroup.patchValue({
+          roleId: role.roleId,
+          rolename: response.data // Extract the 'data' property
+        });
+      });
+  }
+
+  updateRole(): void { 
+    if(this.rolesfmGroup.invalid) {
+      console.log("Form is invalid"); 
+      return;
+    }
+    let requstdata = {
+      roleId: this.rolesfmGroup.get('roleId')?.value,
+      rolename: this.rolesfmGroup.get('rolename')?.value 
+    };
+      this.baseService.PATCH("https://localhost:7272/api/TblRole/Update", requstdata)
         .subscribe(response => {
-          console.log("POST Response:",response);
+          console.log("PUT Response:", response);
           this.getRoles();
           this.isShowList = true;
-      });
-      
-    //record for the page
-    this.AddRoles() 
-      {
-  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-  const endIndex = startIndex + this.itemsPerPage;
-  this.Roles = this.objroles.slice(startIndex, endIndex);
-    }
+          this.selectedroleId = null; 
+        });
   }
-  
 
-
-  //page number
-  PageNumber() {
-  this.pageNumbers = [];
-  for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
-    this.pageNumbers.push(i);
+  onDelete(roleId: number) {
+    // console.log(roleId);
+    this.baseService.DELETE(`https://localhost:7272/api/TblRole/delete?id=${roleId}`).subscribe(response => {
+      this.getRoles();
+      this.isShowList = true;
+    });
   }
 }
-  //change page
-nextpage(page: number) {
-  if (page >= 1 && page <= this.totalPages) {
-    this.currentPage = page;
-    this.AddRoles();
-  }
-}
-}	

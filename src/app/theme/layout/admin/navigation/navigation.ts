@@ -78,6 +78,22 @@ export const NavigationItems: NavigationItem[] = [
         url: '/hospitaldepartment',
         icon: 'feather icon-home',
         classes: 'nav-item'
+      },
+      {
+        id: 'room type',
+        title: 'Room Type',
+        type: 'item',
+        url: '/roomtype',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
+        id: 'Roles',
+        title: 'Roles',
+        type: 'item',
+        url: '/roles',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
       }
 
     ]
@@ -136,25 +152,6 @@ export const NavigationItems: NavigationItem[] = [
   },
  
 
-
-{
-  id: 'master',
-  title: 'Master',
-  type: 'group',
-  icon: 'icon-navigation',
-  children: [
-    {
-      id: 'room type',
-      title: 'Room Type',
-      type: 'item',
-      url: '/roomtype',
-      icon: 'feather icon-home',
-      classes: 'nav-item'
-    }
-  ]
-},
-
-
 // end
 
 
@@ -176,43 +173,13 @@ export const NavigationItems: NavigationItem[] = [
   ]
 },
 
+
+
 //New Start:
 
-{
-  id: 'master',
-  title: 'Master',
-  type: 'group',
-  icon: 'icon-navigation',
-  children: [
-    {
-      id: 'roles',
-      title: 'roles',
-      type: 'item',
-      url: '/roles',
-      icon: 'feather icon-home',
-      classes: 'nav-item'
-    }
-  ]
-},
 
-//New Start
 
-{
-  id: 'master',
-  title: 'master',
-  type: 'group',
-  icon: 'icon-navigation',
-  children: [
-    {
-      id: 'Roles',
-      title: 'roles',
-      type: 'item',
-      url: '/Roles',
-      icon: 'feather icon-home',
-      classes: 'nav-item'
-    }
-  ]
-},
+
 
       
     
