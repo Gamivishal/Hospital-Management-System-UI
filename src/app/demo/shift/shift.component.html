@@ -1,7 +1,7 @@
 <div class="row" *ngIf="objshift">
  
   @if(isShowList){
-    <div class="col-xl-12">
+  <div class="col-xl-12" *ngIf="isShowList">
       <div class="d-flex justify-content-end mb-3 position-relative">
         <button type="button" (click)="isShowList=false;" class="btn btn-primary add-shift-button">
           Add Shift
@@ -12,7 +12,7 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Shift ID</th>
+                <!-- <th>Shift ID</th> -->
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Shift Name</th>
@@ -21,23 +21,23 @@
                 <th>UpdateBy</th>
                 <th>updateOn</th>
                 <th>IsActive</th>
-                <th>VersionNo</th>
+                <!-- <th>VersionNo</th> -->
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of paginatedList">
                 <!-- <th scope="row">1</th> -->
-                <td>{{item.shiftId}}</td>
+                <!-- <td>{{item.shiftId}}</td> -->
                 <td>{{item.startTime}}</td>
                 <td>{{item.endTime}}</td>
                 <td>{{item.shiftname}}</td>
-                <td>{{item.createBy}}</td>
+                <td>{{item.createdBy}}</td>
                 <td>{{item.createdOn | date:'dd-MM-yyyy hh:mm:ss a':'UTC+5:30'}}</td>
-                <td>{{item.updateBy}}</td>
+                <td>{{item.updatedBy}}</td>
                 <td>{{item.updateOn | date:'dd-MM-yyyy hh:mm:ss a':'UTC+5:30'}}</td>
                 <td>{{item.isActive ? 'Active' : 'Inactive'}}</td>
-                <td>{{item.versionNo}}</td>
+                <!-- <td>{{item.versionNo}}</td> -->
 
                 <td>
                   <!-- <button class="btn btn-sm btn-warning me-2">Edit</button>
@@ -78,7 +78,7 @@
   }
   @if(!isShowList){
   
-    <div class="col-sm-12">
+  <div class="col-sm-12">
         <app-card cardTitle="Basic Component" [options]="false">
             <h5>Form controls</h5>
             <hr />

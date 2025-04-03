@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 
+//import { PaginationComponent } from 'src/app/theme/shared/components/pagination/pagination.component'; 
 
 import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -19,7 +20,7 @@ export class shiftComponent implements OnInit {
   paginatedList: any[] = []; // Paginated data
   selectedshiftId: number | null = null;  // Store selected hospital ID for update
 
-
+  
 
   // hopitaltypepost : any ={
   //   "createBy": 0,
@@ -55,6 +56,7 @@ export class shiftComponent implements OnInit {
     pageNumbers: number[] = [];//list
 
 
+
     createFormGroup()
     {
      this.shiftfmGroup = new FormGroup({
@@ -81,12 +83,15 @@ export class shiftComponent implements OnInit {
 
     getShifts()
     {
+      //debugger;
+      //console.log(localStorage.getItem('token'));
       this.baseService.GET<any>("https://localhost:7272/api/TblShift/GetAll").subscribe(response=>{
         console.log("GET Response:", response);
         this.objshift = response.data;
         this.totalPages = Math.ceil(this.objshift.length / this.itemsPerPage); // FIX: Update total pages
         this. Paginationrecord();//update list
         this.PageNumber(); // FIX: Update page numbers
+        //this.updatePagination();
       });
     }
 
@@ -96,9 +101,15 @@ export class shiftComponent implements OnInit {
         .subscribe(response => {
           console.log("POST Response:", response);
           this.getShifts(); // Refresh list
-          this.isShowList = true; // Switch to list view
+           // Switch to list view
   
-  
+          this.shiftfmGroup.reset({
+            ShiftId: 0,
+            Shiftname: ''
+
+          })
+          this.isShowList = true;
+          this.currentPage = 1;
   
         });
   
@@ -119,6 +130,7 @@ export class shiftComponent implements OnInit {
           next: response => {
             console.log("PUT Response:", response);
             this.getShifts();
+            //this.shiftfmGroup.reset();
             this.isShowList = true;
             // this.selectedHospitalId = null;
           },
@@ -138,26 +150,26 @@ export class shiftComponent implements OnInit {
 
 
     //record for the page
-Paginationrecord() {
-  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-  const endIndex = startIndex + this.itemsPerPage;
-  this.paginatedList = this.objshift.slice(startIndex, endIndex);
-}
-
-//page number
-PageNumber() {
-  this.pageNumbers = [];
-  for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
-    this.pageNumbers.push(i);
-  }
-}
-//change page
-nextpage(page: number) {
-  if (page >= 1 && page <= this.totalPages) {
-    this.currentPage = page;
-    this. Paginationrecord();
-  }
-}
+    Paginationrecord() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      this.paginatedList = this.objshift.slice(startIndex, endIndex);
+    }
+    
+    //page number
+    PageNumber() {
+      this.pageNumbers = [];
+      for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
+        this.pageNumbers.push(i);
+      }
+    }
+    //change page
+    nextpage(page: number) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+        this. Paginationrecord();
+      }
+    }
 
 }
 
