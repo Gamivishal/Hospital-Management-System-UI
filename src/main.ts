@@ -6,11 +6,12 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
+import { provideToastr } from 'ngx-toastr';
 
 if (environment.production) {
   enableProdMode();
 }
 
 bootstrapApplication(AppComponent, {
-  providers: [importProvidersFrom(BrowserModule, AppRoutingModule), provideAnimations()]
+  providers: [importProvidersFrom(BrowserModule, AppRoutingModule), provideAnimations(), provideToastr()]
 }).catch((err) => console.error(err));
