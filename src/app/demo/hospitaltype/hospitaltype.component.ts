@@ -1,58 +1,49 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit} from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-
+import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 @Component({
   selector: 'app-hospitaltype',
   standalone: true,
   imports: [SharedModule],
+
   templateUrl:'./hospitaltype.component.html',
   styleUrls: ['./hospitaltype.component.scss']
 })
 export  class hospitaltypeComponent implements OnInit {
-
   hospitallist: any [] = [];
-  paginatedList: any[] = []; // Paginated data
+          // PAGINATION
+  paginatedList: any[] = [];
+  currentPage: number = 1;
+  totalPages: number = 1;
+  totalRecords: number = 0;
+  itemsPerPage: number = AppConstant.RecordPerPage;
+  pageNumbers: number[] = [];
+
+
   isShowList:boolean=true;
-  selectedHospitalId: number | null = null;  // Store selected hospital ID for update
-//  hopitaltypepost : any ={
-//   "createBy": 0,
-//   "createdOn": "",
-//   "updateBy": 0,
-//   "updateOn": "",
-//   "isActive": true,
-//   "versionNo": 0,
-//   "hospitalTypeID": 0,
-//   "hospitalType": ""
-
-//  }
+  selectedHospitalId: number | null = null;
 
 
-  constructor(private baseService: BaseService) {}
+  constructor(
+    private baseService: BaseService ) {
 
-     ngOnInit() {
+  }
+
+    ngOnInit() {
       this.createFormGroup();
       this.gethospitaltypelist();
       this.addHospital();
-      // this.hospitalTypefmGroup.patchValue({
-      //   HospitalType:'Naitik',
-      //   HospitalTypeID:1
-      // });
-     }
+
+
+    }
+
+
 
      hospitalTypefmGroup:FormGroup;
-   // Pagination properties
-   currentPage: number = 1; //currect page number
-   itemsPerPage: number = 7; //total data in page
-   totalPages: number = 0; //total page
-   pageNumbers: number[] = [];//list
-
-
 
      createFormGroup()
      {
@@ -74,16 +65,14 @@ export  class hospitaltypeComponent implements OnInit {
         return this.hospitalTypefmGroup.controls[controlName].errors?.['minlength']
      }
 
-
-
-
-  gethospitaltypelist(){     this.baseService.GET<any>("https://localhost:7272/api/TblHospitalType/GetAll").subscribe(response=>{
-    console.log("GET Response:", response);
-    this.hospitallist = response.data || []
-    this.totalPages = Math.ceil(this.hospitallist.length / this.itemsPerPage); // FIX: Update total pages
-    this. Paginationrecord();//update list
-     this.PageNumber(); // FIX: Update page numbers
-});
+  gethospitaltypelist() {
+    this.baseService.GET<any>("https://localhost:7272/api/TblHospitalType/GetAll").subscribe(response => {
+      this.hospitallist = response.data || [];
+      this.totalRecords = this.hospitallist.length;
+      this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
+      this.PageNumber();
+      this.Paginationrecord();
+    });
   }
 
 
@@ -92,20 +81,21 @@ export  class hospitaltypeComponent implements OnInit {
     this.baseService.POST("https://localhost:7272/api/TblHospitalType/Add", this.hospitalTypefmGroup.getRawValue())
       .subscribe(response => {
         console.log("POST Response:", response);
-        this.gethospitaltypelist(); // Refresh list
-       this.isShowList = true; // list view
 
-
+        this.gethospitaltypelist();
+        this.hospitalTypefmGroup.reset({ HospitalTypeID: 0 });
+        this.isShowList = true;
+        this.currentPage=1;
       });
 
 
     }
     editHospital(hospital: any) {
       this.selectedHospitalId = hospital.hospitalTypeID;
-      this.isShowList = false; //showList
+      this.isShowList = false;
       this.hospitalTypefmGroup.patchValue({
-        HospitalTypeID: hospital.hospitalTypeID, // ID
-       HospitalType: hospital.hospitalType      // NAME
+        HospitalTypeID: hospital.hospitalTypeID,
+       HospitalType: hospital.hospitalType
       });
     }
 
@@ -113,50 +103,47 @@ export  class hospitaltypeComponent implements OnInit {
 
 
       this.baseService.PUT("https://localhost:7272/api/TblHospitalType/Update",this.hospitalTypefmGroup.getRawValue()) // No ID in the URL
-        .subscribe({
-          next: response => {
+        .subscribe(response => {
             console.log("PUT Response:", response);
             this.gethospitaltypelist();
             this.isShowList = true;
-            // this.selectedHospitalId = null;
-          },
+
 
         });
-    }
+      }
 
+        onDelete(hospitalTypeID: number){
+          this.baseService.DELETE("https://localhost:7272/api/TblHospitalType/Delete?id=" + hospitalTypeID).subscribe(response => {
+            console.log("DELETE Response:", response);
+            this.gethospitaltypelist();
+            this.isShowList = true;
+          });
+        }
 
+        updatePagination() {
+          this.PageNumber();
+          this.Paginationrecord();
+        }
 
+        Paginationrecord() {
+          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+          const endIndex = Math.min(startIndex + this.itemsPerPage, this.totalRecords);
+          this.paginatedList = this.hospitallist.slice(startIndex, endIndex);
+        }
 
+        PageNumber() {
+          const startPage = 1; // Always start with page 1
+          const maxPagesToShow = 3;
 
+          this.pageNumbers = [];
+          for (let i = startPage; i <= Math.min(this.totalPages, maxPagesToShow); i++) {
+            this.pageNumbers.push(i);
+          }
+        }
 
-
-
-
-
-//record for the page
-Paginationrecord() {
-  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-  const endIndex = startIndex + this.itemsPerPage;
-  this.paginatedList = this.hospitallist.slice(startIndex, endIndex);
-}
-
-//page number
-PageNumber() {
-  this.pageNumbers = [];
-  for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
-    this.pageNumbers.push(i);
-  }
-}
-//change page
-nextpage(page: number) {
-  if (page >= 1 && page <= this.totalPages) {
-    this.currentPage = page;
-    this. Paginationrecord();
-  }
-}
-
-
-}
-
-
-
+        nextpage(page: number) {
+          this.currentPage = Math.max(1, Math.min(page, this.totalPages));
+          this.Paginationrecord();
+          this.PageNumber();
+        }
+      }
