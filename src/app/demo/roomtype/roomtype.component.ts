@@ -119,7 +119,12 @@ export  class RoomTypesComponent implements OnInit {
        .subscribe(response => {
         console.log("POST Response:", response);
         this.getRoomType(); // Refresh list
-        this.isShowList = true; 
+
+        this.roomTypefmGroup.reset({
+          roomTypeId: 0, 
+          roomType: ''
+        });
+        this.isShowList = true;
        });
       } 
 
@@ -141,13 +146,16 @@ export  class RoomTypesComponent implements OnInit {
             console.log("PUT Response:", response);
             this.getRoomType();
             this.isShowList = true;
+            this.currentPage = 1; 
           });
       }
     
       
       onDelete(roomId: number){
         this.baseService.DELETE("https://localhost:7272/api/TblRoomType/delete?id=" + roomId).subscribe(response => {
-          console.log("DELETE Response:", response);
+          // this.baseService.DELETE("https://localhost:7272/api/TblRoomType/delete?id=" + roomId).subscribe(response => {
+  
+        console.log("DELETE Response:", response);
           this.getRoomType();
           this.isShowList = true;
         });
