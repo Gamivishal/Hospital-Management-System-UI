@@ -102,13 +102,4 @@ export class RolesComponent implements OnInit {
 
       });
   }
-  
-  onDelete(roleId: number) {
-    // console.log(roleId);
-    this.baseService.DELETE("https://localhost:7272/api/TblRole/delete?id=" + roleId).subscribe(response => {
-      console.log("DELETE Response:", response);
-      this.getRoles();
-      this.isShowList = true;
-    });
   }
-}
