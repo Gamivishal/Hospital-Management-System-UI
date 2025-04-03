@@ -26,6 +26,7 @@ export  class hospitaltypeComponent implements OnInit {
 
   isShowList:boolean=true;
   selectedHospitalId: number | null = null;
+ URL=AppConstant.url;
 
 
   constructor(
@@ -66,7 +67,7 @@ export  class hospitaltypeComponent implements OnInit {
      }
 
   gethospitaltypelist() {
-    this.baseService.GET<any>("https://localhost:7272/api/TblHospitalType/GetAll").subscribe(response => {
+    this.baseService.GET<any>(this.URL+"TblHospitalType/GetAll").subscribe(response => {
       this.hospitallist = response.data || [];
       this.totalRecords = this.hospitallist.length;
       this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
@@ -78,7 +79,7 @@ export  class hospitaltypeComponent implements OnInit {
 
   addHospital() {
 
-    this.baseService.POST("https://localhost:7272/api/TblHospitalType/Add", this.hospitalTypefmGroup.getRawValue())
+    this.baseService.POST(this.URL+"TblHospitalType/Add", this.hospitalTypefmGroup.getRawValue())
       .subscribe(response => {
         console.log("POST Response:", response);
 
@@ -102,7 +103,7 @@ export  class hospitaltypeComponent implements OnInit {
     updateHospital() {
 
 
-      this.baseService.PUT("https://localhost:7272/api/TblHospitalType/Update",this.hospitalTypefmGroup.getRawValue()) // No ID in the URL
+      this.baseService.PUT(this.URL+"TblHospitalType/Update",this.hospitalTypefmGroup.getRawValue()) // No ID in the URL
         .subscribe(response => {
             console.log("PUT Response:", response);
             this.gethospitaltypelist();
@@ -113,37 +114,33 @@ export  class hospitaltypeComponent implements OnInit {
       }
 
         onDelete(hospitalTypeID: number){
-          this.baseService.DELETE("https://localhost:7272/api/TblHospitalType/Delete?id=" + hospitalTypeID).subscribe(response => {
+          this.baseService.DELETE(this.URL+"TblHospitalType/Delete?id=" + hospitalTypeID).subscribe(response => {
             console.log("DELETE Response:", response);
             this.gethospitaltypelist();
             this.isShowList = true;
           });
         }
 
-        updatePagination() {
-          this.PageNumber();
-          this.Paginationrecord();
-        }
 
-        Paginationrecord() {
-          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-          const endIndex = Math.min(startIndex + this.itemsPerPage, this.totalRecords);
-          this.paginatedList = this.hospitallist.slice(startIndex, endIndex);
-        }
+//PAGINATION STOP
+Paginationrecord() {
+  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  const endIndex = startIndex + this.itemsPerPage;
+  this.paginatedList = this.hospitallist.slice(startIndex, endIndex);
+}
 
-        PageNumber() {
-          const startPage = 1; // Always start with page 1
-          const maxPagesToShow = 3;
-
-          this.pageNumbers = [];
-          for (let i = startPage; i <= Math.min(this.totalPages, maxPagesToShow); i++) {
-            this.pageNumbers.push(i);
-          }
-        }
-
-        nextpage(page: number) {
-          this.currentPage = Math.max(1, Math.min(page, this.totalPages));
-          this.Paginationrecord();
-          this.PageNumber();
-        }
-      }
+//page number
+PageNumber() {
+  this.pageNumbers = [];
+  for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
+    this.pageNumbers.push(i);
+  }
+}
+//change page
+nextpage(page: number) {
+  if (page >= 1 && page <= this.totalPages) {
+    this.currentPage = page;
+    this. Paginationrecord();
+  }
+}
+}

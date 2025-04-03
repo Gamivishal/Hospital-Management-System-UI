@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-Role',
   standalone: true,
   imports: [CommonModule, SharedModule],
@@ -19,9 +23,10 @@ export class RolesComponent implements OnInit {
   rolesfmGroup: FormGroup;
 
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number =AppConstant.RecordPerPage;
   totalPages: number = 0;
   pageNumbers: number[] = [];
+  URL=AppConstant.url
 
   roleData :any
   constructor(private baseService: BaseService) {}
@@ -64,7 +69,7 @@ export class RolesComponent implements OnInit {
   }
 
   getRoles() {
-    this.baseService.GET<any>("https://localhost:7272/api/TblRole/GetAll").subscribe(response => {
+    this.baseService.GET<any>(this.URL+"TblRole/GetAll").subscribe(response => {
       this.lstrole = response.data;
       this.totalPages = Math.ceil(this.lstrole.length / this.itemsPerPage);
       this.Rolerecord();
@@ -73,8 +78,9 @@ export class RolesComponent implements OnInit {
   }
 
   AddRoles() {
-    this.baseService.POST("https://localhost:7272/api/TblRole/Add", this.rolesfmGroup.getRawValue())
+    this.baseService.POST(this.URL+"TblRole/Add", this.rolesfmGroup.getRawValue())
       .subscribe(response => {
+        console.log("POST Response:", response);
         this.getRoles();
         this.isShowList = true;
       });
@@ -92,7 +98,7 @@ export class RolesComponent implements OnInit {
   updateRole() {
 
 
-    this.baseService.PUT("https://localhost:7272/api/TblRole/Update",this.rolesfmGroup.getRawValue()) // No ID in the URL
+    this.baseService.PUT(this.URL+"TblRole/Update",this.rolesfmGroup.getRawValue()) // No ID in the This.URL
       .subscribe({
         next: response => {
           console.log("PUT Response:", response);

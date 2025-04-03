@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 
-//import { PaginationComponent } from 'src/app/theme/shared/components/pagination/pagination.component'; 
+//import { PaginationComponent } from 'src/app/theme/shared/components/pagination/pagination.component';
 
 import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 @Component({
   selector: 'app-shift',
@@ -19,8 +21,9 @@ export class shiftComponent implements OnInit {
   isShowList:boolean=true;
   paginatedList: any[] = []; // Paginated data
   selectedshiftId: number | null = null;  // Store selected hospital ID for update
+  URL=AppConstant.url
 
-  
+
 
   // hopitaltypepost : any ={
   //   "createBy": 0,
@@ -42,16 +45,16 @@ export class shiftComponent implements OnInit {
       this.getShifts();
       this.addShifts();
       //this.onDelete();
-      
+
       // this.shiftfmGroup.patchValue({
       //   HospitalType:'Naitik',
       //   HospitalTypeID:1
       // });
-     
+
     }
     shiftfmGroup:FormGroup;
     currentPage: number = 1; //currect page number
-    itemsPerPage: number = 5; //total data in page
+    itemsPerPage: number = AppConstant.RecordPerPage; //total data in page
     totalPages: number = 0; //total page
     pageNumbers: number[] = [];//list
 
@@ -85,7 +88,7 @@ export class shiftComponent implements OnInit {
     {
       //debugger;
       //console.log(localStorage.getItem('token'));
-      this.baseService.GET<any>("https://localhost:7272/api/TblShift/GetAll").subscribe(response=>{
+      this.baseService.GET<any>(this.URL+"TblShift/GetAll").subscribe(response=>{
         console.log("GET Response:", response);
         this.objshift = response.data;
         this.totalPages = Math.ceil(this.objshift.length / this.itemsPerPage); // FIX: Update total pages
@@ -97,12 +100,12 @@ export class shiftComponent implements OnInit {
 
     addShifts() {
 
-      this.baseService.POST("https://localhost:7272/api/TblShift/Add", this.shiftfmGroup.getRawValue())
+      this.baseService.POST(this.URL+"TblShift/Add", this.shiftfmGroup.getRawValue())
         .subscribe(response => {
           console.log("POST Response:", response);
           this.getShifts(); // Refresh list
            // Switch to list view
-  
+
           this.shiftfmGroup.reset({
             ShiftId: 0,
             Shiftname: ''
@@ -110,9 +113,9 @@ export class shiftComponent implements OnInit {
           })
           this.isShowList = true;
           this.currentPage = 1;
-  
+
         });
-  
+
     }
     editshift(shift: any) {
       this.selectedshiftId = shift.shiftId;
@@ -125,7 +128,7 @@ export class shiftComponent implements OnInit {
     updateshift() {
 
 
-      this.baseService.PUT("https://localhost:7272/api/TblShift/Update",this.shiftfmGroup.getRawValue()) // No ID in the URL
+      this.baseService.PUT(this.URL+"TblShift/Update",this.shiftfmGroup.getRawValue()) // No ID in the URL
         .subscribe({
           next: response => {
             console.log("PUT Response:", response);
@@ -140,7 +143,7 @@ export class shiftComponent implements OnInit {
 
 
     onDelete(shiftId: number){
-      this.baseService.DELETE("https://localhost:7272/api/TblShift/Delete?id=" + shiftId).subscribe(response => {
+      this.baseService.DELETE(this.URL+"TblShift/Delete?id=" + shiftId).subscribe(response => {
         console.log("DELETE Response:", response);
         this.getShifts();
         this.isShowList = true;
@@ -155,7 +158,7 @@ export class shiftComponent implements OnInit {
       const endIndex = startIndex + this.itemsPerPage;
       this.paginatedList = this.objshift.slice(startIndex, endIndex);
     }
-    
+
     //page number
     PageNumber() {
       this.pageNumbers = [];

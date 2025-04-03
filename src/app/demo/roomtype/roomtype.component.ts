@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component,inject,OnInit } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 
 
@@ -41,16 +42,17 @@ export  class RoomTypesComponent implements OnInit {
       this.createFormGroup();
       this.getRoomType();
       this.AddRoomType()
-    
+
      }
 
      roomTypefmGroup:FormGroup;
 
-     // Page NAvigation 
+     // Page NAvigation
      currentPage: number = 1; //currect page number
-     itemsPerPage: number = 5; //total data in page
+     itemsPerPage: number =AppConstant.RecordPerPage;  //total data in page
      totalPages: number = 0; //total page
      pageNumbers: number[] = [];//list
+     URL=AppConstant.url
 
 
 
@@ -62,7 +64,7 @@ export  class RoomTypesComponent implements OnInit {
         roomType: new FormControl(null, [Validators.required,Validators.minLength(3)]),
       })
      }
-     
+
 
 
      checkRequired(controlName:any)
@@ -82,7 +84,7 @@ export  class RoomTypesComponent implements OnInit {
       const endIndex = startIndex + this.itemsPerPage;
       this.paginatedList = this.lstroomtype.slice(startIndex, endIndex);
     }
-    
+
     //page number
     PageNumber() {
       this.pageNumbers = [];
@@ -99,12 +101,12 @@ export  class RoomTypesComponent implements OnInit {
     }
 
 
- 
+
 
 
 
      getRoomType(){
-       this.baseService.GET<any>("https://localhost:7272/api/TblRoomType/GetAll").subscribe(response=>{
+       this.baseService.GET<any>(this.URL+"TblRoomType/GetAll").subscribe(response=>{
        console.log("GET Response:", response);
        this.lstroomtype = response.data;
        this.totalPages = Math.ceil(this.lstroomtype.length / this.itemsPerPage); // FIX: Update total pages
@@ -113,18 +115,24 @@ export  class RoomTypesComponent implements OnInit {
        });
       }
 
-      AddRoomType() 
+      AddRoomType()
       {
-       this.baseService.POST("https://localhost:7272/api/TblRoomType/Add", this.roomTypefmGroup.getRawValue())
+       this.baseService.POST(this.URL+"TblRoomType/Add", this.roomTypefmGroup.getRawValue())
        .subscribe(response => {
         console.log("POST Response:", response);
         this.getRoomType(); // Refresh list
-        this.isShowList = true; 
+        this.isShowList = true;
+
+        this.roomTypefmGroup.reset({
+          roomTypeId: 0,
+          roomType: ''
+        });
+        this.isShowList = true;
        });
-      } 
+      }
 
 
-   
+
       editRoom(room: any) {
         this.selectedRoomTypeId = room.roomTypeId;
         this.isShowList = false; // Show edit form
@@ -133,32 +141,29 @@ export  class RoomTypesComponent implements OnInit {
             roomType: room.roomType // Correct key
         });
     }
-    
+
 
       updateRoom() {
-        this.baseService.PUT("https://localhost:7272/api/TblRoomType/Update", this.roomTypefmGroup.getRawValue())
+        this.baseService.PUT(this.URL+"TblRoomType/Update", this.roomTypefmGroup.getRawValue())
           .subscribe(response => {
             console.log("PUT Response:", response);
             this.getRoomType();
             this.isShowList = true;
+            this.currentPage = 1;
           });
       }
-    
-      
+
+
       onDelete(roomId: number){
-        this.baseService.DELETE("https://localhost:7272/api/TblRoomType/delete?id=" + roomId).subscribe(response => {
+        this.baseService.DELETE(URL+"TblRoomType/delete?id=" + roomId).subscribe(response => {
           console.log("DELETE Response:", response);
+        this.baseService.DELETE("https://localhost:7272/api/TblRoomType/delete?id=" + roomId).subscribe(response => {
+          // this.baseService.DELETE("https://localhost:7272/api/TblRoomType/delete?id=" + roomId).subscribe(response => {
+
+        console.log("DELETE Response:", response);
           this.getRoomType();
           this.isShowList = true;
         });
+      })
       }
-
-
-      // getbyId(id: number) {
-      //   this.baseService.GET<any>(`https://localhost:7272/api/TblRoomType/GetById?id=${id}`)
-      //     .subscribe(
-      //       response => {
-      //         console.log("GET BY ID Response:", response);
-      //       });
-      // }
-}
+    }

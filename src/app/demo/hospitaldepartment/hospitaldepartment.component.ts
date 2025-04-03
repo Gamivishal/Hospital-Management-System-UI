@@ -1,11 +1,16 @@
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component,inject, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 // import { ToastrService, ToastrModule } from 'ngx-toastr';
-import { ToastService } from 'src/app/services/toast.service';
+// import { ToastService } from 'src/app/services/toast.service';
 import { ToastrService } from 'ngx-toastr';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
+
 
 
 @Component({
@@ -38,9 +43,10 @@ constructor(
    }
    hospitaldeptfmGroup:FormGroup;
    currentPage: number = 1; //currect page number
-   itemsPerPage: number = 5; //total data in page
+   itemsPerPage: number = AppConstant.RecordPerPage; //total data in page
    totalPages: number = 0; //total page
    pageNumbers: number[] = [];//list
+   URL=AppConstant.url
      createFormGroup()
      {
       this.hospitaldeptfmGroup = new FormGroup({
@@ -61,7 +67,7 @@ constructor(
     }
 
     getDept() {
-          this.baseService.GET<any>("https://localhost:7272/api/TblHospitalDept/GetAll").subscribe({
+          this.baseService.GET<any>(this.URL+"TblHospitalDept/GetAll").subscribe({
           next: (response) => {
             this.toastr.success('Hello world!', 'Toastr fun!');
           console.log("GET Response:", response);
@@ -84,7 +90,7 @@ this.currentPage = 1; // Reset to first page when new data loads
 // this.hopitaldeptpost.createdOn = new Date().toISOString();
 // this.hopitaldeptpost.updateOn = new Date().toISOString();
 
-        this.baseService.POST("https://localhost:7272/api/TblHospitalDept/Add", this.hospitaldeptfmGroup.getRawValue())
+        this.baseService.POST(this.URL+"TblHospitalDept/Add", this.hospitaldeptfmGroup.getRawValue())
         .subscribe({ next: (response) => {
         console.log("POST Response:", response);
         //this.toastService.handleApiResponse(200, 'Department added successfully');
@@ -106,7 +112,7 @@ editHospital(hospital: any) {
 }
 
 updateHospital() {
-  this.baseService.PUT("https://localhost:7272/api/TblHospitalDept/Update",this.hospitaldeptfmGroup.getRawValue()) // No ID in the URL
+  this.baseService.PUT(this.URL+"TblHospitalDept/Update",this.hospitaldeptfmGroup.getRawValue()) // No ID in the URL
     .subscribe({
       next: response => {
         console.log("PUT Response:", response);
@@ -118,7 +124,7 @@ updateHospital() {
     });
 }
 onDelete(hospitalDepartmentId: number){
-  this.baseService.DELETE("https://localhost:7272/api/TblHospitalDept/DeleteByID?id=" + hospitalDepartmentId).subscribe(response => {
+  this.baseService.DELETE(this.URL+"TblHospitalDept/DeleteByID?id=" + hospitalDepartmentId).subscribe(response => {
     console.log("DELETE Response:", response);
     this.getDept();
     this.isShowList = true;
