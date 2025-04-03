@@ -3,8 +3,9 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ToastrService, ToastrModule } from 'ngx-toastr';
+// import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { ToastService } from 'src/app/services/toast.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -23,8 +24,8 @@ selectedHospitalId: number | null = null;
 http = inject(HttpClient);
 
 constructor(
-  private baseService: BaseService
-  //private toastService: ToastService
+  private baseService: BaseService,
+  private toastr: ToastrService
 ) {}
    ngOnInit() {
     this.getDept();
@@ -62,6 +63,7 @@ constructor(
     getDept() {
           this.baseService.GET<any>("https://localhost:7272/api/TblHospitalDept/GetAll").subscribe({
           next: (response) => {
+            this.toastr.success('Hello world!', 'Toastr fun!');
           console.log("GET Response:", response);
           this.hospitaldepartments = response.data;
           this.totalPages = Math.ceil(this.hospitaldepartments.length / this.itemsPerPage); // FIX: Update total pages
