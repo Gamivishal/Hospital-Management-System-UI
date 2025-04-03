@@ -1,4 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,10 +8,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BaseService {
+
   constructor(private http: HttpClient) {}
-  
+
   private getAuthHeaders(): HttpHeaders {
-    debugger;
+
     //console.log(localStorage.getItem('token'));
     const token = true//sessionStorage.getItem('token'); // Retrieve token from localStorage or another source
     return new HttpHeaders({
@@ -34,3 +37,4 @@ export class BaseService {
     return this.http.delete<T>(url,{headers : this.getAuthHeaders()});
   }
 }
+

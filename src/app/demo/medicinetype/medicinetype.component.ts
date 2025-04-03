@@ -1,10 +1,14 @@
+/* eslint-disable no-debugger */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component,inject,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CommonModule, NgIfContext } from '@angular/common';
+import { CommonModule,  } from '@angular/common';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 
 
@@ -21,9 +25,9 @@ export class MedicineTypeComponent implements OnInit{
   paginatedList: any[] = []; // Paginated data
   isShowList:boolean=true;
   selectedmedicineTypeId: number | null = null;  // Store selected hospital ID for update
-  
 
-  
+
+
   // medicinetypepost:any={
   //   "createBy":0,
   //   "cretedOn":"",
@@ -37,21 +41,22 @@ export class MedicineTypeComponent implements OnInit{
   http=inject(HttpClient)
 
   constructor(private baseService: BaseService) {}
- 
+
   // life cycle event
   ngOnInit() {
      this.createFormGroup();
      this.getMedicineTypes();
      this.AddMedicineTypes();
-     
+
     }
 
     medicineTypeFormGroup:FormGroup
     // Pagination properties
     currentPage: number = 1; //currect page number
-    itemsPerPage: number = 5; //total data in page
+    itemsPerPage: number = AppConstant.RecordPerPage;
     totalPages: number = 0; //total page
     pageNumbers: number[] = [];//list
+    URL=AppConstant.url
 
     createFormGroup(){
 
@@ -74,7 +79,7 @@ export class MedicineTypeComponent implements OnInit{
     }
 
   getMedicineTypes(){
-    this.baseService.GET <any>("https://localhost:7272/api/TblMedicineType/GetAll").subscribe(response=>{
+    this.baseService.GET <any>(this.URL+"TblMedicineType/GetAll").subscribe(response=>{
       console.log("Get Response:", response);
       this. medicinetypelist = response.data;
       this.totalPages = Math.ceil(this.medicinetypelist.length / this.itemsPerPage); // FIX: Update total pages
@@ -84,11 +89,11 @@ export class MedicineTypeComponent implements OnInit{
 }
 
   AddMedicineTypes(){
-    
-    //Medicine:any [] = [];
-  
 
-    this.baseService.POST("https://localhost:7272/api/TblMedicineType/Add",this.medicineTypeFormGroup.getRawValue())
+    //Medicine:any [] = [];
+
+
+    this.baseService.POST(this.URL+"TblMedicineType/Add",this.medicineTypeFormGroup.getRawValue())
       .subscribe(response => {
         console.log("POST Response:", response);
         this.getMedicineTypes();
@@ -102,7 +107,7 @@ export class MedicineTypeComponent implements OnInit{
 
    this.currentPage = 1;
 
-     
+
     });
 
   }
@@ -118,7 +123,7 @@ export class MedicineTypeComponent implements OnInit{
 
   updateMedicineTypes() {
     debugger
-    this.baseService.PUT("https://localhost:7272/api/TblMedicineType/Update",this.medicineTypeFormGroup.getRawValue())// No ID in the URL
+    this.baseService.PUT(this.URL+"TblMedicineType/Update",this.medicineTypeFormGroup.getRawValue())// No ID in the URL
       .subscribe({
         next: response => {
           console.log("PUT Response:", response);
@@ -130,7 +135,7 @@ export class MedicineTypeComponent implements OnInit{
       });
     }
     onDelete(medicineTypeID: number){
-      this.baseService.DELETE("https://localhost:7272/api/TblMedicineType/Delete?Id=" + medicineTypeID).subscribe(response => {
+      this.baseService.DELETE(this.URL+"TblMedicineType/Delete?Id=" + medicineTypeID).subscribe(response => {
         console.log("DELETE Response:", response);
         this.getMedicineTypes();
         this.isShowList = true;
@@ -160,6 +165,6 @@ nextpage(page: number) {
   }
 }
 }
-    
+
 
 
