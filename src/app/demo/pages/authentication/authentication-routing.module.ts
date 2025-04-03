@@ -12,6 +12,10 @@ const routes: Routes = [
       {
         path: 'signup',
         loadComponent: () => import('./auth-signup/auth-signup.component')
+      },
+      {
+        path: 'forget-password',
+        loadComponent: () => import('./forget-password/forget-password.component')
       }
     ]
   }
