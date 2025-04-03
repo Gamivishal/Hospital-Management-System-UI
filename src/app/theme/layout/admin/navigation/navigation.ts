@@ -94,8 +94,27 @@ export const NavigationItems: NavigationItem[] = [
         url: '/roles',
         icon: 'feather icon-home',
         classes: 'nav-item'
-      }
+      },
+     
 
+    ]
+    
+  },
+  {
+    id: 'data',
+    title: 'Data',
+    type: 'group',
+    icon: 'icon-navigation',
+    children: [
+      {
+        id: 'Empshiftmapping',
+        title: 'EmpShiftMapping',
+        type: 'item',
+        url: '/empshiftmapping',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      }
+    
     ]
   },
   
