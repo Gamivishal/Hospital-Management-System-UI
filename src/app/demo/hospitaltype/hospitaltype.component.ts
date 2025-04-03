@@ -4,7 +4,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-hospitaltype',
   standalone: true,
@@ -30,7 +30,7 @@ export  class hospitaltypeComponent implements OnInit {
 
 
   constructor(
-    private baseService: BaseService ) {
+    private baseService: BaseService,private toastr: ToastrService ) {
 
   }
 
@@ -79,18 +79,25 @@ export  class hospitaltypeComponent implements OnInit {
 
   addHospital() {
 
-    this.baseService.POST(this.URL+"TblHospitalType/Add", this.hospitalTypefmGroup.getRawValue())
-      .subscribe(response => {
+    this.baseService.POST(this.URL+"TblHospitalType/Add", this.hospitalTypefmGroup.getRawValue()).subscribe({
+        next: (response:any) => {
+        if (response.statusCode === 200) {
+        this.toastr.success(response.message, 'Success');
         console.log("POST Response:", response);
-
         this.gethospitaltypelist();
         this.hospitalTypefmGroup.reset({ HospitalTypeID: 0 });
         this.isShowList = true;
         this.currentPage=1;
-      });
-
-
+      }
+      else {
+        this.toastr.error(response.message, 'Error');
+      }
+    },
+    error: () => {
+      this.toastr.error('Failed to update ', 'Error');
     }
+  });
+}
     editHospital(hospital: any) {
       this.selectedHospitalId = hospital.hospitalTypeID;
       this.isShowList = false;
@@ -104,21 +111,41 @@ export  class hospitaltypeComponent implements OnInit {
 
 
       this.baseService.PUT(this.URL+"TblHospitalType/Update",this.hospitalTypefmGroup.getRawValue()) // No ID in the URL
-        .subscribe(response => {
+        .subscribe({
+          next: (response: any) => {
+            if (response.statusCode === 200) {
+              this.toastr.success(response.message, 'Success');
             console.log("PUT Response:", response);
             this.gethospitaltypelist();
             this.isShowList = true;
 
 
-        });
+          } else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to update ', 'Error');
+        }
+      });
       }
 
         onDelete(hospitalTypeID: number){
-          this.baseService.DELETE(this.URL+"TblHospitalType/Delete?id=" + hospitalTypeID).subscribe(response => {
+          this.baseService.DELETE(this.URL+"TblHospitalType/Delete?id=" + hospitalTypeID).subscribe({
+            next: (response: any) => {
+              if (response.statusCode === 200) {
+                this.toastr.success(response.message, 'Success');
             console.log("DELETE Response:", response);
             this.gethospitaltypelist();
             this.isShowList = true;
-          });
+          } else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to delete ', 'Error');
+        }
+      });
         }
 
 

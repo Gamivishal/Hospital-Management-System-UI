@@ -10,7 +10,7 @@ import { CommonModule,  } from '@angular/common';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
-
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -40,7 +40,8 @@ export class MedicineTypeComponent implements OnInit{
   // }
   http=inject(HttpClient)
 
-  constructor(private baseService: BaseService) {}
+  constructor(private baseService: BaseService,
+    private toastr: ToastrService) {}
 
   // life cycle event
   ngOnInit() {
@@ -89,27 +90,27 @@ export class MedicineTypeComponent implements OnInit{
 }
 
   AddMedicineTypes(){
-
-    //Medicine:any [] = [];
-
-
     this.baseService.POST(this.URL+"TblMedicineType/Add",this.medicineTypeFormGroup.getRawValue())
-      .subscribe(response => {
+      .subscribe({
+        next: (response:any) => {
+        if (response.statusCode === 200) {
+        this.toastr.success(response.message, 'Success');
         console.log("POST Response:", response);
         this.getMedicineTypes();
         this.isShowList = true;
-
         this.medicineTypeFormGroup.reset({
           medicineTypeID: 0,
           typeName: ''
-
-            })
-
-   this.currentPage = 1;
-
-
-    });
-
+        });
+        }
+        else {
+          this.toastr.error(response.message, 'Error');
+        }
+      },
+      error: () => {
+        this.toastr.error('Failed to update ', 'Error');
+      }
+      });
   }
   editMedicineTypes(medicinetype: any) {
     this.selectedmedicineTypeId = medicinetype.medicineTypeID;
@@ -125,21 +126,36 @@ export class MedicineTypeComponent implements OnInit{
     debugger
     this.baseService.PUT(this.URL+"TblMedicineType/Update",this.medicineTypeFormGroup.getRawValue())// No ID in the URL
       .subscribe({
-        next: response => {
-          console.log("PUT Response:", response);
+        next: (response: any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
           this.getMedicineTypes();
           this.isShowList = true;
-          // this.selectedHospitalId = null;
-        },
-
-      });
+        } else {
+          this.toastr.error(response.message, 'Error');
+        }
+      },
+      error: () => {
+        this.toastr.error('Failed to update ', 'Error');
+      }
+    });
     }
     onDelete(medicineTypeID: number){
-      this.baseService.DELETE(this.URL+"TblMedicineType/Delete?Id=" + medicineTypeID).subscribe(response => {
+      this.baseService.DELETE(this.URL+"TblMedicineType/Delete?Id=" + medicineTypeID).subscribe({
+        next: (response: any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
         console.log("DELETE Response:", response);
         this.getMedicineTypes();
         this.isShowList = true;
-      });
+      } else {
+        this.toastr.error(response.message, 'Error');
+      }
+    },
+    error: () => {
+      this.toastr.error('Failed to delete ', 'Error');
+    }
+  });
     }
 
 

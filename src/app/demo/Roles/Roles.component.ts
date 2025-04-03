@@ -6,7 +6,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-Role',
@@ -29,7 +29,8 @@ export class RolesComponent implements OnInit {
   URL=AppConstant.url
 
   roleData :any
-  constructor(private baseService: BaseService) {}
+  constructor(private baseService: BaseService,
+    private toastr: ToastrService) {}
 
   ngOnInit() {
     this.createFormGroup();
@@ -78,13 +79,24 @@ export class RolesComponent implements OnInit {
   }
 
   AddRoles() {
-    this.baseService.POST(this.URL+"TblRole/Add", this.rolesfmGroup.getRawValue())
-      .subscribe(response => {
-        console.log("POST Response:", response);
-        this.getRoles();
-        this.isShowList = true;
+    this.baseService.POST(this.URL + "TblRole/Add", this.rolesfmGroup.getRawValue())
+      .subscribe({
+        next: (response:any) => { // No need for ': any'
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
+            console.log("POST Response:", response);
+            this.getRoles();
+            this.isShowList = true;
+          } else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to add role', 'Error');
+        }
       });
   }
+
 
   editRole(role: any) {
     this.selectedroleId = role.roleId;
@@ -100,12 +112,19 @@ export class RolesComponent implements OnInit {
 
     this.baseService.PUT(this.URL+"TblRole/Update",this.rolesfmGroup.getRawValue()) // No ID in the This.URL
       .subscribe({
-        next: response => {
+        next: (response: any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
           console.log("PUT Response:", response);
           this.getRoles();
           this.isShowList = true;
-          },
-
-      });
+        } else {
+          this.toastr.error(response.message, 'Error');
+        }
+      },
+      error: () => {
+        this.toastr.error('Failed to update ', 'Error');
+      }
+    });
   }
-  }
+}

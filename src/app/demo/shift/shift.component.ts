@@ -8,7 +8,7 @@ import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-shift',
   standalone: true,
@@ -17,7 +17,8 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
   styleUrls: ['./shift.component.scss']
 })
 export class shiftComponent implements OnInit {
-  constructor(private baseService: BaseService) {}
+  constructor(private baseService: BaseService,
+    private toastr: ToastrService) {}
   isShowList:boolean=true;
   paginatedList: any[] = []; // Paginated data
   selectedshiftId: number | null = null;  // Store selected hospital ID for update
@@ -99,24 +100,31 @@ export class shiftComponent implements OnInit {
     }
 
     addShifts() {
-
       this.baseService.POST(this.URL+"TblShift/Add", this.shiftfmGroup.getRawValue())
-        .subscribe(response => {
+        .subscribe({
+          next: (response:any) => {
+          if (response.statusCode === 200) {
+          this.toastr.success(response.message, 'Success');
           console.log("POST Response:", response);
           this.getShifts(); // Refresh list
            // Switch to list view
-
+           this.isShowList = true;
+           this.currentPage = 1;
           this.shiftfmGroup.reset({
             ShiftId: 0,
             Shiftname: ''
-
-          })
-          this.isShowList = true;
-          this.currentPage = 1;
-
         });
-
+      }
+      else {
+        this.toastr.error(response.message, 'Error');
+      }
+    },
+    error: () => {
+      this.toastr.error('Failed to update ', 'Error');
     }
+    });
+}
+
     editshift(shift: any) {
       this.selectedshiftId = shift.shiftId;
       this.isShowList = false; //showList
@@ -130,24 +138,41 @@ export class shiftComponent implements OnInit {
 
       this.baseService.PUT(this.URL+"TblShift/Update",this.shiftfmGroup.getRawValue()) // No ID in the URL
         .subscribe({
-          next: response => {
+          next: (response: any) => {
+            if (response.statusCode === 200) {
+              this.toastr.success(response.message, 'Success');
             console.log("PUT Response:", response);
             this.getShifts();
             //this.shiftfmGroup.reset();
             this.isShowList = true;
             // this.selectedHospitalId = null;
-          },
-
-        });
+          } else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to update ', 'Error');
+        }
+      });
     }
 
 
     onDelete(shiftId: number){
-      this.baseService.DELETE(this.URL+"TblShift/Delete?id=" + shiftId).subscribe(response => {
+      this.baseService.DELETE(this.URL+"TblShift/Delete?id=" + shiftId).subscribe({
+        next: (response: any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
         console.log("DELETE Response:", response);
         this.getShifts();
         this.isShowList = true;
-      });
+      } else {
+        this.toastr.error(response.message, 'Error');
+      }
+    },
+    error: () => {
+      this.toastr.error('Failed to delete ', 'Error');
+    }
+  });
     }
 
 

@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-roomtypeess',
@@ -36,7 +36,8 @@ export  class RoomTypesComponent implements OnInit {
 
   // roomTypeId: number = null;
 
-  constructor(private baseService: BaseService) {}
+  constructor(private baseService: BaseService,
+    private toastr: ToastrService) {}
 
      ngOnInit() {
       this.createFormGroup();
@@ -118,7 +119,10 @@ export  class RoomTypesComponent implements OnInit {
       AddRoomType()
       {
        this.baseService.POST(this.URL+"TblRoomType/Add", this.roomTypefmGroup.getRawValue())
-       .subscribe(response => {
+       .subscribe({
+        next: (response:any) => {
+        if (response.statusCode === 200) {
+        this.toastr.success(response.message, 'Success');
         console.log("POST Response:", response);
         this.getRoomType(); // Refresh list
         this.isShowList = true;
@@ -127,10 +131,16 @@ export  class RoomTypesComponent implements OnInit {
           roomTypeId: 0,
           roomType: ''
         });
-        this.isShowList = true;
-       });
       }
-
+      else {
+        this.toastr.error(response.message, 'Error');
+      }
+    },
+    error: () => {
+      this.toastr.error('Failed to update ', 'Error');
+    }
+    });
+}
 
 
       editRoom(room: any) {
@@ -145,17 +155,30 @@ export  class RoomTypesComponent implements OnInit {
 
       updateRoom() {
         this.baseService.PUT(this.URL+"TblRoomType/Update", this.roomTypefmGroup.getRawValue())
-          .subscribe(response => {
+          .subscribe({
+            next: (response: any) => {
+              if (response.statusCode === 200) {
+                this.toastr.success(response.message, 'Success');
             console.log("PUT Response:", response);
             this.getRoomType();
             this.isShowList = true;
             this.currentPage = 1;
-          });
+          } else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to update ', 'Error');
+        }
+      });
       }
 
 
       onDelete(roomId: number){
-        this.baseService.DELETE(URL+"TblRoomType/delete?id=" + roomId).subscribe(response => {
+        this.baseService.DELETE(URL+"TblRoomType/delete?id=" + roomId).subscribe({
+          next: (response: any) => {
+            if (response.statusCode === 200) {
+              this.toastr.success(response.message, 'Success');
           console.log("DELETE Response:", response);
         this.baseService.DELETE("https://localhost:7272/api/TblRoomType/delete?id=" + roomId).subscribe(response => {
           // this.baseService.DELETE("https://localhost:7272/api/TblRoomType/delete?id=" + roomId).subscribe(response => {
@@ -164,6 +187,13 @@ export  class RoomTypesComponent implements OnInit {
           this.getRoomType();
           this.isShowList = true;
         });
-      })
+      } else {
+        this.toastr.error(response.message, 'Error');
       }
+    },
+    error: () => {
+      this.toastr.error('Failed to delete ', 'Error');
     }
+  });
+    }
+  }
