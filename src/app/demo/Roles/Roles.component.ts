@@ -4,7 +4,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+/// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
 @Component({
@@ -45,7 +45,7 @@ export class RolesComponent implements OnInit {
   }
 
   checkRequired(controlName: any) {
-    return this.rolesfmGroup.controls[controlName].errors?.['required'];
+    return this.rolesfmGroup.controls[controlName].touched && this.rolesfmGroup.controls[controlName].errors?.['required'];
   }
 
   // Pagination logic

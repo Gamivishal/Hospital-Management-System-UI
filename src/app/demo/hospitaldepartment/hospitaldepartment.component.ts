@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Component,inject, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
@@ -30,7 +31,6 @@ constructor(
    ngOnInit() {
     this.getDept();
     this.createFormGroup();
-    this.addHospital();
 
    }
    hospitaldeptfmGroup:FormGroup;
@@ -50,12 +50,12 @@ constructor(
 
      checkRequired(controlName:any)
      {
-      return this.hospitaldeptfmGroup.controls[controlName].errors?.['required'];
+      return this.hospitaldeptfmGroup.controls[controlName].touched && this.hospitaldeptfmGroup.controls[controlName].errors?.['required'];
      }
 
     checkminlength(controlName:any)
     {
-      return this.hospitaldeptfmGroup.controls[controlName].errors?.['minlength'];
+      return this.hospitaldeptfmGroup.controls[controlName].touched && this.hospitaldeptfmGroup.controls[controlName].errors?.['minlength'];
     }
 
     getDept() {

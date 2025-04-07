@@ -7,7 +7,7 @@ import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule,  } from '@angular/common';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+/// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 import { ToastrService } from 'ngx-toastr';
@@ -47,7 +47,7 @@ export class MedicineTypeComponent implements OnInit{
   ngOnInit() {
      this.createFormGroup();
      this.getMedicineTypes();
-     this.AddMedicineTypes();
+
 
     }
 
@@ -70,13 +70,13 @@ export class MedicineTypeComponent implements OnInit{
     }
     checkRequired(controlName:any)
     {
-      return this.medicineTypeFormGroup.controls[controlName].errors?.['required'];
+      return this.medicineTypeFormGroup.controls[controlName].touched && this.medicineTypeFormGroup.controls[controlName].errors?.['required'];
     }
 
 
     checkminlength(controlName:any)
     {
-       return this.medicineTypeFormGroup.controls[controlName].errors?.['minlength'];
+       return this.medicineTypeFormGroup.controls[controlName].touched && this.medicineTypeFormGroup.controls[controlName].errors?.['minlength'];
     }
 
   getMedicineTypes(){
