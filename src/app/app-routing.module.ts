@@ -56,6 +56,14 @@ const routes: Routes = [
         loadComponent : () => import('./demo/Roles/Roles.component').then((c) => c.RolesComponent)
       },
       {
+        path: 'empshiftmapping',
+        loadComponent : () => import ('./demo/empshiftmapping/empshiftmapping.component').then((c) => c.empshiftmapping)
+      },
+      {
+        path: 'empdepartmentmapping',
+        loadComponent : () => import ('./demo/empdepartmentmapping/empdepartmentmapping.component').then((c) => c.EmpDepartmentMapping)
+      },
+      {
         path: 'hospitaldepartment',
        loadComponent : () => import('./demo/hospitaldepartment/hospitaldepartment.component').then((c) => c.hospitaldepartmentComponent)
       },

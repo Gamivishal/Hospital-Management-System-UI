@@ -42,7 +42,6 @@ export  class RoomTypesComponent implements OnInit {
      ngOnInit() {
       this.createFormGroup();
       this.getRoomType();
-      this.AddRoomType()
 
      }
 
