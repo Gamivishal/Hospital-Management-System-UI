@@ -1,5 +1,5 @@
 <div class="auth-wrapper">
-    <div class="auth-content">
+    <div class="SingupPage-content">
         <div class="auth-bg">
             <span class="r"></span>
             <span class="r s"></span>
@@ -93,6 +93,9 @@
                                 <div class="input-group-append">
                                     <label class="input-group-text">Blood Group</label>
                                 </div>
+                                <div>
+
+                                </div>
                                 <span *ngIf="checkRequired('Blood_Group')" class="error-span">This Field Is Required</span>
                             </div>
 
@@ -122,14 +125,14 @@
                             <div class="form-group row">
                                 <label for="userId" class="col-sm-3 col-form-label">User ID</label>
                                 <div class="col-sm-9">
-                                    <input type="number" class="form-control" id="userId" formControlName="UserId" placeholder="Enter User ID" />
+                                    <input type="text" class="form-control" id="userId" formControlName="UserId" placeholder="Enter User ID" />
                                     <span *ngIf="checkRequired('UserId')" class="error-span">User ID is required</span>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="roleId" class="col-sm-3 col-form-label">Role ID</label>
                                     <div class="col-sm-9">
-                                        <input type="number" class="form-control" id="roleId" formControlName="RoleId" placeholder="Enter Role ID" />
+                                        <input type="text" class="form-control" id="roleId" formControlName="RoleId" placeholder="Enter Role ID" />
                                         <span *ngIf="checkRequired('RoleId')" class="error-span">Role ID is required</span>
                                     </div>
                                 </div>
