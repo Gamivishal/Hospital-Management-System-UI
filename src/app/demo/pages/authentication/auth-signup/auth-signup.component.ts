@@ -29,33 +29,68 @@ export default class AuthSignupComponent implements OnInit {
   createFormGroup(){
     this.singupformgoup= new FormGroup({
       FullName: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-      Email: new FormControl(null, [Validators.required]),
+      Email: new FormControl(null, [Validators.required,Validators.email]),
       Password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
-      MobilNumber: new FormControl(null, [Validators.required]),
-      DOB: new FormControl(null, [Validators.required]),
+      ConfirmPassword: new FormControl(null, [
+        Validators.required,
+        this.matchPasswordValidator('Password')
+      ]),
+
+      MobilNumber: new FormControl(null, [Validators.required,Validators.pattern(/^[6-9]\d{9}$/),Validators.maxLength(10)]),
+      DOB: new FormControl(null, [Validators.required,control => new Date(control.value)?.getTime() > Date.now() ? { futureDate: true } : null]),
       Gender: new FormControl(null, [Validators.required]),
       Address: new FormControl(null, [Validators.required]),
       Blood_Group: new FormControl(null, [Validators.required]),
-      Emergency_Contact: new FormControl(null, [Validators.required]),
+      Emergency_Contact: new FormControl(null, [Validators.required,Validators.pattern(/^[6-9]\d{9}$/),Validators.maxLength(10)]),
       Medical_History: new FormControl(null),
-      UserId: new FormControl(null, [Validators.required]),
-      RoleId: new FormControl(null, [Validators.required]),
-
-
     })
   }
   ngOnInit(){
     this.createFormGroup();
-    this.signup()
+    //this.signup()
   }
 
   checkRequired(controlName: any) {
-    return this.singupformgoup.controls[controlName].errors?.['required'];
+    return this.singupformgoup.controls[controlName].touched && this.singupformgoup.controls[controlName].errors?.['required'];
   }
 
   checkMinLength(controlName: any) {
     return this.singupformgoup.controls[controlName].errors?.['minlength'];
   }
+
+  checkMobileNumber(controlName: any) {
+    return this.singupformgoup.controls[controlName].touched &&
+    this.singupformgoup.controls[controlName].errors?.['pattern'] &&
+    /^[0-5]/.test(this.singupformgoup.controls[controlName].value);
+  }
+  // checkMaxLength(controlName: any) {
+  //   return this.singupformgoup.controls[controlName].errors?.['maxLength'];
+  // }
+  checkMaxLength(controlName: any) {
+    return this.singupformgoup.controls[controlName].touched &&
+           this.singupformgoup.controls[controlName].errors?.['maxlength'];
+  }
+  checkFutureDate(controlName: any) {
+    return this.singupformgoup.controls[controlName].touched &&
+      this.singupformgoup.controls[controlName].errors?.['futureDate'];
+  }
+  passwordsMatchValidator(group: FormGroup) {
+    return group.get('Password')?.value === group.get('ConfirmPassword')?.value ? null : { passwordsMismatch: true };
+
+  }
+  matchPasswordValidator(passwordControlName: string) {
+    return (control: FormControl) => {
+      return control?.parent?.get(passwordControlName)?.value === control.value
+        ? null
+        : { passwordMismatch: true };
+    };
+  }
+
+
+
+
+
+
 
 
     signup() {
@@ -66,4 +101,6 @@ export default class AuthSignupComponent implements OnInit {
 
         });
       }
+
+
     }

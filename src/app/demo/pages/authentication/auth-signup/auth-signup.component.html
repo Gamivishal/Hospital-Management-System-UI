@@ -42,28 +42,46 @@
                                 </div>
                             </div>
 
+
+                            <div class="form-group row">
+                                <label for="confirmPassword" class="col-sm-3 col-form-label">Confirm Password</label>
+                                <div class="col-sm-9">
+                                    <input type="password" formControlName="ConfirmPassword" class="form-control" id="confirmPassword" placeholder="Confirm Password" />
+
+                                    <span *ngIf="checkRequired('ConfirmPassword')" class="error-span">This Field Is Required</span>
+
+                                    <span *ngIf="singupformgoup.get('ConfirmPassword')?.errors?.['passwordMismatch'] && singupformgoup.get('ConfirmPassword')?.touched" class="error-span">
+                                  Passwords do not match
+                                </span>
+                                </div>
+                            </div>
+
                             <div class="form-group row">
                                 <label for="mobileNumber" class="col-sm-3 col-form-label">Mobile Number</label>
                                 <div class="col-sm-9">
                                     <input type="text" formControlName="MobilNumber" class="form-control" id="mobileNumber" placeholder="Mobile Number" />
                                     <span *ngIf="checkRequired('MobilNumber')" class="error-span">This Field Is Required</span>
+                                    <span *ngIf="checkMobileNumber('MobilNumber')" class="error-span">Enter valid monile number </span>
+                                    <span *ngIf="checkMaxLength('MobilNumber')" class="error-span">Enter Only 10 digit</span>
                                 </div>
                             </div>
 
-                            <fieldset class="form-group">
-                                <div class="row">
+                            <fieldset class="form-group row">
+
+                                <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Gender</label>
-                                    <div class="col-sm-9">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" formControlName="Gender" value="Male" />
-                                            <label class="form-check-label">Male</label>
+                                    <div class="col-sm-9 d-flex align-items-center gap-3">
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="radio" formControlName="Gender" value="Female" id="genderFemale" />
+                                            <label class="form-check-label" for="genderFemale">Female</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" formControlName="Gender" value="Female" />
-                                            <label class="form-check-label">Female</label>
+                                            <input class="form-check-input" type="radio" formControlName="Gender" value="Male" id="genderMale" />
+                                            <label class="form-check-label" for="genderMale">Male</label>
                                         </div>
                                     </div>
                                 </div>
+
                             </fieldset>
                         </form>
                     </div>
@@ -75,11 +93,41 @@
                                 <div class="col-sm-9">
                                     <input type="date" formControlName="DOB" class="form-control" id="dob" />
                                     <span *ngIf="checkRequired('DOB')" class="error-span">This Field Is Required</span>
+                                    <span *ngIf="checkFutureDate('DOB')" class="error-span">Enter valid date of birth</span>
+
                                 </div>
                             </div>
 
+
+
+
+
+
+
+
                             <div class="input-group mb-3">
-                                <select formControlName="Blood_Group" class="form-select">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputGroupSelect01">Blood Group</label>
+                                </div>
+                                <select class="form-select" formControlName="Blood_Group" id="inputGroupSelect01">
+                    <option selected>Choose Blood Group...</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                  </select>
+                                <span *ngIf="checkRequired('Blood_Group')" class="error-span">This Field Is Required</span>
+                            </div>
+
+
+                            <!-- <div class="input-group mb-3"> -->
+                            <!-- <div class="input-group-prepend">
+                                    <label class="input-group-text">Blood Group</label>
+                                    <select formControlName="Blood_Group" class="form-select">
                                   <option selected disabled>Choose Blood Group...</option>
                                   <option value="A+">A+</option>
                                   <option value="A-">A-</option>
@@ -90,20 +138,20 @@
                                   <option value="AB+">AB+</option>
                                   <option value="AB-">AB-</option>
                               </select>
-                                <div class="input-group-append">
-                                    <label class="input-group-text">Blood Group</label>
+
                                 </div>
                                 <div>
-
-                                </div>
-                                <span *ngIf="checkRequired('Blood_Group')" class="error-span">This Field Is Required</span>
-                            </div>
+                                </div> -->
+                            <!-- <span *ngIf="checkRequired('Blood_Group')" class="error-span">This Field Is Required</span> -->
+                            <!-- </div> -->
 
                             <div class="form-group row">
-                                <label for="emergencyContact" class="col-sm-3 col-form-label">Emergency Contact</label>
+                                <label for="emergencyContact" class="col-sm-3 col-form-label">Emergency contact</label>
                                 <div class="col-sm-9">
                                     <input type="text" formControlName="Emergency_Contact" class="form-control" id="emergencyContact" placeholder="Emergency Contact" />
                                     <span *ngIf="checkRequired('Emergency_Contact')" class="error-span">This Field Is Required</span>
+                                    <span *ngIf="checkMobileNumber('Emergency_Contact')" class="error-span">Enter valid monile number </span>
+                                    <span *ngIf="checkMaxLength('Emergency_Contact')" class="error-span">Enter Only 10 digit</span>
                                 </div>
                             </div>
 
@@ -121,34 +169,17 @@
                                     <input type="text" formControlName="Medical_History" class="form-control" id="medicalHistory" placeholder="Medical History" />
                                 </div>
                             </div>
-
-                            <div class="form-group row">
-                                <label for="userId" class="col-sm-3 col-form-label">User ID</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="userId" formControlName="UserId" placeholder="Enter User ID" />
-                                    <span *ngIf="checkRequired('UserId')" class="error-span">User ID is required</span>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="roleId" class="col-sm-3 col-form-label">Role ID</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="roleId" formControlName="RoleId" placeholder="Enter Role ID" />
-                                        <span *ngIf="checkRequired('RoleId')" class="error-span">Role ID is required</span>
-                                    </div>
-                                </div>
-
-                            </div>
                         </form>
                     </div>
                 </div>
-                <div class="form-group text-start mb-3">
+                <!-- <div class="form-group text-start mb-3">
                     <div class="checkbox checkbox-fill d-inline">
                         <input type="checkbox" name="checkbox-fill-2" id="checkbox-fill-2" />
                         <label for="checkbox-fill-2" class="cr">
                           Send me the <a href="javascript:">Newsletter</a> weekly.
                       </label>
                     </div>
-                </div>
+                </div> -->
 
                 <button type="submit" class="btn btn-primary shadow-2 mb-4" (click)="signup()" [disabled]="singupformgoup.invalid" [routerLink]="['/auth/signin']">Sign up</button>
 
