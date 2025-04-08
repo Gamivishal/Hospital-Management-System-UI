@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { BaseService } from 'src/app/services/base.service';
+import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth-signin',
@@ -11,39 +13,38 @@ import { BaseService } from 'src/app/services/base.service';
   styleUrls: ['./auth-signin.component.scss']
 })
 export default class AuthSigninComponent {
-  constructor(private baseService: BaseService,private router: Router) {}
+  constructor(private baseService: BaseService,private router: Router,private toastr: ToastrService) {}
 
   email: string = '';
   password: string = '';
   objlogin:any;
+  URL=AppConstant.url
 
-  // ngOnInit(){
-  //   this.OnLogin();
-  // }
+
 
 
 
   OnLogin(){
     debugger;
-    const apiurl = `https://localhost:7272/api/TblUser/ValidateCredential?email=${encodeURIComponent(this.email)}&password=${encodeURIComponent(this.password)}`;
+    const apiurl = this.URL+`TblUser/ValidateCredential?email=${encodeURIComponent(this.email)}&password=${encodeURIComponent(this.password)}`;
 
     this.baseService.GET<any>(apiurl).subscribe(response=>{
+      
       console.log("GET Response:", response);
       this.objlogin = response.data;
 
 
-      if(response?.data){
+      if(response?.data  && response.statusCode === 200){
         //localStorage.setItem('data', response?.data || '');
-        localStorage.setItem('data',response?.data);
-        console.log("Token stored in localstorage:", response?.data);
+        localStorage.setItem('data',JSON.stringify(response.data));
+        console.log("Token stored in localstorage:", response.data);
 
 
         this.router.navigate(['/dashboard']);
-        alert("Login successfully")
-      }else{
-        alert("Invalid Creadentials...");
-      }
-      
+        this.toastr.success(response.message);
+      } else {
+        this.toastr.error(response.message, 'Envalid credentials');
+      } 
     })  
   }
   

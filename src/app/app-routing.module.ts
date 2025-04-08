@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
 import { BaseService } from './services/base.service';
+import { AuthGuard } from './auth.guard';
 const routes: Routes = [
   {
     path: '',
@@ -23,6 +24,7 @@ const routes: Routes = [
   {
     path: '',
     component: AdminComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -31,66 +33,83 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadComponent: () => import('./demo/dashboard/dashboard.component').then((c) => c.DashboardComponent)
+        loadComponent: () => import('./demo/dashboard/dashboard.component').then((c) => c.DashboardComponent),
+        canActivate: [AuthGuard]
+
       },
       {
         path: 'medicinetype',
-        loadComponent: () => import('./demo/medicinetype/medicinetype.component').then((c) => c.MedicineTypeComponent)
+        loadComponent: () => import('./demo/medicinetype/medicinetype.component').then((c) => c.MedicineTypeComponent),
+        canActivate: [AuthGuard]
+
       },
       {
         path: 'shift',
-        loadComponent: () => import('./demo/shift/shift.component').then((c) => c.shiftComponent)
+        loadComponent: () => import('./demo/shift/shift.component').then((c) => c.shiftComponent),
+        canActivate: [AuthGuard]
+
       },
       {
         path: 'roomtype',
-        loadComponent: () => import('./demo/roomtype/roomtype.component').then((c) => c.RoomTypesComponent)
+        loadComponent: () => import('./demo/roomtype/roomtype.component').then((c) => c.RoomTypesComponent),
+        canActivate: [AuthGuard]
+
       },
 
       {
         path: 'hospitaltype',
-       loadComponent : () => import('./demo/hospitaltype/hospitaltype.component').then((c) => c.hospitaltypeComponent)
+       loadComponent : () => import('./demo/hospitaltype/hospitaltype.component').then((c) => c.hospitaltypeComponent),
+       canActivate: [AuthGuard]
+
       },
 
       {
         path: 'roles',
-        loadComponent : () => import('./demo/Roles/Roles.component').then((c) => c.RolesComponent)
-      },
-      {
-        path: 'empshiftmapping',
-        loadComponent : () => import ('./demo/empshiftmapping/empshiftmapping.component').then((c) => c.empshiftmapping)
-      },
-      {
-        path: 'empdepartmentmapping',
-        loadComponent : () => import ('./demo/empdepartmentmapping/empdepartmentmapping.component').then((c) => c.EmpDepartmentMapping)
+        loadComponent : () => import('./demo/Roles/Roles.component').then((c) => c.RolesComponent),
+        canActivate: [AuthGuard]
+
       },
       {
         path: 'hospitaldepartment',
-       loadComponent : () => import('./demo/hospitaldepartment/hospitaldepartment.component').then((c) => c.hospitaldepartmentComponent)
+       loadComponent : () => import('./demo/hospitaldepartment/hospitaldepartment.component').then((c) => c.hospitaldepartmentComponent),canActivate: [AuthGuard]
       },
       {
-        path: 'patientdata',
-       loadComponent : () => import('./demo/patientdata/patientdata.component').then((c) => c.PatientDataComponent)
+        path: 'petientdoctormapping',
+        loadComponent: () => import('./demo/petientdoctormapping/petientdoctormapping.component').then((c) => c.petientdoctormappingComponent),canActivate: [AuthGuard]
+      },
+      {
+        path: 'empshiftmapping',
+        loadComponent : () => import ('./demo/empshiftmapping/empshiftmapping.component').then((c) => c.empshiftmapping),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'empdepartmentmapping',
+        loadComponent : () => import ('./demo/empdepartmentmapping/empdepartmentmapping.component').then((c) => c.EmpDepartmentMapping),canActivate: [AuthGuard]
       },
       {
         path: 'basic',
-        loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then((m) => m.UiBasicModule)
+        loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then((m) => m.UiBasicModule),
+        canActivate: [AuthGuard]
       },
 
       {
         path: 'forms',
-        loadChildren: () => import('./demo/pages/form-elements/form-elements.module').then((m) => m.FormElementsModule)
+        loadChildren: () => import('./demo/pages/form-elements/form-elements.module').then((m) => m.FormElementsModule),canActivate: [AuthGuard]
       },
       {
         path: 'tables',
-        loadChildren: () => import('./demo/pages/tables/tables.module').then((m) => m.TablesModule)
+        loadChildren: () => import('./demo/pages/tables/tables.module').then((m) => m.TablesModule),
+        canActivate: [AuthGuard]
       },
       {
         path: 'apexchart',
-        loadComponent: () => import('./demo/pages/core-chart/apex-chart/apex-chart.component')
+        loadComponent: () => import('./demo/pages/core-chart/apex-chart/apex-chart.component'),
+        canActivate: [AuthGuard]
       },
       {
         path: 'sample-page',
-        loadComponent: () => import('./demo/extra/sample-page/sample-page.component')
+        loadComponent: () => import('./demo/extra/sample-page/sample-page.component'),
+        canActivate: [AuthGuard]
       },
     ]
   },
