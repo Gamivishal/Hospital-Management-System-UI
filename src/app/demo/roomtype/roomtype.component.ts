@@ -42,7 +42,10 @@ export  class RoomTypesComponent implements OnInit {
      ngOnInit() {
       this.createFormGroup();
       this.getRoomType();
-      this.AddRoomType()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 35f63f7c29385d85b6ef40c89dc12f5798227dd4
 
      }
 
@@ -70,13 +73,13 @@ export  class RoomTypesComponent implements OnInit {
 
      checkRequired(controlName:any)
     {
-     return this.roomTypefmGroup.controls[controlName].errors?.['required'];
+     return this.roomTypefmGroup.controls[controlName].touched && this.roomTypefmGroup.controls[controlName].errors?.['required'];
     }
 
 
     checkminlength(controlName:any)
     {
-       return this.roomTypefmGroup.controls[controlName].errors?.['minlength']
+       return this.roomTypefmGroup.controls[controlName].touched && this.roomTypefmGroup.controls[controlName].errors?.['minlength']
     }
 
 

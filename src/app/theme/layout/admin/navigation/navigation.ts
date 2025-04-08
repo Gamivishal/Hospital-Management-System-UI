@@ -48,14 +48,6 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item'
       },
       {
-        id: 'room type',
-        title: 'Room Type',
-        type: 'item',
-        url: '/roomtype',
-        icon: 'feather icon-home',
-        classes: 'nav-item'
-      },
-      {
         id: 'hospitaltype',
         title: 'Hospital Type',
         type: 'item',
@@ -120,6 +112,14 @@ export const NavigationItems: NavigationItem[] = [
         title: 'EmpShiftMapping',
         type: 'item',
         url: '/empshiftmapping',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
+        id: 'Empdepartmentmapping',
+        title: 'EmpDepartmentMapping',
+        type: 'item',
+        url: '/empdepartmentmapping',
         icon: 'feather icon-home',
         classes: 'nav-item'
       }

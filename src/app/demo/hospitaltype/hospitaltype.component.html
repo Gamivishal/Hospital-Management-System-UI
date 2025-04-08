@@ -27,12 +27,12 @@
                         <tr *ngFor="let item of paginatedList">
                             <!-- <td>{{item.hospitalTypeID}}</td> -->
                             <td>{{ item.hospitalType }}</td>
-                            <td>{{ item.createBy }}</td>
+                            <td>{{ item.createdBy }}</td>
                             <td>{{ item.createdOn | date:'dd/MM/yyyy' }}</td>
-                            <td>{{ item.updateBy }}</td>
+                            <td>{{ item.updatedBy }}</td>
                             <td>{{ item.updateOn | date:'dd/MM/yyyy' }}</td>
                             <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
-                            <td>{{ item.versionNo }}</td>
+                            <td>{{ item.versionNo }}</td>   
 
                             <td>
 

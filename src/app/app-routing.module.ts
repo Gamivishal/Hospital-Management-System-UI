@@ -7,6 +7,21 @@ import { BaseService } from './services/base.service';
 const routes: Routes = [
   {
     path: '',
+    component: GuestComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'auth/signin',
+        pathMatch: 'full'
+      },
+      {
+        path: 'auth',
+        loadChildren: () => import('./demo/pages/authentication/authentication.module').then((m) => m.AuthenticationModule)
+      }
+    ]
+  },
+  {
+    path: '',
     component: AdminComponent,
     children: [
       {
@@ -41,6 +56,14 @@ const routes: Routes = [
         loadComponent : () => import('./demo/Roles/Roles.component').then((c) => c.RolesComponent)
       },
       {
+        path: 'empshiftmapping',
+        loadComponent : () => import ('./demo/empshiftmapping/empshiftmapping.component').then((c) => c.empshiftmapping)
+      },
+      {
+        path: 'empdepartmentmapping',
+        loadComponent : () => import ('./demo/empdepartmentmapping/empdepartmentmapping.component').then((c) => c.EmpDepartmentMapping)
+      },
+      {
         path: 'hospitaldepartment',
        loadComponent : () => import('./demo/hospitaldepartment/hospitaldepartment.component').then((c) => c.hospitaldepartmentComponent)
       },
@@ -71,15 +94,10 @@ const routes: Routes = [
       },
     ]
   },
+  
   {
-    path: '',
-    component: GuestComponent,
-    children: [
-      {
-        path: 'auth',
-        loadChildren: () => import('./demo/pages/authentication/authentication.module').then((m) => m.AuthenticationModule)
-      }
-    ]
+    path: '**',
+    redirectTo: 'auth/signin' 
   }
 ];
 
