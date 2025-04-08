@@ -1,0 +1,158 @@
+<div class="row" *ngIf="patients">
+  @if(isShowList) {
+  <div class="col-xl-12">
+    <!-- <div>
+      <button type="button" (click)="isShowList = false;" class="btn btn-primary">Edit Patient</button>
+    </div> -->
+
+    <app-card cardTitle="Patient Data Table" [options]="false" blockClass="table-border-style">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Patient ID</th>
+              <th>Full Name</th>
+              <th>DOB</th>
+              <th>Gender</th>
+              <th>Address</th>
+              <th>Blood Group</th>
+              <th>Emergency Contact</th>
+              <th>Medical History</th>
+              <th>User ID</th>
+              <th>Created By</th>
+              <th>Created On</th>
+              <th>Updated By</th>
+              <th>Updated On</th>
+              <th>Is Active</th>
+              <th>Email</th>
+              <th>Mobile Number</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let patient of patients">
+              <td>{{ patient.patientId }}</td>
+              <td>{{ patient.fullName }}</td>
+              <td>{{ patient.dob | date:'yyyy-MM-dd' }}</td>
+              <td>{{ patient.gender }}</td>
+              <td>{{ patient.address }}</td>
+              <td>{{ patient.BloodGroup }}</td>
+              <td>{{ patient.emergencyContact }}</td>
+              <td>{{ patient.medicalHistory }}</td>
+              <td>{{ patient.userId }}</td>
+              <td>{{ patient.createdBy }}</td>
+              <td>{{ patient.createdOn | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+              <td>{{ patient.updatedBy }}</td>
+              <td>{{ patient.updatedOn | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+              <td>{{ patient.isActive ? 'Yes' : 'No' }}</td>
+              <td>{{ patient.email }}</td>
+              <td>{{ patient.mobileNumber || 'N/A' }}</td>
+              <td>
+                <svg (click)="editPatient(patient)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                  class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2">
+                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                </svg>
+                <svg (click)="onDelete(patient.UserId)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="15" x2="9" y1="9" y2="15" />
+                  <line x1="9" x2="15" y1="9" y2="15" />
+                </svg>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+  } @if(!isShowList) {
+    <div class="col-sm-12">
+      <app-card cardTitle="Update Patient Details" [options]="false">
+        <h5>Patient Form</h5>
+        <hr />
+        <div class="row">
+          <div class="col-md-6">
+            <form [formGroup]="patientFormGroup">
+
+              <!-- Patient Name Dropdown -->
+              <div class="form-group">
+                <label for="patientName">Patient Name</label>
+                <select formControlName="patientName" class="form-control">
+                  <option *ngFor="let patient of patientlist" [value]="patient.value">
+                    {{ patient.text }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" formControlName="fullName" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" formControlName="email" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" formControlName="password" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label for="mobilNumber">Mobile Number</label>
+                <input type="text" formControlName="mobilNumber" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label for="dob">DOB</label>
+                <input type="date" formControlName="dob" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label for="gender">Gender</label><br />
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" formControlName="gender" value="M" />
+                  <label class="form-check-label">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" formControlName="gender" value="F" />
+                  <label class="form-check-label">Female</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="blood_Group">Blood Group</label>
+                <select formControlName="blood_Group" class="form-control">
+                  <option *ngFor="let group of bloodGroups" [value]="group">{{ group }}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="emergency_Contact">Emergency Contact</label>
+                <input type="text" formControlName="emergency_Contact" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label for="medical_History">Medical History</label>
+                <input type="text" formControlName="medical_History" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label for="address">Address</label>
+                <textarea formControlName="address" class="form-control" rows="3"></textarea>
+              </div>
+
+              <div class="mt-3">
+                <button type="button" class="btn btn-success" (click)="updatePatient()">Update</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </app-card>
+    </div>
+
+
+  }
+</div>

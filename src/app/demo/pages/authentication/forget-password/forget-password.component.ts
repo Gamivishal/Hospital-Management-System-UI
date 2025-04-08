@@ -22,8 +22,9 @@ export default class ForgetPasswordComponent {
       return;
     }
 
-    this.baseService.POST("https://localhost:7272/api/TblUser/ForgetPassword", { email: this.email })
-      .subscribe({
+    this.baseService.GET("https://localhost:7272/api/TblUser/ForgetPassword?email=" + encodeURIComponent(this.email))
+  .subscribe({
+
         next: (response) => {
           this.toastr.success("Password reset successfully. Check your email!");
           console.log("Password Reset Response:", response);

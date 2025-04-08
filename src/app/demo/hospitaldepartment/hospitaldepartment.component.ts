@@ -1,4 +1,3 @@
-
 import { Component,inject, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
@@ -19,8 +18,14 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 export class hospitaldepartmentComponent implements OnInit {
 hospitaldepartments: any[]=[];
 paginatedList: any[] = [];
+currentPage: number = 1;
+totalPages: number = 1;
+totalRecords: number = 5;
+itemsPerPage: number = AppConstant.RecordPerPage;
+pageNumbers: number[] = [];
 isShowList:boolean=true;
 selectedHospitalId: number | null = null;
+URL=AppConstant.url
 http = inject(HttpClient);
 
 constructor(
@@ -34,11 +39,7 @@ constructor(
 
    }
    hospitaldeptfmGroup:FormGroup;
-   currentPage: number = 1; //currect page number
-   itemsPerPage: number = AppConstant.RecordPerPage; //total data in page
-   totalPages: number = 0; //total page
-   pageNumbers: number[] = [];//list
-   URL=AppConstant.url
+
      createFormGroup()
      {
       this.hospitaldeptfmGroup = new FormGroup({
@@ -63,10 +64,11 @@ constructor(
           next: (response) => {
           console.log("GET Response:", response);
           this.hospitaldepartments = response.data;
+          this.totalRecords = this.hospitaldepartments.length;
           this.totalPages = Math.ceil(this.hospitaldepartments.length / this.itemsPerPage); // FIX: Update total pages
-          this. Paginationrecord();//update list
-          this.PageNumber(); // FIX: Update page numbers
-          this.currentPage = 1; // Reset to first page when new data loads
+          this.currentPage = 1;
+          this.PageNumber();
+          this.Paginationrecord();
           },
           });
     }
@@ -135,11 +137,12 @@ onDelete(hospitalDepartmentId: number){
   });
 }
 
-//record for the page
+///PAGINATION STOP
 Paginationrecord() {
   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
   const endIndex = startIndex + this.itemsPerPage;
   this.paginatedList = this.hospitaldepartments.slice(startIndex, endIndex);
+  console.log("Paginated List:", this.paginatedList);
 }
 
 //page number

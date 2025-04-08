@@ -45,14 +45,14 @@ const routes: Routes = [
        loadComponent : () => import('./demo/hospitaldepartment/hospitaldepartment.component').then((c) => c.hospitaldepartmentComponent)
       },
       {
-        path: 'hospitaldepartment',
-       loadComponent : () => import('./demo/hospitaldepartment/hospitaldepartment.component').then((c) => c.hospitaldepartmentComponent)
+        path: 'patientdata',
+       loadComponent : () => import('./demo/patientdata/patientdata.component').then((c) => c.PatientDataComponent)
       },
       {
         path: 'basic',
         loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then((m) => m.UiBasicModule)
       },
-      
+
       {
         path: 'forms',
         loadChildren: () => import('./demo/pages/form-elements/form-elements.module').then((m) => m.FormElementsModule)

@@ -80,6 +80,15 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item'
       },
       {
+        id: 'patientdata',
+        title: 'Patient Data',
+        type: 'item',
+        url: '/patientdata',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+
+      {
         id: 'room type',
         title: 'Room Type',
         type: 'item',
@@ -95,10 +104,10 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
-     
+
 
     ]
-    
+
   },
   {
     id: 'data',
@@ -114,10 +123,10 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       }
-    
+
     ]
   },
-  
+
   {
     id: 'ui-element',
     title: 'UI ELEMENT',
@@ -170,7 +179,7 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
- 
+
 
 // end
 
@@ -201,9 +210,9 @@ export const NavigationItems: NavigationItem[] = [
 
 
 
-      
-    
-  
+
+
+
 //  END
   {
     id: 'forms',
