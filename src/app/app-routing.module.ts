@@ -72,9 +72,14 @@ const routes: Routes = [
        loadComponent : () => import('./demo/patientdata/patientdata.component').then((c) => c.PatientDataComponent)
       },
       {
+        path: 'billing',
+       loadComponent : () => import('./demo/billing/billing.component').then((c) => c.billingComponent)
+      },
+      {
         path: 'basic',
         loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then((m) => m.UiBasicModule)
       },
+
 
       {
         path: 'forms',
@@ -94,10 +99,10 @@ const routes: Routes = [
       },
     ]
   },
-  
+
   {
     path: '**',
-    redirectTo: 'auth/signin' 
+    redirectTo: 'auth/signin'
   }
 ];
 

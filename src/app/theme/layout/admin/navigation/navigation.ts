@@ -122,6 +122,14 @@ export const NavigationItems: NavigationItem[] = [
         url: '/empdepartmentmapping',
         icon: 'feather icon-home',
         classes: 'nav-item'
+      },
+      {
+        id: 'billing',
+        title: 'Billing',
+        type: 'item',
+        url: '/billing',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
       }
 
     ]
