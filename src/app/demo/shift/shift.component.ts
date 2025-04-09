@@ -66,6 +66,10 @@ export class shiftComponent implements OnInit {
      this.shiftfmGroup = new FormGroup({
       ShiftId: new FormControl(0, [Validators.required]),
       Shiftname: new FormControl(null, [Validators.required,Validators.minLength(4)]),
+      StartTime: new FormControl(null, [Validators.required]),
+      EndTime: new FormControl(null, [Validators.required])
+
+      
        // lastName: new FormControl('', []),
        // address: new FormControl('', []),
        // age: new FormControl('', []),

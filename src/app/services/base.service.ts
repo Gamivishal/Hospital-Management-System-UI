@@ -13,7 +13,10 @@ export class BaseService {
 
   private getAuthHeaders(): HttpHeaders {
     debugger;
-    const token = localStorage.getItem('data'); // Retrieve token from localStorage or another source
+    const tokendata = localStorage.getItem('data'); // Retrieve token from localStorage or another source
+    const parsedata= tokendata? JSON.parse(tokendata) : null;
+    const token = parsedata?.data;
+    //const userId = localStorage.getItem('userId');
     return new HttpHeaders({
       Authorization: token ? `bearer ${token}` : '', 
       'Content-Type': 'application/json',
