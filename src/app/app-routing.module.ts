@@ -74,10 +74,6 @@ const routes: Routes = [
        loadComponent : () => import('./demo/hospitaldepartment/hospitaldepartment.component').then((c) => c.hospitaldepartmentComponent),canActivate: [AuthGuard]
       },
       {
-        path: 'petientdoctormapping',
-        loadComponent: () => import('./demo/petientdoctormapping/petientdoctormapping.component').then((c) => c.petientdoctormappingComponent),canActivate: [AuthGuard]
-      },
-      {
         path: 'empshiftmapping',
         loadComponent : () => import ('./demo/empshiftmapping/empshiftmapping.component').then((c) => c.empshiftmapping),
         canActivate: [AuthGuard]
@@ -85,6 +81,18 @@ const routes: Routes = [
       {
         path: 'empdepartmentmapping',
         loadComponent : () => import ('./demo/empdepartmentmapping/empdepartmentmapping.component').then((c) => c.EmpDepartmentMapping),canActivate: [AuthGuard]
+      },
+      {
+        path: 'diseasetype',
+       loadComponent : () => import('./demo/diseasetype/diseasetype.component').then((c) => c.DiseaseTypeComponent)
+      },
+      {
+        path: 'medicinedetails',
+       loadComponent : () => import('./demo/medicinedetails/medicinedetails.component').then((c) => c. medicinedetails)
+      },
+      {
+        path: 'treatmentdetails',
+       loadComponent : () => import('./demo/treatmentdetails/treatmentdetails.component').then((c) => c. TreatmentdetailsComponent)
       },
       {
         path: 'basic',

@@ -36,8 +36,8 @@ export default class AuthSigninComponent {
 
       if(response?.data  && response.statusCode === 200){
         //localStorage.setItem('data', response?.data || '');
-        localStorage.setItem('data',JSON.stringify(response.data));
-        console.log("Token stored in localstorage:", response.data);
+        localStorage.setItem('data',JSON.stringify(response?.data));
+        console.log("Token stored in localstorage:", response?.data);
 
 
         this.router.navigate(['/dashboard']);

@@ -1,0 +1,165 @@
+<div class="row" *ngIf="medicinedetailslist">
+ 
+  @if (isShowList)
+    {
+<div class="col-xl-12">
+  <div class="d-flex justify-content-end mb-3 position-relative">
+    <button type="button" (click)="isShowList=false;" class="btn btn-primary add-shift-button">
+      Add Medicinedetails
+    </button>
+  </div>
+  <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <!-- <th>MedicineTypeID</th> -->
+            <th>TypeName</th>
+            <th>DieseaseName </th>
+            <th>Dosage</th>
+            <th>Frequency</th>
+            <th>Duration</th>
+            <th>Instruction</th>
+            <th>Issudate</th>
+            <th>Created By</th>
+            <th>Created On</th>
+            <th>Updated By</th>
+            <th>Updated On</th>
+            <th>Status</th>
+            <th>Action</th>
+            <!-- <th>Version No</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor= "let item of paginatedList">
+            <!-- <th scope="row">1</th> -->
+            <!-- <td>{{ item.medicineTypeID}}</td> -->
+            <!-- <td>{{ item.typeName}}</td> -->
+             <td>{{item.typeName}}</td>
+             <td>{{item.dieseaseName}}</td>
+             <td>{{item.dosage}}</td>
+             <td>{{item.frequency}}</td>
+             <td>{{item.duration}}</td>
+             <td>{{item.instruction}}</td>
+             <td>{{item.issueDateTime}}</td>
+            <td>{{item.createdBy }}</td>
+            <td>{{item.createdOn | date:'dd/MM/yyyy' }}</td>
+            <td>{{item.updatedBy }}</td>
+            <td>{{item.updatedOn | date:'dd/MM/yyyy' }}</td>
+            <td>{{item.isActive ? 'Active' : 'Inactive' }}</td>
+            <td> <svg style="cursor: pointer;" (click)="editmedicinedetails(item)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon">
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+            </svg>
+            <!-- https://feathericons.dev/?search=xcircle&iconset=feather -->
+       <svg  (click)="onDelete(item.medicineDetailsID)"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+       <circle cx="12" cy="12" r="10" />
+      <line x1="15" x2="9" y1="9" y2="15" />
+        <line x1="9" x2="15" y1="9" y2="15" />
+      </svg></td>
+             <!-- <td>{{ item.versionNo }}</td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-end">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" href="javascript:void(0)" (click)="nextpage(currentPage - 1)">Previous</a>
+          </li>
+
+          <li class="page-item" *ngFor="let page of pageNumbers">
+              <a class="page-link" href="javascript:void(0)" (click)="nextpage(page)" [class.active]="currentPage === page">{{ page }}</a>
+          </li>
+
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" href="javascript:void(0)" (click)="nextpage(currentPage + 1)">Next</a>
+          </li>
+      </ul>
+  </nav>
+  </app-card>
+</div>
+} 
+@if(!isShowList)
+{
+
+
+<div class="col-sm-12">
+    <app-card cardTitle="Basic Component" [options]="false">
+        <h5>Form controls</h5>
+        <hr />
+        <div class="row">
+
+            <div class="col-md-6">
+              <form [formGroup]="medicinedetailsFormGroup" action="javascript:">
+
+                <div class="form-group">
+                    <label for="">TreatmentdetailsId</label>
+          
+                    <input type="text" formControlName="treatmentdetailsId" name="treatmentdetailsId" class="form-control" placeholder="Enter treatmentdetailsId" required/>
+
+                    <span *ngIf="checkRequired('treatmentdetailsId')" class="error-span">This Field Is Required</span>
+                   
+                  </div>
+                    <div >
+                      <label for="medicinetype">Medicine</label>
+                      <select id="medicineTypeID" formControlName="medicinetypeID" class="form-control">
+                        <option value="0">Select Medicine</option>
+                        <option *ngFor="let medicine of medicinetypelist" [value]="medicine.id">{{medicine.name}}</option>
+                      </select>
+                    </div>
+                    <!-- <div>
+                       <label for="dieseaseName">Disease</label>
+                      <select id="dieseaseName" formControlName="dieseaseName" class="form-control">
+                        <option value="">Select diesease</option>
+                        <option *ngFor="let disease of diseaselist" [value]="disease.id">{{ disease.name}}</option>
+                      </select>
+                    </div>  -->
+                     <div class="form-group">
+                      <label for="">Dosage</label>
+            
+                      <input type="text" formControlName="dosage" name=" Dosage" class="form-control" placeholder="Enter Dosage" required/>
+
+                      <span *ngIf="checkRequired('dosage')" class="error-span">This Field Is Required</span><br>
+                  </div>
+                  <div class="form-group">
+                    <label for="">Frequency</label>
+          
+                    <input type="text" formControlName="frequency" name=" Dosage" class="form-control" placeholder="Enter frequency" required/>
+
+                    <span *ngIf="checkRequired('frequency')" class="error-span">This Field Is Required</span><br>
+                </div>
+                <div class="form-group">
+                  <label for="">Duration</label>
+        
+                  <input type="text" formControlName="duration" name=" duration" class="form-control" placeholder="Enter duration" required/>
+
+                  <span *ngIf="checkRequired('duration')" class="error-span">This Field Is Required</span><br>
+              </div>
+             <div class="form-group">
+              <label for="">Instruction</label>
+    
+              <input type="text" formControlName="instruction" name=" instruction" class="form-control" placeholder="Enter instruction" required/>
+
+              <span *ngIf="checkRequired('instruction')" class="error-span">This Field Is Required</span><br>
+         
+            </div>
+           <div class="form-group">
+            <label for="">Issudate</label>
+
+            <input type="date" formControlName="issudate" name=" issudate" class="form-control" placeholder="Enter Issudate" required/>
+            <!-- <span *ngIf="checkRequired('issudate')" class="error-span">This Field Is Required</span><br> -->
+        </div> 
+         
+          <div class="mt-3">
+            <button *ngIf="!selectedMedicineID" type="button" class="btn btn-primary"[disabled]="medicinedetailsFormGroup.invalid" (click)="Addmedicinedetails()">Submit</button>                      
+            <button *ngIf="selectedMedicineID" type="button" class="btn btn-success"[disabled]="medicinedetailsFormGroup.invalid" (click)="updatemedicinedetails()"> Update</button>     
+         </div>
+         
+
+            </form>
+            </div>
+        </div>
+    </app-card>
+</div>
+}

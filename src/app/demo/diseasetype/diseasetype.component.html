@@ -1,10 +1,10 @@
-<div class="row" *ngIf=" medicinetypelist">
+<div class="row" *ngIf=" diseasetypelist">
  
   @if(isShowList){
   <div class="col-xl-12">
     <div class="d-flex justify-content-end mb-3 position-relative">
       <button type="button" (click)="isShowList=false;" class="btn btn-primary add-shift-button">
-        Add MedicineType
+        Add  dieseaseName
       </button>
     </div>
     <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
@@ -13,7 +13,7 @@
           <thead>
             <tr>
               <!-- <th>MedicineTypeID</th> -->
-              <th>MedicineType</th>
+              <th> DieseaseName</th>
               <th>Created By</th>
               <th>Created On</th>
               <th>Updated By</th>
@@ -28,18 +28,18 @@
               <!-- <th scope="row">1</th> -->
               <!-- <td>{{ item.medicineTypeID}}</td> -->
               <!-- <td>{{ item.typeName}}</td> -->
-               <td>{{item.typeName}}</td>
+               <td>{{item.dieseaseName}}</td>
               <td>{{ item.createdBy }}</td>
               <td>{{ item.createdOn | date:'dd/MM/yyyy' }}</td>
               <td>{{ item.updatedBy }}</td>
               <td>{{ item.updatedOn | date:'dd/MM/yyyy' }}</td>
               <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
-              <td> <svg (click)="editMedicineTypes(item)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon">
+              <td> <svg (click)=" editdieseaseTypes(item)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon">
                 <path d="M12 20h9" />
                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
               </svg>
               <!-- https://feathericons.dev/?search=xcircle&iconset=feather -->
-         <svg  (click)="onDelete(item.medicineTypeID)"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+         <svg  (click)=" onDelete(item.dieseaseTypeID)"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
          <circle cx="12" cy="12" r="10" />
         <line x1="15" x2="9" y1="9" y2="15" />
           <line x1="9" x2="15" y1="9" y2="15" />
@@ -71,24 +71,24 @@
 <!-- form -->
 @if(!isShowList){
 
-    <div class="col-sm-12">
-         <app-card cardTitle="Basic Component" [options]="false">
+  <div class="col-sm-12">
+      <app-card cardTitle="Basic Component" [options]="false">
           <h5>Form controls</h5>
           <hr />
           <div class="row">
 
               <div class="col-md-6">
-                  <form [formGroup]="medicineTypeFormGroup" action="javascript:">
+                  <form [formGroup]="dieseaseTypeFormGroup" action="javascript:">
 
                       <div class="form-group">
-                          <label for="typeName">Medicine Type</label>
+                          <label for="dieseaseName">Diesease Name</label>
                 
-                          <input type="text" formControlName="typeName" name="typeName" class="form-control" placeholder="Enter Medicine Type" required/>
+                          <input type="text" formControlName="dieseaseName" name="dieseaseName" class="form-control" placeholder="Enter diesease Name" required/>
 
-                          <span *ngIf="checkRequired('typeName')" class="error-span">This Field Is Required</span><br>
+                          <span *ngIf="checkRequired('dieseaseName')" class="error-span">This Field Is Required</span><br>
 
                           <!-- <span *ngIf="medicineTypeFormGroup.controls['HospitalType'].errors['minlength']!==null" class="error-span">Minimum 3 character required</span> -->
-                          <span *ngIf="checkminlength('typeName')" class="error-span">Minimum 3 characters required</span>
+                          <span *ngIf="checkminlength('dieseaseName')" class="error-span">Minimum 3 characters required</span>
 
 
                       </div>
@@ -98,8 +98,8 @@
                           <!-- [disabled]="hospitalTypefmGroup.invalid"  -->
 
                           <!-- <button type="button" class="btn btn-primary" [disabled]="hospitalTypefmGroup.invalid" (click)="addHospital()">Submit</button> -->
-                          <button *ngIf="!selectedmedicineTypeId" type="button" class="btn btn-primary" [disabled]="medicineTypeFormGroup.invalid" (click)="AddMedicineTypes()">Submit</button>
-                          <button *ngIf="selectedmedicineTypeId" type="button" class="btn btn-success" [disabled]="medicineTypeFormGroup.invalid" (click)=" updateMedicineTypes()">Update</button>
+                          <button *ngIf="!selecteddieseaseTypeID" type="button" class="btn btn-primary" [disabled]="dieseaseTypeFormGroup.invalid" (click)="AddDieseaseTypes()">Submit</button>
+                          <button *ngIf="selecteddieseaseTypeID" type="button" class="btn btn-success" [disabled]="dieseaseTypeFormGroup.invalid" (click)="updatedieseaseTypes()">Update</button>
 
                       </div>
 
