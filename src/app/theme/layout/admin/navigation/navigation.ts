@@ -42,7 +42,7 @@ export const NavigationItems: NavigationItem[] = [
     children: [
       {
         id: 'shift',
-        title: 'shift',
+        title: 'Shift Type',
         type: 'item',
         url: '/shift',
         icon: 'feather icon-home',
@@ -122,6 +122,14 @@ export const NavigationItems: NavigationItem[] = [
         title: 'EmpShiftMapping',
         type: 'item',
         url: '/empshiftmapping',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
+        id: 'patientdoctormapping',
+        title: 'PatientDoctorMapping',
+        type: 'item',
+        url: '/patientdoctormapping',
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
