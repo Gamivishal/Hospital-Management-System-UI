@@ -6,7 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule, NgIfContext } from '@angular/common';
 import { AppConstant } from '../baseservice/baseservice.service';
-import { ToastService } from 'src/app/services/toast.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 
 
@@ -25,8 +26,10 @@ export class medicinedetails implements OnInit{
  // medicineDetailsID: number | null = null;
   selectedMedicineID: number | null = null; 
   medicinetypelist:any []=[];
-  // diseaselist:any []=[];
-  paginatedList: any[] = []; // Paginated data
+  diseaselist:any []=[];
+  paginatedList: any[] = [];
+  treatmentdetailsidwithnamelist:any[]=[];
+   // Paginated data
   URL=AppConstant.url
   // selected  // Store selected hospital ID for update
   
@@ -44,7 +47,8 @@ export class medicinedetails implements OnInit{
   // // }
   // http=inject(HttpClient)
 
-  constructor(private baseService: BaseService) {}
+  constructor(private baseService: BaseService,private toastr: ToastrService) {}
+
  
   // life cycle event
   ngOnInit() {
@@ -52,6 +56,7 @@ export class medicinedetails implements OnInit{
      this.getmedicinedetails();
     //  this.Addmedicinedetails();
      this.getmedicinetype();
+     this.gettreatmentdetailsidwithname();
     //  this.getdisease();
      
     }
@@ -105,11 +110,21 @@ Addmedicinedetails(){
     
     //Medicine:any [] = [];
     this.baseService.POST(this.URL+"TblMedicineDetails/Add",this.medicinedetailsFormGroup.getRawValue())
-      .subscribe(response => {
+      .subscribe({
+        next:(response:any)=> {
+        if(response.statusCode === 200){
+          this.toastr.success(response.message,'Success');
         console.log("POST Response:", response);
         this.getmedicinedetails();
         this.isShowList = true;
-        this.medicinedetailsFormGroup.reset({ })
+        this.medicinedetailsFormGroup.reset({ });
+      }
+      else{
+        this.toastr.error(response.message,'Error');
+      }},
+      error:()=>{
+        this.toastr.error('Failed to Add','Error');
+      }
           
         
   //  this.currentPage = 1;
@@ -118,7 +133,6 @@ Addmedicinedetails(){
   }
   
   editmedicinedetails(medicinedetails: any) {
-    debugger
     this.selectedMedicineID = medicinedetails.medicineDetailsID;
     this.isShowList = false; //showList
     this.medicinedetailsFormGroup.patchValue({
@@ -152,7 +166,9 @@ Addmedicinedetails(){
   updatemedicinedetails() {
     this.baseService.PUT(this.URL+"TblMedicineDetails/Update",this.medicinedetailsFormGroup.getRawValue())// No ID in the URL
       .subscribe({
-        next: response => {
+        next:( response:any )=>  {
+        if (response.statusCode ===200){
+        this.toastr.success(response.message,'Success');
           console.log("PUT Response:", response);
           this. getmedicinedetails();
           this.isShowList = true;
@@ -169,19 +185,36 @@ Addmedicinedetails(){
             instruction: '',
             issudate: ''
           });
-  
+  }
+  else {
+    this.toastr.error(response.message, 'Error');
+  }
      this.currentPage = 1;
   
           // this.selectedHospitalId = null;
         },
+        error: () => {
+          this.toastr.error('Failed to update ', 'Error');
+        }
 
       });
     }
     onDelete(medicineDetailsID: number){
-      this.baseService.DELETE(this.URL+"TblMedicineDetails/Delete?ID=" + medicineDetailsID).subscribe(response => {
+      this.baseService.DELETE(this.URL+"TblMedicineDetails/Delete?ID=" + medicineDetailsID).subscribe({
+        next:(response:any)=> {
+          if(response.statusCode===200){
+            this.toastr.success(response.message,'Success');
         console.log("DELETE Response:", response);
         this. getmedicinedetails();
         this.isShowList = true;
+          }
+          else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to Delete', 'Error');
+        }
       });
     }
 // getmedicinetype(){
@@ -208,7 +241,13 @@ getmedicinetype() {
 //     }
 //   });
 // }
-
+gettreatmentdetailsidwithname(){
+  this.baseService.GET<any>(this.URL+"GetDropDownList/FillTreatmentCode").subscribe(response => {
+    console.log("GET Response:", response);
+    this.treatmentdetailsidwithnamelist = response.data;
+    console.log("treamentdetailslistwithname", this.treatmentdetailsidwithnamelist);
+  })
+}
  
 
 //record for the page

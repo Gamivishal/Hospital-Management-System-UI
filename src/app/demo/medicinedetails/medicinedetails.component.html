@@ -86,25 +86,25 @@
 
 <div class="col-sm-12">
     <app-card cardTitle="Basic Component" [options]="false">
-        <h5>Form controls</h5>
+        <h5>Add Medicinedetails</h5>
         <hr />
         <div class="row">
 
             <div class="col-md-6">
               <form [formGroup]="medicinedetailsFormGroup" action="javascript:">
 
-                <div class="form-group">
-                    <label for="">TreatmentdetailsId</label>
-          
-                    <input type="text" formControlName="treatmentdetailsId" name="treatmentdetailsId" class="form-control" placeholder="Enter treatmentdetailsId" required/>
+                <div>
+                  <label for="treatmentdetailsId">Treatmentdetails</label>
+                  <select id="treatmentdetailsId" formControlName="treatmentdetailsId" class="form-control">
+                    <option value="0">Select TreatmentdetailsId</option>
+                    <option *ngFor="let medicine of treatmentdetailsidwithnamelist" [value]="medicine.id">{{medicine.name}}</option>
+                  </select>
+                </div>
 
-                    <span *ngIf="checkRequired('treatmentdetailsId')" class="error-span">This Field Is Required</span>
-                   
-                  </div>
                     <div >
-                      <label for="medicinetype">Medicine</label>
-                      <select id="medicineTypeID" formControlName="medicinetypeID" class="form-control">
-                        <option value="0">Select Medicine</option>
+                      <label for="medicinetypeID">Medicine</label>
+                      <select id="medicinetypeID" formControlName="medicinetypeID" class="form-control">
+                        <option value="0">Select medicine</option>
                         <option *ngFor="let medicine of medicinetypelist" [value]="medicine.id">{{medicine.name}}</option>
                       </select>
                     </div>

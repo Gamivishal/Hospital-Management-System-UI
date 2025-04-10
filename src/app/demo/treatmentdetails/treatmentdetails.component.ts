@@ -27,6 +27,7 @@ export class TreatmentdetailsComponent implements OnInit{
   selectedtreatmentDetailsId: number | null = null;  // Store selected hospital ID for update
   diseaselist: any []=[];
   patientlist:any []=[];
+ 
 
 
   // medicinetypepost:any={
@@ -51,6 +52,7 @@ export class TreatmentdetailsComponent implements OnInit{
      this.getdisease();
      this.getpateint();
      
+     
 
     }
 
@@ -69,7 +71,7 @@ export class TreatmentdetailsComponent implements OnInit{
         dieseaseTypeID:new FormControl(null,[Validators.required]),
         patientId:new FormControl(null,[Validators.required]),
         treatmentDate:new FormControl(null,[Validators.required]),
-        treatmentCode:new FormControl(null,[Validators.required])
+        // treatmentCode:new FormControl(null,[Validators.required])
 
 
 
@@ -131,7 +133,7 @@ export class TreatmentdetailsComponent implements OnInit{
       dieseaseTypeID: treatmentdetails.dieseaseTypeID, // ID
       patientId: treatmentdetails.patientId, // NAME
       treatmentDate: treatmentdetails.treatmentDate,
-      treatmentCode: treatmentdetails.treatmentCode
+       treatmentCode: treatmentdetails.treatmentCode
 
     });
   }
@@ -207,6 +209,8 @@ export class TreatmentdetailsComponent implements OnInit{
         console.log("patient", this.patientlist);
       })
     }
+
+    
 
       
    
