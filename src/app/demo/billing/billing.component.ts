@@ -18,7 +18,7 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 export class billingComponent implements OnInit {
 billings: any[]=[];
 patientlist :any[];
-Treatmentcodelist :any[];
+TreatmentId :any[];
 paginatedList: any[] = [];
 paymentMethods: any[] = [];
 currentPage: number = 1;
@@ -38,25 +38,25 @@ constructor(
    ngOnInit() {
     this.getbill();
     this.createFormGroup();
-    this.getTreatmentCode();
-    this.getdropdown();
-    this.getPaymentMethods();
-
+    this.getTreatmentId();
    }
+
    billingfmGroup:FormGroup;
 
      createFormGroup()
      {
+      const today = new Date().toISOString().split('T')[0];
       this.billingfmGroup = new FormGroup({
         //billingId: new FormControl(0),
         //patientId:new FormControl(),
         //patientName: new FormControl('', [Validators.required]),
         PatientId: new FormControl(0, [Validators.required]),
         paymentMethod: new FormControl('', [Validators.required]),
-        billDate: new FormControl('', [Validators.required]),
-        TreatmentDetailsId: new FormControl(0, [Validators.required])
+        billDate: new FormControl(today, [Validators.required]),
+        treatmentDetailsId: new FormControl(0, [Validators.required]),
+        totalAmount: new FormControl(0, [Validators.required])
       });
-
+      console.log("Form Initialized:", this.billingfmGroup.value);
      }
 
      checkRequired(controlName:any)
@@ -82,78 +82,40 @@ constructor(
           },
           });
     }
-    getdropdown() {
-      this.baseService.GET<any>(this.URL + "GetDropDownList/FillPatientName").subscribe({
-        next: (response) => {
-          this.patientlist = response.data;
-        },
-        error: (err) => {
-          console.error("Failed to fetch patient list", err);
-        }
-      });
-    }
-
-    getTreatmentCode() {
+    getTreatmentId() {
       this.baseService.GET<any>(this.URL + "GetDropDownList/FillTreatmentCode").subscribe({
         next: (response) => {
-          this.Treatmentcodelist = response.data;
+          this.TreatmentId = response.data;
         },
         error: (err) => {
           console.error("Failed to fetch patient list", err);
-        }
-      });
-    }
-
-
-    getPaymentMethods() {
-      this.baseService.GET<any>(this.URL + "GetDropDownList/FillPaymentMethod").subscribe({
-        next: (response) => {
-          this.paymentMethods = response.data;
-        },
-        error: (err) => {
-          console.error("Failed to fetch payment methods", err);
         }
       });
     }
 
     addbilling() {
-        this.baseService.POST(this.URL+"TblBill/Add", this.billingfmGroup.getRawValue()).subscribe({
-        next: (response:any) => {
-        if (response.statusCode === 200) {
-        this.toastr.success(response.message, 'Success');
-        console.log("POST Response:", response);
-        this.getbill();
-        this.isShowList = true;
-  }
-  else {
-    this.toastr.error(response.message, 'Error');
-  }
-},
-error: () => {
-  this.toastr.error('Failed to update ', 'Error');
-}
+      const data = this.billingfmGroup.getRawValue();
+      console.log("Submitting Billing Data:", data); // ✅ Debug
 
-});
-}
-
-
-onDelete(billingId: number){
-  this.baseService.DELETE(this.URL + "TblBill/Delete?id=" + billingId)
-  .subscribe({
-    next: (response: any) => {
-      if (response.statusCode === 200) {
-        this.toastr.success(response.message, 'Success');
-        this.getbill();
-        this.isShowList = true;
-      } else {
-        this.toastr.error(response.message, 'Error');
-      }
-    },
-    error: () => {
-      this.toastr.error('Failed to delete ', 'Error');
+      this.baseService.POST(this.URL + "TblBill/Add", data).subscribe({
+        next: (response: any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
+            this.getbill();
+            this.isShowList = true;
+          } else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: (err) => {
+          this.toastr.error('Failed', 'Error');
+          console.error("POST Error:", err);
+        }
+      });
     }
-  });
-}
+
+
+
 
 ///PAGINATION STOP
 Paginationrecord() {

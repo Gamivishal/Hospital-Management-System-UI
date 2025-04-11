@@ -74,10 +74,6 @@ const routes: Routes = [
        loadComponent : () => import('./demo/hospitaldepartment/hospitaldepartment.component').then((c) => c.hospitaldepartmentComponent),canActivate: [AuthGuard]
       },
       {
-        path: 'petientdoctormapping',
-        loadComponent: () => import('./demo/petientdoctormapping/petientdoctormapping.component').then((c) => c.petientdoctormappingComponent),canActivate: [AuthGuard]
-      },
-      {
         path: 'empshiftmapping',
         loadComponent : () => import ('./demo/empshiftmapping/empshiftmapping.component').then((c) => c.empshiftmapping),
         canActivate: [AuthGuard]
