@@ -156,8 +156,6 @@ export const NavigationItems: NavigationItem[] = [
         url: '/treatmentdetails',
         icon: 'feather icon-home',
         classes: 'nav-item'
-      }
-
       },
       {
         id: 'billing',
