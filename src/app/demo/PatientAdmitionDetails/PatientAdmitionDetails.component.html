@@ -1,0 +1,154 @@
+<div class="row" *ngIf="PatientAdmitionDetails">
+
+    @if(isShowList){
+    <div class="col-xl-12">
+        <div class="d-flex justify-content-end mb-3 position-relative">
+            <button type="button" (click)="isShowList=false;" class="btn btn-primary add-master-button">
+            Add Hospital
+        </button>
+        </div>
+        <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>patientName</th>
+                            <th>treatmentCode</th>
+                            <th>admisionDate</th>
+                            <th>roomNumber</th>
+                            <th>Dishcharge date</th>
+                            <th>CreatedBy</th>
+                            <th>UpdatedBy</th>
+                            <th>CreatedOn</th>
+                            <th>Updatedon</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of paginatedList">
+                            <td>{{ item.patientName }}</td>
+                            <td>{{item.treatmentCode}}</td>
+                            <td>{{ item.admisionDate | date:'yyyy/MM/dd'}}</td>
+                            <td>{{ item.roomNumber }}</td>
+                            <td>{{item.dischargeDate | date:'yyyy/MM/dd' }}</td>
+                            <td>{{item.createdBy}}</td>
+                            <td>{{item.updatedBy}}</td>
+                            <td>{{item.createdOn}}</td>
+                            <td>{{item.updatedOn}}</td>
+                            <!-- <td>{{item.versionNo}}</td>
+                            <td>{{item.isActive}}</td> -->
+                            <td>
+
+                                <a [routerLink]="['/billing', item.patientAdmitionDetailsId]" type="button">Bill</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                        <a class="page-link" href="javascript:void(0)" (click)="nextpage(currentPage - 1)">Previous</a>
+                    </li>
+
+                    <li class="page-item" *ngFor="let page of pageNumbers">
+                        <a class="page-link" href="javascript:void(0)" (click)="nextpage(page)" [class.active]="currentPage === page">{{ page }}</a>
+                    </li>
+
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                        <a class="page-link" href="javascript:void(0)" (click)="nextpage(currentPage + 1)">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </app-card>
+    </div>
+    } @if(!isShowList){
+    <div class="col-sm-12">
+        <app-card cardTitle="Basic Component" [options]="false">
+            <h5>Form controls</h5>
+            <hr />
+            <div class="row">
+                <div class="col-md-6">
+                    <form [formGroup]="PatientAdmitionDetailsformGroup" action="javascript:">
+
+                        <div class="form-group row">
+                            <label for="start-date" class="col-sm-3 col-form-label">Admision-Date</label>
+                            <div class="col-sm-9">
+                                <input type="datetime-local" formControlName="AdmisionDate" class="form-control" placeholder="Admision-Date" />
+                                <span *ngIf="checkRequired('AdmisionDate')" class="error-span">This fild is ready</span>
+                            </div>
+                        </div>
+
+
+                        <!-- Disabled input showing selected patient name -->
+                        <div class="input-group mb-3">
+                            <label class="col-sm-3 col-form-label">Patient Name</label>
+                            <input class="form-control" [value]="selectedPatientName" disabled />
+                        </div>
+                    </form>
+                </div>
+
+
+
+                <!-- left -->
+                <div class="col-md-6">
+                    <form [formGroup]="PatientAdmitionDetailsformGroup" action="javascript:">
+                        <div class="input-group mb-3">
+                            <label for="shift-name">Room Number</label>
+                            <select id="shift-name" formControlName="roomID" class="form-select">
+                         <option>Select Room number</option>
+                        <option *ngFor="let roomnumber of Roomlist" [value]="roomnumber.id">{{ roomnumber.name}}</option>
+                      </select>
+                        </div>
+
+                        <!-- <div class="form-group row">
+                            <label for="end-date" class="col-sm-3 col-form-label">TreatmentDetailsId</label>
+                            <div class="col-sm-9">
+                                <input type="text" formControlName="treatmentCode" class="form-control" />
+                                <span *ngIf="checkRequired('treatmentCode')" class="error-span">This fild is incompete</span>
+
+                            </div>
+                        </div> -->
+
+
+                        <!-- Patient ID Dropdown -->
+                        <!-- Patient ID Dropdown -->
+                        <div class="input-group mb-3">
+                            <label class="col-sm-3 col-form-label">Patient ID</label>
+                            <select class="form-select" formControlName="treatmentDetailsId" (change)="onPatientIdChange($event)">
+    <option value="" disabled selected>Select Patient ID</option>
+    <option *ngFor="let user of TreatmentDetailsCodelist" [value]="user.id">
+      {{ user.id }}
+    </option>
+  </select>
+                        </div>
+                        <span *ngIf="checkRequired('treatmentDetailsId')" class="error-span">Patient ID is required</span>
+                        <span *ngIf="checkRequired('treatmentDetailsId')" class="error-span">Patient Name is required</span>
+                    </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <button type="button" *ngIf="!selectedHospitalId" class="btn btn-primary" [disabled]="PatientAdmitionDetailsformGroup.invalid" (click)="addPatientAdmitionDetails()">Submit</button>
+                    <button type="button" *ngIf="selectedHospitalId" class="btn btn-primary" [disabled]="PatientAdmitionDetailsformGroup.invalid" (click)="updatetreatmentDetailsId()">Update</button>
+
+
+
+
+                </div>
+            </div>
+        </app-card>
+    </div>
+
+    }
