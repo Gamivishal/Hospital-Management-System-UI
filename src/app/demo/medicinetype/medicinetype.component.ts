@@ -138,10 +138,16 @@ export class MedicineTypeComponent implements OnInit{
   
           //     })
             }
+            else {
+              this.toastr.error(response.message, 'Error');
+            }
   
      this.currentPage = 1;
   
           // this.selectedHospitalId = null;
+        },
+        error: () => {
+          this.toastr.error('Failed to update ', 'Error');
         }
 
       });
