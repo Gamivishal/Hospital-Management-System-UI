@@ -18,6 +18,7 @@ export class patientdoctormappingComponent implements OnInit {
   constructor(private baseService: BaseService,
     private toastr: ToastrService) {}
   isShowList:boolean=true;
+  selectedTreatmentName: string = '';
   doctorList: any[] = [];
   TreatmentcodeList: any[] = [];
   patientList: any[] = [];
@@ -36,11 +37,17 @@ export class patientdoctormappingComponent implements OnInit {
       this.getdoctor();
       this.getpatient();
       this.getTreatmentcode();
+      this.selectedTreatmentName = '';
       //this.onDelete();
 
       // this.shiftfmGroup.patchValue({
       //   HospitalType:'Naitik',
       //   HospitalTypeID:1
+      // });
+
+      // this.petientdoctorfmGroup.get('TreatmentDetailsId')?.valueChanges.subscribe((id: number) => {
+      //   const selected = this.TreatmentcodeList.find(item => item.id === id);
+      //   this.selectedTreatmentName = selected ? selected.name : '';
       // });
 
     }
@@ -59,9 +66,9 @@ pageNumbers: number[] = [];//list
      this.petientdoctorfmGroup = new FormGroup({
       pateintDoctormappingId: new FormControl(0, [Validators.required]),
       //patientName: new FormControl(null, [Validators.required,Validators.minLength(4)]),
-      PatientId: new FormControl(0, [Validators.required]),
+      //PatientId: new FormControl(0, [Validators.required]),
       UserId: new FormControl(0, [Validators.required]),
-      TreatmentDetailsId: new FormControl(0, [Validators.required]),
+      TreatmentDetailsId: new FormControl('', [Validators.required]),
       IsActive: new FormControl(true)
 
       
@@ -119,6 +126,24 @@ pageNumbers: number[] = [];//list
       });
     }
 
+    // onTreatmentChange(event: any) {
+    //   const selectedId = +event.target.value;
+    //   const selected = this.TreatmentcodeList.find(t => t.id === selectedId);
+    //   this.selectedTreatmentName = selected ? selected.name : '';
+    // }
+
+    onTreatmentNameChange(event: any) {
+      const selectedName = event.target.value;
+      const selectedTreatment = this.TreatmentcodeList.find(item => item.name === selectedName);
+    
+      if (selectedTreatment) {
+        this.petientdoctorfmGroup.patchValue({
+          TreatmentDetailsId: selectedTreatment.id
+        });
+      }
+    }
+    
+
     addPatientdoctor() {
       console.log(this.petientdoctorfmGroup.getRawValue())
       this.baseService.POST(this.URL+"TblPateintDoctormapping/Add", this.petientdoctorfmGroup.getRawValue())
@@ -135,7 +160,8 @@ pageNumbers: number[] = [];//list
             pateintDoctormappingId: 0,
             PatientId: '',
             UserId: '',
-            TreatmentDetailsId: ''
+            TreatmentDetailsId: '',
+            //IsActive: true
         });
       }
       else {
@@ -154,7 +180,6 @@ pageNumbers: number[] = [];//list
       this.petientdoctorfmGroup.patchValue({
         pateintDoctormappingId: patient.pateintDoctormappingId, // ID
         UserId: patient.userId,     // NAME
-        PatientId: patient.patientId,
         TreatmentDetailsId: patient.treatmentDetailsId
       });
     }
