@@ -17,8 +17,8 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-medicinetype',
   standalone: true,
   imports: [CommonModule,SharedModule],
-  templateUrl: './medicineType.component.html',
-  styleUrls: ['./medicineType.component.scss']
+  templateUrl: './medicinetype.component.html',
+  styleUrls: ['./medicinetype.component.scss']
 })
 export class MedicineTypeComponent implements OnInit{
   medicinetypelist:any[]=[];
@@ -131,14 +131,26 @@ export class MedicineTypeComponent implements OnInit{
             this.toastr.success(response.message, 'Success');
           this.getMedicineTypes();
           this.isShowList = true;
-        } else {
-          this.toastr.error(response.message, 'Error');
+          
+          // this.medicineTypeFormGroup.reset({
+          //   medicineTypeID: 0,
+          //   typeName: ''
+  
+          //     })
+            }
+            else {
+              this.toastr.error(response.message, 'Error');
+            }
+  
+     this.currentPage = 1;
+  
+          // this.selectedHospitalId = null;
+        },
+        error: () => {
+          this.toastr.error('Failed to update ', 'Error');
         }
-      },
-      error: () => {
-        this.toastr.error('Failed to update ', 'Error');
-      }
-    });
+
+      });
     }
     onDelete(medicineTypeID: number){
       this.baseService.DELETE(this.URL+"TblMedicineType/Delete?Id=" + medicineTypeID).subscribe({

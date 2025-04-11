@@ -162,4 +162,3 @@ nextpage(page: number) {
 }
 
 
-

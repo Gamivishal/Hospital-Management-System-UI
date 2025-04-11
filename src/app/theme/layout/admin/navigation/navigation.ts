@@ -33,6 +33,7 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+
   {
     id: 'master',
     title: 'Master',
@@ -41,7 +42,7 @@ export const NavigationItems: NavigationItem[] = [
     children: [
       {
         id: 'shift',
-        title: 'shift',
+        title: 'Shift Type',
         type: 'item',
         url: '/shift',
         icon: 'feather icon-home',
@@ -63,6 +64,7 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
+
       {
         id: 'hospitaldepartment',
         title: 'Hospital Department',
@@ -96,6 +98,14 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
+      {
+        id: 'diseasetype',
+        title: 'Disease Type',
+        type: 'item',
+        url: '/diseasetype',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
 
 
     ]
@@ -116,12 +126,38 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item'
       },
       {
+        id: 'patientdoctormapping',
+        title: 'PatientDoctorMapping',
+        type: 'item',
+        url: '/patientdoctormapping',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
+        id: 'medicinedetails',
+        title: 'Medicinedetails',
+        type: 'item',
+        url: '/medicinedetails',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
         id: 'Empdepartmentmapping',
         title: 'EmpDepartmentMapping',
         type: 'item',
         url: '/empdepartmentmapping',
         icon: 'feather icon-home',
         classes: 'nav-item'
+      },
+      {
+        id: 'treatmentdetails',
+        title: 'Treatmentdetails',
+        type: 'item',
+        url: '/treatmentdetails',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      }
+
       },
       {
         id: 'billing',
