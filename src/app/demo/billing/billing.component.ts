@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
+import * as jsPDF from 'jspdf';
+
 
 
 
@@ -42,6 +44,39 @@ constructor(
    }
 
    billingfmGroup:FormGroup;
+
+// -PDF CODE  
+
+   public downloadRowAsPDF(department: any) {
+    const doc = new jsPDF('p', 'pt', 'a4');
+  
+  
+    // const user = [
+    //   "Full Name: John Doe",
+    //   "Total Amount: 1500",
+    //   "Payment Method: Credit Card",
+    //   "Bill Date: 2025-04-08",
+    // ];
+    
+    const user = [
+      `Full Name: ${department.fullName}`,
+      `Total Amount: ${department.totalAmount}`,
+      `Payment Method: ${department.paymentMethod}`,
+      `Bill Date: ${department.billDate}`,
+    ];
+  
+    let y = 40;
+    doc.setFontSize(12);
+    user.forEach(line => {
+      doc.text(line, 40, y);
+      y += 20;
+    });
+  
+    doc.save(`${department.fullName}.pdf`);
+  }
+
+//  -END 
+
 
      createFormGroup()
      {

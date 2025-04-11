@@ -52,19 +52,19 @@ export  class EmpDepartmentMapping implements OnInit {
      createFormGroup() {
       
       this.empdepartmentmappingfmGroup = new FormGroup({
-        // employeeDepartmentMappingId: new FormControl(0), 
+        employeeDepartmentMappingId: new FormControl(0),
         // empDeptId: new FormControl(null),
         userId: new FormControl(null, Validators.required),
-        hospitalDepartmentID: new FormControl(null, Validators.required),
+        departmentId: new FormControl(null, Validators.required), 
+        // hospitalDepartmentID: new FormControl(null, Validators.required),
       });
-      
     }
      
 
 
      checkRequired(controlName:any)
     {
-     return this.empdepartmentmappingfmGroup.controls[controlName].errors?.['required'];
+     return this.empdepartmentmappingfmGroup.controls[controlName].touched && this.empdepartmentmappingfmGroup.controls[controlName].errors?.['required'];
     }
 
 
@@ -107,49 +107,36 @@ export  class EmpDepartmentMapping implements OnInit {
     }
 
 
-  //   AddEmpShift() {
-  //     this.baseService.POST(this.URL+"TblEmployeeshiftMapping/Add", this.empshiftmappingfmGroup.getRawValue())
-  //       .subscribe(response => {
-  //         console.log("POST Response:", response);
-  //         this.getEmpShiftMapping();  
-  //         this.Paginationrecord();  
-  //         this.isShowList = true;
-  //       });
-  // }
 
 
 
     AddEmpDeptMapping() {
       console.log(this.empdepartmentmappingfmGroup.getRawValue())
       this.baseService.POST(this.URL + "TblEmployeeDepartmentMapping/Add", this.empdepartmentmappingfmGroup.getRawValue())
-        .subscribe(response => {
+        .subscribe({next: (response:any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
             this.getEmpDeptMapping();
             this.Paginationrecord(); 
             this.isShowList = true;
             this.empdepartmentmappingfmGroup.reset();
+          }
+          else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to Add', 'Error');
+        }
+        
         });
-    }
+        }
 
-
-
-    // AddEmpDeptMapping() {
-    //   this.baseService.POST(this.URL + "TblEmployeeDepartmentMapping/Add", this.empdepartmentmappingfmGroup.getRawValue())
-    //     .subscribe({
-    //       next: (response: any) => {
-    //         this.currentPage = 1;
-    //         this.getEmpDeptMapping();
-    //         this.isShowList = true;
-    //         this.empdepartmentmappingfmGroup.reset();
-    //       }
-    //     });
-    // }
     
 
 
-   
 
-
-    editEmpDeptMapping(item: any) {  
+      editEmpDeptMapping(item: any) {  
       this.EmpDeptId = item.employeeDepartmentMappingId;
       this.isShowList = false;
       this.empdepartmentmappingfmGroup.patchValue({
@@ -159,43 +146,53 @@ export  class EmpDepartmentMapping implements OnInit {
       });      
     }
     
-    
-    
-
-      // updateRoom() {
-      //   this.baseService.PUT("https://localhost:7272/api/TblRoomType/Update", this.roomTypefmGroup.getRawValue())
-      //     .subscribe(response => {
-      //       console.log("PUT Response:", response);
-      //       this.getRoomType();
-      //       this.isShowList = true;
-      //       this.currentPage = 1; 
-      //     });
-      // }
 
 
 
 
       updateEmpDeptMapping() {
         this.baseService.PUT(this.URL + "TblEmployeeDepartmentMapping/Update", this.empdepartmentmappingfmGroup.getRawValue())
-          .subscribe( response => {
+          .subscribe({next: (response:any) => {
+            if (response.statusCode === 200) {
+              this.toastr.success(response.message, 'Success');
             console.log("PUT Response", response)
               this.getEmpDeptMapping();
               this.isShowList = true;
               this.EmpDeptId = null;
               this.empdepartmentmappingfmGroup.reset();
+            }
+            else {
+              this.toastr.error(response.message, 'Error');
+            }
+          },
+          error: () => {
+            this.toastr.error('Failed to Update', 'Error');
+          }
+          
           });
-      }
+          }
       
       
 
 
       onDelete(id: number) {
         this.baseService.DELETE(this.URL + "TblEmployeeDepartmentMapping/Delete?id=" + id)
-          .subscribe(response => {
+          .subscribe({next: (response:any) => {
+            if (response.statusCode === 200) {
+              this.toastr.success(response.message, 'Success');
             this.toastr.success("Deleted successfully");
             this.getEmpDeptMapping();
-          });
-      }
+          }
+          else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to Delete', 'Error');
+        }
+        
+        });
+        }
 
 
       
@@ -220,5 +217,5 @@ export  class EmpDepartmentMapping implements OnInit {
               this. Paginationrecord();
             }
           }
-          }  
+}  
 
