@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule,  } from '@angular/common';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
+import { RouterModule } from '@angular/router';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -16,10 +17,12 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-treatmentdetails',
   standalone: true,
-  imports: [CommonModule,SharedModule],
+  imports: [CommonModule,SharedModule,RouterModule],
   templateUrl: './treatmentdetails.component.html',
   styleUrls: ['./treatmentdetails.component.scss']
+  
 })
+
 export class TreatmentdetailsComponent implements OnInit{
   treatmentdetailslist:any[]=[];
   paginatedList: any[] = []; // Paginated data
@@ -27,9 +30,8 @@ export class TreatmentdetailsComponent implements OnInit{
   selectedtreatmentDetailsId: number | null = null;  // Store selected hospital ID for update
   diseaselist: any []=[];
   patientlist:any []=[];
- 
 
-
+   
   // medicinetypepost:any={
   //   "createBy":0,
   //   "cretedOn":"",
@@ -39,7 +41,10 @@ export class TreatmentdetailsComponent implements OnInit{
   //   "versionNo":0,
   //   "medicineTypeID":0,
   //   "typeName":"",
+
   // }
+
+   
   http=inject(HttpClient)
 
   constructor(private baseService: BaseService,

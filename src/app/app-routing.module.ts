@@ -104,6 +104,10 @@ const routes: Routes = [
        loadComponent : () => import('./demo/medicinedetails/medicinedetails.component').then((c) => c. medicinedetails)
       },
       {
+        path: 'medicinedetails/:id',
+       loadComponent : () => import('./demo/medicinedetails/medicinedetails.component').then((c) => c. medicinedetails)
+      },
+      {
         path: 'treatmentdetails',
        loadComponent : () => import('./demo/treatmentdetails/treatmentdetails.component').then((c) => c. TreatmentdetailsComponent)
       },
