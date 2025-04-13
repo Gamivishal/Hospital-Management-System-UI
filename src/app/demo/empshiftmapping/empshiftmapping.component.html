@@ -30,7 +30,7 @@
                           <td>{{item. createdBy}}</td>  
                           <td>{{ item.createdOn | date:'dd/MM/yyyy' }}</td>
                           <td>{{ item.updatedBy }}</td>
-                          <td>{{ item.updateOn | date:'dd/MM/yyyy' }}</td>
+                          <td>{{ item.updatedOn | date:'dd/MM/yyyy' }}</td>
                           <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
                          
                          
@@ -78,21 +78,8 @@
   <div class="col-sm-12">
       <app-card cardTitle="Basic Component" [options]="false">
           <h5>Add the Employee Shift</h5>
-          <hr />
-          <!-- <div class="row">
-              <div class="col-md-6">
-                  <form [formGroup]="empshiftmappingfmGroup"> -->
-
-
-                    <!-- <div class="form-group row">
-                      <label for="userId" class="col-sm-3 col-form-label">User ID</label>
-                      <div class="col-sm-9">
-                          <input type="text" class="form-control" id="userId" formControlName="UserId" placeholder="Enter User ID" />
-                          <span *ngIf="checkRequired('UserId')" class="error-span">User ID is required</span>
-                      </div> -->
-
-
-                      <div class="row">
+          <hr/>
+                        <div class="row">
                         <div class="col-md-6">
                             <form [formGroup]="empshiftmappingfmGroup" action="javascript:">
 
@@ -102,7 +89,8 @@
                                     <label for="start-date" class="col-sm-3 col-form-label">Start Date:</label>
                                     <div class="col-sm-9">
                                         <input type="date" formControlName="employeeshiftMappingStartingDate" class="form-control" id="start-date" placeholder="StartingDate" />
-                                    </div>
+                                        <span *ngIf="checkRequired('employeeshiftMappingStartingDate')" class="error-span">This Field Is Required</span><br>
+                                      </div>
                                 </div>
 
 
@@ -113,42 +101,23 @@
                                        <option value="" selected disabled>User Name</option>
                                      <option *ngFor="let user of lstUserNames" [value]="user.id">{{ user.name }}</option>
                                    </select>
+                                   <span *ngIf="checkRequired('userId')" class="error-span">This Field Is Required</span>
                                  </div>                                 
 
-                               <!-- <div _ngcontent-ng-c349631402="" class="input-group mb-3"><div _ngcontent-ng-c349631402="" class="input-group-prepend">
-                                 <label _ngcontent-ng-c349631402="" for="inputGroupSelect01" class="input-group-text">Options</label>
-                               </div>
-                               <select _ngcontent-ng-c349631402="" id="inputGroupSelect01" class="form-select" fdprocessedid="4t2bmo">
-                                 <option _ngcontent-ng-c349631402="" selected="" disabled>Select User Name</option>
-
-                                 <option _ngcontent-ng-c349631402="" *ngFor="let user of lstUserNames" [value]="user.id">{{ user.name }}</option>
-
-                               </select>
-                               </div> -->
-                                
                                 
                             </form>
                         </div>
     
 
 
-                      <!-- left -->
+                      
                         <div class="col-md-6">
                             <form [formGroup]="empshiftmappingfmGroup" action="javascript:">
-
-
-                              <!-- <div class="form-group row">
-                                <label for="end-date"  class="col-sm-3 col-form-label">End Date:</label>
-                                <div class="col-sm-9">
-                                   <input type="date" class="form-control" id="end-date" formControlName="employeeshiftMappingEndingDate" >
-                                </div>
-                              </div> -->
-
                                 <div class="form-group row">
                                     <label for="end-date" class="col-sm-3 col-form-label">End Date:</label>
                                     <div class="col-sm-9">
                                         <input type="date" formControlName="employeeshiftMappingEndingDate" class="form-control" id="end-date" />
-                                        <!-- <span *ngIf="checkRequired('DOB')" class="error-span">This Field Is Required</span> -->
+                                        <span *ngIf="checkRequired('employeeshiftMappingEndingDate')" class="error-span">This Field Is Required</span><br>
                                     </div>
                                 </div>
     
@@ -158,27 +127,11 @@
                                 <div class="input-group mb-3">
                                   <label for="shift-name">Shift Name:</label>
                                    <select id="shift-name"  formControlName="shiftId" class="form-select">
-                                    <!-- <select id="shift-name" formControlName="shiftId"> -->
                                      <option>Select Shift</option>
                                     <option *ngFor="let shift of lstShifts" [value]="shift.id">{{ shift.name }}</option>
                                   </select>
+                                  <span *ngIf="checkRequired('shiftId')" class="error-span">This Field Is Required</span>
                                 </div>                                
-
-
-                                <!-- <div class="input-group mb-3"><div class="input-group-prepend">
-                                  <label _for="inputGroupSelect01" class="input-group-text">Options</label>
-                                </div>
-                                <select id="shift-name" class="form-select" formControlName="shiftId">
-                                  <option selected="" disabled>Select Shift Name</option>
-                                
-                                  <option *ngFor="let shift of lstShifts" [value]="shift.id">{{ shift.name }}</option>
-                                
-                                </select>
-                                </div>  -->
-
-
-                               <!-- ///// -->
-
 
                             </form>
                             <div class="mt-3">
@@ -190,44 +143,6 @@
                             
                         </div>
                     </div>
-
-
-
-                    
-                    
-
-
-                    
-<!-- righ -->
-
-                              
-
-<!-- left -->
-
-                                 <!-- left               -->   
-
-                     
-
-
-              
-
-
-
-
-                      <!-- <div class="mt-3">
-                        <button type="button" class="btn btn-primary" [disabled]="empshiftmappingfmGroup.invalid" (click)="AddEmpShift()">Submit</button>
-
-                        
-                        <button *ngIf="employeeshiftMappingId" type="button" class="btn btn-success" [disabled]="empshiftmappingfmGroup.invalid" (click)="updateEmpShift()">Update</button>
-                      </div> -->
-
-                   
-                  
-                  
-                  
-                    <!-- </form> -->
-              <!-- </div>
-          </div> -->
       </app-card>
   </div>
 </div>

@@ -62,7 +62,10 @@ const routes: Routes = [
        canActivate: [AuthGuard]
 
       },
-
+      {
+        path: 'billing',
+        loadComponent : () => import ('./demo/billing/billing.component').then((c) => c.billingComponent)
+      },
       {
         path: 'roles',
         loadComponent : () => import('./demo/Roles/Roles.component').then((c) => c.RolesComponent),
@@ -101,6 +104,10 @@ const routes: Routes = [
       },
       {
         path: 'medicinedetails',
+       loadComponent : () => import('./demo/medicinedetails/medicinedetails.component').then((c) => c. medicinedetails)
+      },
+      {
+        path: 'medicinedetails/:id',
        loadComponent : () => import('./demo/medicinedetails/medicinedetails.component').then((c) => c. medicinedetails)
       },
       {

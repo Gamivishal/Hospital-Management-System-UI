@@ -37,7 +37,6 @@ export  class hospitaltypeComponent implements OnInit {
     ngOnInit() {
       this.createFormGroup();
       this.gethospitaltypelist();
-      this.addHospital();
 
 
     }
@@ -57,13 +56,13 @@ export  class hospitaltypeComponent implements OnInit {
 
      checkRequired(controlName:any)
      {
-      return this.hospitalTypefmGroup.controls[controlName].errors?.['required'];
+      return this.hospitalTypefmGroup.controls[controlName].touched &&  this.hospitalTypefmGroup.controls[controlName].errors?.['required'];
      }
 
 
      checkminlength(controlName:any)
      {
-        return this.hospitalTypefmGroup.controls[controlName].errors?.['minlength']
+        return this.hospitalTypefmGroup.controls[controlName].touched &&  this.hospitalTypefmGroup.controls[controlName].errors?.['minlength']
      }
 
   gethospitaltypelist() {

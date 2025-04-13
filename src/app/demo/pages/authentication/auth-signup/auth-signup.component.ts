@@ -29,7 +29,7 @@ export default class AuthSignupComponent implements OnInit {
   createFormGroup(){
     this.singupformgoup= new FormGroup({
       FullName: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-      Email: new FormControl(null, [Validators.required,Validators.email]),
+      Email: new FormControl(null, [Validators.required,Validators.email,Validators.maxLength(100)]),
       Password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
       ConfirmPassword: new FormControl(null, [
         Validators.required,
@@ -53,23 +53,27 @@ export default class AuthSignupComponent implements OnInit {
   checkRequired(controlName: any) {
     return this.singupformgoup.controls[controlName].touched && this.singupformgoup.controls[controlName].errors?.['required'];
   }
+  checemail(controlName: any) {
+    return this.singupformgoup.controls[controlName].errors?.['email'];
+  }
 
   checkMinLength(controlName: any) {
-    return this.singupformgoup.controls[controlName].errors?.['minlength'];
+    return this.singupformgoup.controls[controlName].touched && this.singupformgoup.controls[controlName].errors?.['minlength'];
   }
+
+  checkMaxLength(controlName: any) {
+    return this.singupformgoup.controls[controlName].touched &&
+           this.singupformgoup.controls[controlName].errors?.['maxlength'];
+  }
+
 
   checkMobileNumber(controlName: any) {
     return this.singupformgoup.controls[controlName].touched &&
     this.singupformgoup.controls[controlName].errors?.['pattern'] &&
     /^[0-5]/.test(this.singupformgoup.controls[controlName].value);
   }
-  // checkMaxLength(controlName: any) {
-  //   return this.singupformgoup.controls[controlName].errors?.['maxLength'];
-  // }
-  checkMaxLength(controlName: any) {
-    return this.singupformgoup.controls[controlName].touched &&
-           this.singupformgoup.controls[controlName].errors?.['maxlength'];
-  }
+
+
   checkFutureDate(controlName: any) {
     return this.singupformgoup.controls[controlName].touched &&
       this.singupformgoup.controls[controlName].errors?.['futureDate'];
