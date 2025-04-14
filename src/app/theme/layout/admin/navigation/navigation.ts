@@ -105,8 +105,7 @@ export const NavigationItems: NavigationItem[] = [
         url: '/facilitytype',
         icon: 'feather icon-home',
         classes: 'nav-item'
-      },
-     
+      },   
       {
         id: 'diseasetype',
         title: 'Disease Type',
@@ -115,8 +114,6 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
-
-
     ]
 
   },
@@ -134,7 +131,6 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
-
       {
         id: 'patientdoctormapping',
         title: 'PatientDoctorMapping',
