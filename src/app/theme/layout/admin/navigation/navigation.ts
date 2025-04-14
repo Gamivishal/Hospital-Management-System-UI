@@ -123,8 +123,6 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
-
-
     ]
 
   },
@@ -142,7 +140,6 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
-
       {
         id: 'patientdoctormapping',
         title: 'PatientDoctorMapping',

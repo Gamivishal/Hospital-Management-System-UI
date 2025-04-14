@@ -70,7 +70,7 @@ const routes: Routes = [
       },
       {
         path: 'billing',
-        loadComponent : () => import ('./demo/billing/billing.component').then((c) => c.billingComponent)
+        loadComponent : () => import ('./demo/billing/billing.component').then((c) => c.billingComponent),canActivate: [AuthGuard]
       },
       {
         path: 'roles',
@@ -89,17 +89,17 @@ const routes: Routes = [
       },
 
       {
-        path: 'petientdoctormapping',
-        loadComponent : () => import('./demo/patientdoctormapping/patientdoctormapping.component').then((c) => c.patientdoctormappingComponent),
+        path: 'patientdoctormapping',
+        loadComponent : () => import('./demo/patientdoctormapping/patientdoctormapping.component').then((c) => c.patientdoctormappingComponent),canActivate: [AuthGuard]
       },
       {
         path: 'PatientAdmitionDetails',
-        loadComponent : () => import ('./demo/PatientAdmitionDetails/PatientAdmitionDetails.component').then((c) => c.PatientAdmitionDetailsComponent)
+        loadComponent : () => import ('./demo/PatientAdmitionDetails/PatientAdmitionDetails.component').then((c) => c.PatientAdmitionDetailsComponent),canActivate: [AuthGuard]
       },
       {
         path: 'empshiftmapping',
-        loadComponent : () => import ('./demo/empshiftmapping/empshiftmapping.component').then((c) => c.empshiftmapping),
-        canActivate: [AuthGuard]
+        loadComponent : () => import ('./demo/empshiftmapping/empshiftmapping.component').then((c) => c.empshiftmapping),canActivate: [AuthGuard]
+        
       },
       {
         path: 'empdepartmentmapping',
@@ -107,39 +107,45 @@ const routes: Routes = [
       },
       {
         path: 'billing',
-       loadComponent : () => import('./demo/billing/billing.component').then((c) => c.billingComponent)
+       loadComponent : () => import('./demo/billing/billing.component').then((c) => c.billingComponent),canActivate: [AuthGuard]
       },
       {
         path: 'billing/:id',
-        loadComponent: () => import('./demo/billing/billing.component').then((c) => c.billingComponent)
+        loadComponent: () => import('./demo/billing/billing.component').then((c) => c.billingComponent),canActivate: [AuthGuard]
       },
       {
         path: 'facilitytype',
-        loadComponent : () => import('./demo/Facility Type/facilitytype.component').then((c) => c.FacilityTypeComponent)
+        loadComponent : () => import('./demo/Facility Type/facilitytype.component').then((c) => c.FacilityTypeComponent),canActivate: [AuthGuard]
       },
       {
         path: 'roomTypeFacilityMapping',
-        loadComponent : () => import('./demo/roomtypefacilitymapping/roomtypefacilitymapping.component').then((c) => c.roomtypefacilitymapping)
+        loadComponent : () => import('./demo/roomtypefacilitymapping/roomtypefacilitymapping.component').then((c) => c.roomtypefacilitymapping),canActivate: [AuthGuard]
       },
       {
         path: 'medicinedetails',
-       loadComponent : () => import('./demo/medicinedetails/medicinedetails.component').then((c) => c. medicinedetails)
+       loadComponent : () => import('./demo/medicinedetails/medicinedetails.component').then((c) => c. medicinedetails),
+       canActivate: [AuthGuard]
       },
       {
         path: 'medicinedetails/:id',
-       loadComponent : () => import('./demo/medicinedetails/medicinedetails.component').then((c) => c. medicinedetails)
+       loadComponent : () => import('./demo/medicinedetails/medicinedetails.component').then((c) => c. medicinedetails),canActivate: [AuthGuard]
       },
       {
         path: 'treatmentdetails',
-       loadComponent : () => import('./demo/treatmentdetails/treatmentdetails.component').then((c) => c. TreatmentdetailsComponent)
+       loadComponent : () => import('./demo/treatmentdetails/treatmentdetails.component').then((c) => c. TreatmentdetailsComponent),
+       canActivate: [AuthGuard]
+      },
+
+      {
+        path: 'diseasetype',
+       loadComponent : () => import('./demo/diseasetype/diseasetype.component').then((c) => c.DiseaseTypeComponent),
+       canActivate: [AuthGuard]
       },
       {
         path: 'basic',
         loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then((m) => m.UiBasicModule),
         canActivate: [AuthGuard]
       },
-
-
       {
         path: 'forms',
         loadChildren: () => import('./demo/pages/form-elements/form-elements.module').then((m) => m.FormElementsModule),canActivate: [AuthGuard]
