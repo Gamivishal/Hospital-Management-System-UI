@@ -73,7 +73,7 @@ export class medicinedetails implements OnInit{
 
       this.medicinedetailsFormGroup= new FormGroup({
         medicinedetailsID:new FormControl(0,[Validators.required]),
-        treatmentdetailsId :new FormControl(0,[Validators.required]),
+        treatmentDetailsId :new FormControl(null,[Validators.required]),
         medicinetypeID:new FormControl(0,[Validators.required]),
        // medicinetype:new FormControl(0),
       //  dieseaseName:new FormControl(0),
@@ -138,7 +138,7 @@ Addmedicinedetails(){
     this.isShowList = false; //showList
     this.medicinedetailsFormGroup.patchValue({
       medicinedetailsID: medicinedetails.medicineDetailsID, // Correct patching for the ID
-      treatmentdetailsId: medicinedetails.treatmentdetailsId, 
+      treatmentDetailsId: medicinedetails.treatmentdetailsId, 
         medicinetypeID: medicinedetails.medicinetypeID,
         dosage: medicinedetails.dosage,
         frequency: medicinedetails.frequency,
