@@ -82,8 +82,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'patientdoctormapping',
-        loadComponent: () => import('./demo/patientdoctormapping/patientdoctormapping.component').then((c) => c.patientdoctormappingComponent),canActivate: [AuthGuard]
+        path: 'petientdoctormapping',
+        loadComponent : () => import('./demo/patientdoctormapping/patientdoctormapping.component').then((c) => c.patientdoctormappingComponent),
       },
       {
         path: 'empshiftmapping',
@@ -99,8 +99,12 @@ const routes: Routes = [
        loadComponent : () => import('./demo/billing/billing.component').then((c) => c.billingComponent)
       },
       {
-        path: 'diseasetype',
-       loadComponent : () => import('./demo/diseasetype/diseasetype.component').then((c) => c.DiseaseTypeComponent)
+        path: 'facilitytype',
+        loadComponent : () => import('./demo/Facility Type/facilitytype.component').then((c) => c.FacilityTypeComponent)
+      },
+      {
+        path: 'roomTypeFacilityMapping',
+        loadComponent : () => import('./demo/roomtypefacilitymapping/roomtypefacilitymapping.component').then((c) => c.roomtypefacilitymapping)
       },
       {
         path: 'medicinedetails',
@@ -140,6 +144,7 @@ const routes: Routes = [
         loadComponent: () => import('./demo/extra/sample-page/sample-page.component'),
         canActivate: [AuthGuard]
       },
+      
     ]
   },
 
