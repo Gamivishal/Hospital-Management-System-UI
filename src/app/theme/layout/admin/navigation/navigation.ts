@@ -160,6 +160,16 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item'
       },
       {
+        id: 'PatientAdmitionDetails',
+        title: 'PatientAdmitionDetails',
+        type: 'item',
+        url: '/PatientAdmitionDetails',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+
+
+      {
         id: 'treatmentdetails',
         title: 'Treatmentdetails',
         type: 'item',
