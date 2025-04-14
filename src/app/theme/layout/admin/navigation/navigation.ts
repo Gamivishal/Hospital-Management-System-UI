@@ -99,6 +99,15 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item'
       },
       {
+        id: 'Facility Type',
+        title: 'Facility Type',
+        type: 'item',
+        url: '/facilitytype',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+     
+      {
         id: 'diseasetype',
         title: 'Disease Type',
         type: 'item',
@@ -125,6 +134,7 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
+
       {
         id: 'patientdoctormapping',
         title: 'PatientDoctorMapping',
@@ -142,10 +152,10 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item'
       },
       {
-        id: 'Empdepartmentmapping',
-        title: 'EmpDepartmentMapping',
+        id: 'roomTypeFacilityMapping',
+        title: 'roomTypeFacilityMapping',
         type: 'item',
-        url: '/empdepartmentmapping',
+        url: '/roomTypeFacilityMapping',
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
@@ -166,15 +176,9 @@ export const NavigationItems: NavigationItem[] = [
         url: '/treatmentdetails',
         icon: 'feather icon-home',
         classes: 'nav-item'
-      },
-      {
-        id: 'billing',
-        title: 'Billing',
-        type: 'item',
-        url: '/billing',
-        icon: 'feather icon-home',
-        classes: 'nav-item'
       }
+
+
 
     ]
   },
