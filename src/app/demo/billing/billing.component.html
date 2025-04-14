@@ -54,14 +54,17 @@
             <div class="col-md-6">
               <form [formGroup]="billingfmGroup" action="javascript:">
 
-                <!-- Treatment Code Dropdown -->
-                <div class="form-group mb-3">
-                  <label for="treatmentid">Treatment Id</label>
-                  <select class="form-control" formControlName="treatmentDetailsId">
-                    <option value="">Select Treatment</option>
-                    <option *ngFor="let treatment of TreatmentId" [value]="treatment.id">{{ treatment.id }}</option>
-                  </select>
-                </div>
+              <!-- Auto-selected Treatment ID (readonly) -->
+<div class="form-group mb-3">
+  <label for="treatmentid">Treatment Id</label>
+  <input
+    type="text"
+    class="form-control"
+    formControlName="treatmentDetailsId"
+    readonly
+  />
+</div>
+
                <!-- Total Amount -->
 <div class="form-group mb-3">
   <label for="totalAmount">Total Amount</label>
@@ -87,15 +90,15 @@
                 </div>
 
 
-                <!-- Add Button -->
+
                 <div class="text-center mt-4">
                   <button *ngIf="!selectedbillingId" type="button" class="btn btn-primary" (click)="addbilling()">Add</button>
 
-                  <!--<button *ngIf="!selectedbillingId" type="button" class="btn btn-primary" [disabled]="billingfmGroup.invalid" (click)="addbilling()">Add</button>-->
+                   <!-- <button *ngIf="!selectedbillingId" type="button" class="btn btn-primary" [disabled]="billingfmGroup.invalid" (click)="addbilling()">Add</button> -->
                 </div>
 
 
-                
+
               </form>
             </div>
           </div>

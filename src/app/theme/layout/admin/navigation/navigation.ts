@@ -91,6 +91,14 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item'
       },
       {
+        id: 'room',
+        title: 'Room',
+        type: 'item',
+        url: '/room',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
         id: 'Roles',
         title: 'Roles',
         type: 'item',
