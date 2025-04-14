@@ -165,7 +165,6 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       }
-
     ]
   },
 
@@ -222,10 +221,7 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
 
-
 // end
-
-
 //new start
 {
   id: 'master',
@@ -243,18 +239,7 @@ export const NavigationItems: NavigationItem[] = [
     }
   ]
 },
-
-
-
 //New Start:
-
-
-
-
-
-
-
-
 //  END
   {
     id: 'forms',
