@@ -42,7 +42,7 @@ export class DiseaseTypeComponent implements OnInit{
   ngOnInit() {
      this.createFormGroup();
      this.getDieseaseTypes();
-     this.AddDieseaseTypes();
+     //this.AddDieseaseTypes();
      
     }
 
@@ -64,7 +64,7 @@ export class DiseaseTypeComponent implements OnInit{
     }
     checkRequired(controlName:any)
     {
-      return this.dieseaseTypeFormGroup.controls[controlName].errors?.['required'];
+      return this.dieseaseTypeFormGroup.controls[controlName].touched && this.dieseaseTypeFormGroup.controls[controlName].errors?.['required'];
     }
 
 

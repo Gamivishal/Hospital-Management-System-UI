@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule, NgIfContext } from '@angular/common';
 import { AppConstant } from '../baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -15,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-medicinedetails',
   standalone: true,
-  imports: [SharedModule,CommonModule],
+  imports: [SharedModule,CommonModule,RouterModule],
   templateUrl: './medicinedetails.component.html',
   styleUrls: ['./medicinedetails.component.scss']
   
