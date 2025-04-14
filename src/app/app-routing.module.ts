@@ -76,6 +76,7 @@ const routes: Routes = [
         path: 'hospitaldepartment',
        loadComponent : () => import('./demo/hospitaldepartment/hospitaldepartment.component').then((c) => c.hospitaldepartmentComponent),canActivate: [AuthGuard]
       },
+
       {
         path: 'patientdata',
        loadComponent : () => import('./demo/patientdata/patientdata.component').then((c) => c.PatientDataComponent),canActivate: [AuthGuard]
@@ -84,6 +85,10 @@ const routes: Routes = [
       {
         path: 'patientdoctormapping',
         loadComponent: () => import('./demo/patientdoctormapping/patientdoctormapping.component').then((c) => c.patientdoctormappingComponent),canActivate: [AuthGuard]
+      },
+      {
+        path: 'PatientAdmitionDetails',
+        loadComponent : () => import ('./demo/PatientAdmitionDetails/PatientAdmitionDetails.component').then((c) => c.PatientAdmitionDetailsComponent)
       },
       {
         path: 'empshiftmapping',
@@ -97,6 +102,10 @@ const routes: Routes = [
       {
         path: 'billing',
        loadComponent : () => import('./demo/billing/billing.component').then((c) => c.billingComponent)
+      },
+      {
+        path: 'billing/:id',
+        loadComponent: () => import('./demo/billing/billing.component').then((c) => c.billingComponent)
       },
       {
         path: 'diseasetype',
