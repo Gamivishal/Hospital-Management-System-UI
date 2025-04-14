@@ -109,9 +109,9 @@ export  class RoomTypesComponent implements OnInit {
        this.baseService.GET<any>(this.URL+"TblRoomType/GetAll").subscribe(response=>{
        console.log("GET Response:", response);
        this.lstroomtype = response.data;
-       this.totalPages = Math.ceil(this.lstroomtype.length / this.itemsPerPage); // FIX: Update total pages
-       this. Paginationrecord();//update list
-       this.PageNumber(); // FIX: Update page numbers
+       this.totalPages = Math.ceil(this.lstroomtype.length / this.itemsPerPage); 
+       this. Paginationrecord();
+       this.PageNumber(); 
        });
       }
 
@@ -144,10 +144,10 @@ export  class RoomTypesComponent implements OnInit {
 
       editRoom(room: any) {
         this.selectedRoomTypeId = room.roomTypeId;
-        this.isShowList = false; // Show edit form
+        this.isShowList = false;
         this.roomTypefmGroup.patchValue({
-            roomTypeId: room.roomTypeId, // Correct key
-            roomType: room.roomType // Correct key
+            roomTypeId: room.roomTypeId, 
+            roomType: room.roomType 
         });
     }
 
@@ -173,19 +173,33 @@ export  class RoomTypesComponent implements OnInit {
       }
 
 
+    //   onDelete(hospitalTypeID: number){
+    //     this.baseService.DELETE(this.URL+"TblHospitalType/Delete?id=" + hospitalTypeID).subscribe({
+    //       next: (response: any) => {
+    //         if (response.statusCode === 200) {
+    //           this.toastr.success(response.message, 'Success');
+    //       console.log("DELETE Response:", response);
+    //       this.gethospitaltypelist();
+    //       this.isShowList = true;
+    //     } else {
+    //       this.toastr.error(response.message, 'Error');
+    //     }
+    //   },
+    //   error: () => {
+    //     this.toastr.error('Failed to delete ', 'Error');
+    //   }
+    // });
+    //   }
+
+
       onDelete(roomId: number){
-        this.baseService.DELETE(URL+"TblRoomType/delete?id=" + roomId).subscribe({
+        this.baseService.DELETE(URL+"TblRoomType/delete?id=" +roomId).subscribe({
           next: (response: any) => {
             if (response.statusCode === 200) {
               this.toastr.success(response.message, 'Success');
           console.log("DELETE Response:", response);
-        this.baseService.DELETE("https://localhost:7272/api/TblRoomType/delete?id=" + roomId).subscribe(response => {
-          // this.baseService.DELETE("https://localhost:7272/api/TblRoomType/delete?id=" + roomId).subscribe(response => {
-
-        console.log("DELETE Response:", response);
           this.getRoomType();
           this.isShowList = true;
-        });
       } else {
         this.toastr.error(response.message, 'Error');
       }
@@ -195,4 +209,4 @@ export  class RoomTypesComponent implements OnInit {
     }
   });
     }
-  }
+}

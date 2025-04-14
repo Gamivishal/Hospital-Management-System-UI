@@ -25,20 +25,7 @@ export  class empshiftmapping implements OnInit {
   lstShifts: any[] = [];
   lstUserNames: any[] = [];
 
-//   roomtypepost : any ={
-//       "createBy": 0,
-//       "createdOn": "",
-//       "updateBy": 0,
-//       "updateOn": "",
-//       "isActive": true,
-//       "versionNo": 0,
-//       "roomTypeId": 0,
-//       "roomType": ""
-//  }
-//  lstroomtype: any
-  // http=inject(HttpClient)
 
-  // roomTypeId: number = null;
 
   constructor(private baseService: BaseService,
       private toastr: ToastrService) {}
@@ -68,6 +55,7 @@ export  class empshiftmapping implements OnInit {
 
      createFormGroup() {
       this.empshiftmappingfmGroup = new FormGroup({
+        employeeshiftMappingId:new FormControl(0,[Validators.required]),
         userId: new FormControl(null, [Validators.required]),  
         shiftId: new FormControl(null, [Validators.required]),
         employeeshiftMappingStartingDate: new FormControl(null, [Validators.required]),
@@ -81,7 +69,7 @@ export  class empshiftmapping implements OnInit {
 
      checkRequired(controlName:any)
     {
-     return this.empshiftmappingfmGroup.controls[controlName].errors?.['required'];
+     return this.empshiftmappingfmGroup.controls[controlName].touched && this.empshiftmappingfmGroup.controls[controlName].errors?.['required'];
     }
 
 
@@ -142,49 +130,43 @@ nextpage(page: number) {
        console.log("GET Response:", response);
        this.lstempshiftmapping = response.data;
        this.totalPages = Math.ceil(this.lstempshiftmapping.length / this.itemsPerPage); // FIX: Update total pages
-       this. Paginationrecord();//update list
-       this.PageNumber(); // FIX: Update page numbers
+       this. Paginationrecord();
+       this.PageNumber(); 
        });
       }
 
-
-      
-  
-
-      // AddEmpShift() {
-      //   this.baseService.POST(this.URL+"TblEmployeeshiftMapping/Add", this.empshiftmappingfmGroup.getRawValue())
-      //     .subscribe(response => {
-      //       console.log("POST Response:", response);
-      //       this.getEmpShiftMapping(); 
-      //       this.empshiftmappingfmGroup.reset({
-      //         userId: null,
-      //         shiftId: null,
-      //         employeeshiftMappingStartingDate: null,
-      //         employeeshiftMappingEndingData: null
-      //       });
-      //       this.isShowList = true;
-      //     });
-      //   }
 
 
 
       AddEmpShift() {
         this.baseService.POST(this.URL+"TblEmployeeshiftMapping/Add", this.empshiftmappingfmGroup.getRawValue())
-          .subscribe(response => {
+          .subscribe({
+            next: (response:any) => {
+            if (response.statusCode === 200) {
             console.log("POST Response:", response);
             this.getEmpShiftMapping();  
             this.Paginationrecord();  
             this.isShowList = true;
-          });
-    }
+          }
+          else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to Add ', 'Error');
+        }
+        
+        });
+        }
     
 
 
           editEmpShift(item: any) {
+            debugger
               this.employeeshiftMappingId = item.employeeshiftMappingId;
               this.isShowList = false;
-
               this.empshiftmappingfmGroup.patchValue({
+                employeeshiftMappingId:item.employeeshiftMappingId,
                 userId: item.userId,
                 shiftId: item.shiftId,
                 employeeshiftMappingStartingDate: item.employeeshiftMappingStartingDate,
@@ -192,28 +174,52 @@ nextpage(page: number) {
               });
             }
 
-      
-    
+
+
+
 
       updateEmpShift() {
+        debugger
         this.baseService.PUT(this.URL+"TblEmployeeshiftMapping/Update", this.empshiftmappingfmGroup.getRawValue())
-          .subscribe(response => {
+          .subscribe({
+            next: (response:any) => {
+            if (response.statusCode === 200) {
             console.log("PUT Response:", response);
             this.getEmpShiftMapping();
             this.isShowList = true;
             this.currentPage = 1; 
-          });
-      }
+          }
+          else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to Update ', 'Error');
+        }
+        
+        });
+        }
 
 
 
       onDelete(employeeshiftMappingId: number) {
         this.baseService.DELETE(this.URL+"TblEmployeeshiftMapping/delete?id=" + employeeshiftMappingId)
-          .subscribe(response => {
+          .subscribe({
+            next: (response:any) => {
+            if (response.statusCode === 200) {
             console.log("DELETE Response:", response);
             this.getEmpShiftMapping(); 
-          });
-    }
+          }
+          else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to Delete ', 'Error');
+        }
+        
+        });
+        }
     
   
 }

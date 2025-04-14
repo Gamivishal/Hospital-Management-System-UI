@@ -19,6 +19,7 @@
                             <th>UpdatedBy</th>
                             <th>UpdateOn</th>
                             <th>IsActive</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,7 +37,8 @@
                             <td>{{ department.isActive ? 'Yes' : 'No' }}</td>
                             <!-- <td>{{ department.versionNo }}</td> -->
                             <td>
-                            </td>
+                            <button (click)="downloadRowAsPDF(department)">Download</button>
+                          </td>
                             </tr>
                     </tbody>
                 </table>
@@ -91,6 +93,9 @@
 
                   <!--<button *ngIf="!selectedbillingId" type="button" class="btn btn-primary" [disabled]="billingfmGroup.invalid" (click)="addbilling()">Add</button>-->
                 </div>
+
+
+                
               </form>
             </div>
           </div>
