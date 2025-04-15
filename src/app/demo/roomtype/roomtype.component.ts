@@ -21,6 +21,7 @@ export  class RoomTypesComponent implements OnInit {
   paginatedList: any[] = [];
   isShowList:boolean=true;
   selectedRoomTypeId: number | null = null;
+  URL=AppConstant.url
 //   roomtypepost : any ={
 //       "createBy": 0,
 //       "createdOn": "",
@@ -52,7 +53,7 @@ export  class RoomTypesComponent implements OnInit {
      itemsPerPage: number =AppConstant.RecordPerPage;  //total data in page
      totalPages: number = 0; //total page
      pageNumbers: number[] = [];//list
-     URL=AppConstant.url
+    
 
 
 
@@ -173,27 +174,9 @@ export  class RoomTypesComponent implements OnInit {
       }
 
 
-    //   onDelete(hospitalTypeID: number){
-    //     this.baseService.DELETE(this.URL+"TblHospitalType/Delete?id=" + hospitalTypeID).subscribe({
-    //       next: (response: any) => {
-    //         if (response.statusCode === 200) {
-    //           this.toastr.success(response.message, 'Success');
-    //       console.log("DELETE Response:", response);
-    //       this.gethospitaltypelist();
-    //       this.isShowList = true;
-    //     } else {
-    //       this.toastr.error(response.message, 'Error');
-    //     }
-    //   },
-    //   error: () => {
-    //     this.toastr.error('Failed to delete ', 'Error');
-    //   }
-    // });
-    //   }
 
-
-      onDelete(roomId: number){
-        this.baseService.DELETE(URL+"TblRoomType/delete?id=" +roomId).subscribe({
+      onDelete(roomTypeId: number){
+        this.baseService.DELETE(this.URL+"TblRoomType/delete?id="+roomTypeId).subscribe({
           next: (response: any) => {
             if (response.statusCode === 200) {
               this.toastr.success(response.message, 'Success');

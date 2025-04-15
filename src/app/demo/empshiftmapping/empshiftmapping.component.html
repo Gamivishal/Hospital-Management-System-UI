@@ -1,8 +1,11 @@
 <div *ngIf="isShowList">
   <div class="col-xl-12">
-      <div>
-          <button type="button" (click)="isShowList = false;" class="btn btn-primary" style="color: black;">Add EmployeeShift</button>
-      </div>
+
+    <div class="d-flex justify-content-end mb-3 position-relative">
+      <button type="button" (click)="isShowList=false;" class="btn btn-primary add-master-button">
+        Add EmployeeShift
+      </button>
+  </div>
       <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
           <div class="table-responsive">
               <table class="table table-striped">
@@ -127,7 +130,7 @@
                                 <div class="input-group mb-3">
                                   <label for="shift-name">Shift Name:</label>
                                    <select id="shift-name"  formControlName="shiftId" class="form-select">
-                                     <option>Select Shift</option>
+                                     <option value="" disabled>Select Shift</option>
                                     <option *ngFor="let shift of lstShifts" [value]="shift.id">{{ shift.name }}</option>
                                   </select>
                                   <span *ngIf="checkRequired('shiftId')" class="error-span">This Field Is Required</span>
