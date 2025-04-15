@@ -31,9 +31,9 @@
                           <td>{{ item.employeeshiftMappingStartingDate }}</td>
                           <td>{{ item.employeeshiftMappingEndingDate }}</td>
                           <td>{{item. createdBy}}</td>  
-                          <td>{{ item.createdOn | date:'dd/MM/yyyy' }}</td>
+                          <td>{{ item.createdOn | date:'dd/MM/yyyy hh:mm:ss a':'UTC+5:30' }}</td>
                           <td>{{ item.updatedBy }}</td>
-                          <td>{{ item.updatedOn | date:'dd/MM/yyyy' }}</td>
+                          <td>{{ item.updatedOn | date:'dd/MM/yyyy hh:mm:ss a':'UTC+5:30' }}</td>
                           <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
                          
                          

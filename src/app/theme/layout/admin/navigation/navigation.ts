@@ -133,6 +133,14 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item'
       },
       {
+        id: 'Empdepartmentmapping',
+        title: 'Empdepartmentmapping',
+        type: 'item',
+        url: '/empdepartmentmapping',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
         id: 'patientdoctormapping',
         title: 'PatientDoctorMapping',
         type: 'item',
