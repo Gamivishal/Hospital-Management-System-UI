@@ -1,9 +1,9 @@
 <div class="row" *ngIf="billings">
     @if(isShowList){
     <div class="col-xl-12">
-        <div class="d-flex justify-content-end mb-3 position-relative">
+        <!-- <div class="d-flex justify-content-end mb-3 position-relative">
             <button type="button" (click)="isShowList=false;" class="btn btn-primary">Add bill</button>
-        </div>
+        </div> -->
         <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -26,7 +26,7 @@
                         <tr *ngFor="let department of paginatedList">
 
                             <td>{{ department.patientName }}</td>
-                            <td>{{ department.billId}}</td>
+                            <td>{{ department.billid}}</td>
                             <td>{{ department.totalAmount }}</td>
                             <td>{{ department.paymentMethod }}</td>
                             <td>{{ department.billDate }}</td>

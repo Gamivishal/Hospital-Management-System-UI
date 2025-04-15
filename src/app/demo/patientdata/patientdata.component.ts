@@ -43,13 +43,9 @@ export class PatientDataComponent implements OnInit {
   }
 
   patientFormGroup = new FormGroup({
-    patientName: new FormControl(''), // <-- Add this line
-    patientId: new FormControl(0),
     fullName: new FormControl(''),
     email: new FormControl(''),
     password: new FormControl(''),
-    roleName: new FormControl(''),
-    roleId: new FormControl(0),
     mobilNumber: new FormControl(''),
     dob: new FormControl(''),
     gender: new FormControl(''),
@@ -57,13 +53,7 @@ export class PatientDataComponent implements OnInit {
     blood_Group: new FormControl(''),
     emergency_Contact: new FormControl(''),
     medical_History: new FormControl(''),
-    userId: new FormControl(0),
-    createdBy: new FormControl(0),
-    createdOn: new FormControl(new Date().toISOString()),
-    updatedBy: new FormControl(0),
-    updatedOn: new FormControl(new Date().toISOString()),
-    isActive: new FormControl(true),
-    versionNo: new FormControl(0)
+
   });
 
 
