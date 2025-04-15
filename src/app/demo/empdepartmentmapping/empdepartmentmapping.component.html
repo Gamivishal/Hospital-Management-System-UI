@@ -1,9 +1,11 @@
 <div class="row" *ngIf="lstempdeptmapping">
     @if(isShowList){
     <div class="col-xl-12">
-        <div>
-            <button type="button" (click)="isShowList=false;" class="btn btn-primary" style="color: black;">Add empdeptmapping</button>
 
+        <div class="d-flex justify-content-end mb-3 position-relative">
+            <button type="button" (click)="isShowList=false;" class="btn btn-primary add-master-button">
+                Add empdeptmapping
+            </button>
         </div>
         <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
             <div class="table-responsive">
@@ -79,7 +81,8 @@
                         <div class="form-group">
                             <label for="Employee Department ">Employee Department</label>
 
-                           <div class="form-group">
+                           <div 
+                           class="form-group">
                                 <label for="userId">Select Employee</label>
                                <select formControlName="userId" class="form-control" required>
                                   <option value="" disabled>Select Employee</option>
@@ -92,7 +95,7 @@
                         <div class="form-group mt-3">
                             <label for="departmentId">Select Department</label>
                             <select formControlName="departmentId" class="form-control" required>
-                              <option value="">Select Department</option>
+                              <option value="" disabled>Select Department</option>
                               <option *ngFor="let dept of lstDepartmentName" [value]="dept.id">{{ dept.name }}</option>
                             </select>
                             <span *ngIf="checkRequired('departmentId')" class="error-span">This Field Is Required</span>

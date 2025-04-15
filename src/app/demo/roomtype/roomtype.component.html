@@ -1,11 +1,12 @@
 <div class="row" *ngIf="lstroomtype">
   @if(isShowList){
   <div class="col-xl-12">
-      <div>
-          <button type="button" (click)="isShowList=false;" class="btn btn-primary" style="color: black;">Add Room</button>
-          <!-- <input type="number" [(ngModel)]="roomTypeId" placeholder="Search by ID">
-                     <button (click)="getbyId(roomTypeId)">Get By ID</button> -->
-      </div>
+
+    <div class="d-flex justify-content-end mb-3 position-relative">
+        <button type="button" (click)="isShowList=false;" class="btn btn-primary add-master-button">
+            Add Room
+    </button>
+    </div>
       <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
           <div class="table-responsive">
               <table class="table table-striped">
@@ -29,40 +30,29 @@
                           <td>{{ item.createdBy }}</td>
                           <td>{{ item.createdOn | date:'dd/MM/yyyy' }}</td>
                           <td> {{ item.updatedBy }}</td>
-                          <td>{{ item.updateOn | date:'dd/MM/yyyy' }}</td>
+                          <td>{{ item.updatedOn | date:'dd/MM/yyyy' }}</td>
                           <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
                           <!-- <td>{{ item.versionNo }}</td> -->
 
-                          <!-- <td>
-                            <button class="btn btn-sm btn-warning me-2">Edit</button>
-                            <button class="btn btn-sm btn-danger" (click)="onDelete(item.roomId)">Delete</button>
-                          </td> -->
+                          
                           <td>
-                            <svg (click)="editRoom(item)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                               <svg  style="cursor: pointer;" (click)="editRoom(item)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                 <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-                              </svg>	
+                               </svg>	
 
-                            <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
-                              width="24" height="24" class="main-grid-item-icon">
+                           
+
+                              <!-- <svg  (click) = "onDelete(item.roomTypeId)" xmlns="http://www.w3.org/2000/svg" 
+                                viewBox="0 0 24 24" width="24" height="24" 
+                                class="main-grid-item-icon delete-icon" fill="none" stroke="red" 
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                 <circle cx="12" cy="12" r="10" />
                                 <line x1="15" x2="9" y1="9" y2="15" />
-                                <line x1="9" x2="15" y1="9" y2="15" />
-                            </svg> -->
-
-                            <svg (click)="onDelete(item.roomTypeId)" xmlns="http://www.w3.org/2000/svg" 
-        viewBox="0 0 24 24" width="24" height="24" 
-        class="main-grid-item-icon delete-icon" fill="none" stroke="red" 
-        stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-        <circle cx="12" cy="12" r="10" />
-        <line x1="15" x2="9" y1="9" y2="15" />
-        <line x1="9" x2="15" y1="15" y2="9" />
-    </svg>
-                            
-                        </td>
+                                <line x1="9" x2="15" y1="15" y2="9" />
+                              </svg> -->
+                              <button type="delete" (click) = "onDelete(item.roomTypeId)">Delete</button>
+                          </td>
                       </tr>
-                      <!-- <button (click)="getbyId(roomTypefmGroup.get('roomTypeId')?.value || 1)">Get By ID</button> -->
-                      <!-- <button (click)="getbyId(0)">Getbyid</button> -->
-
                       
                   </tbody>
               </table>
@@ -103,8 +93,6 @@
 
                           <span *ngIf="checkRequired('roomType')" class="error-span">This Field Is Required</span><br>
 
-                          <!-- <span *ngIf="roomTypefmGroup.controls['roomType'].errors['minlength']!==null" class="error-span">Minimum 3 character required</span> -->
-
                           <span *ngIf="roomTypefmGroup.controls['roomType'].errors?.['minlength'] && roomTypefmGroup.controls['roomType'].value.length < 3" class="error-span"> Minimum 3 characters required </span>
                         
                               
@@ -113,8 +101,6 @@
                         <button *ngIf="!selectedRoomTypeId" type="button" class="btn btn-primary" [disabled]="roomTypefmGroup.invalid" (click)="AddRoomType()">Submit</button>
                         <button *ngIf="selectedRoomTypeId" type="button" class="btn btn-success" [disabled]="roomTypefmGroup.invalid" (click)="updateRoom()">Update</button>
                          
-
-                          <!-- [disabled]="hospitalTypefmGroup.invalid" -->
                       </div>
                   </form>
               </div>
