@@ -73,20 +73,20 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
-      {
-        id: 'patientdata',
-        title: 'Patient Data',
-        type: 'item',
-        url: '/patientdata',
-        icon: 'feather icon-home',
-        classes: 'nav-item'
-      },
 
       {
         id: 'room type',
         title: 'Room Type',
         type: 'item',
         url: '/roomtype',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
+        id: 'room',
+        title: 'Room',
+        type: 'item',
+        url: '/room',
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
@@ -105,7 +105,8 @@ export const NavigationItems: NavigationItem[] = [
         url: '/facilitytype',
         icon: 'feather icon-home',
         classes: 'nav-item'
-      },   
+      },
+
       {
         id: 'diseasetype',
         title: 'Disease Type',
@@ -172,10 +173,23 @@ export const NavigationItems: NavigationItem[] = [
         url: '/treatmentdetails',
         icon: 'feather icon-home',
         classes: 'nav-item'
+      },
+      {
+        id: 'billing',
+        title: 'Billing',
+        type: 'item',
+        url: '/billing',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
+        id: 'patientdata',
+        title: 'Patient Data',
+        type: 'item',
+        url: '/patientdata',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
       }
-
-
-
     ]
   },
 
@@ -232,10 +246,7 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
 
-
 // end
-
-
 //new start
 {
   id: 'master',
@@ -253,18 +264,7 @@ export const NavigationItems: NavigationItem[] = [
     }
   ]
 },
-
-
-
 //New Start:
-
-
-
-
-
-
-
-
 //  END
   {
     id: 'forms',

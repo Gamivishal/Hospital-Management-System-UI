@@ -55,6 +55,12 @@ const routes: Routes = [
         canActivate: [AuthGuard]
 
       },
+      {
+        path: 'room',
+        loadComponent: () => import('./demo/room/room.component').then((c) => c.roomsComponent),
+        canActivate: [AuthGuard]
+
+      },
 
       {
         path: 'hospitaltype',
@@ -159,7 +165,7 @@ const routes: Routes = [
         loadComponent: () => import('./demo/extra/sample-page/sample-page.component'),
         canActivate: [AuthGuard]
       },
-      
+
     ]
   },
 

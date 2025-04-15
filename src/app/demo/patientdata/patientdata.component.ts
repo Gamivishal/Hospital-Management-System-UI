@@ -16,6 +16,14 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 export class PatientDataComponent implements OnInit {
   patients: any[] = [];
   patientlist :any[];
+  // PAGINATION
+  paginatedList: any[] = [];
+  currentPage: number = 1;
+  totalPages: number = 1;
+  totalRecords: number = 0;
+  itemsPerPage: number = AppConstant.RecordPerPage;
+  pageNumbers: number[] = [];
+
   isShowList: boolean = true;
   bloodGroups: string[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   selectedPatientId: number | null = null;
@@ -64,6 +72,11 @@ export class PatientDataComponent implements OnInit {
     this.baseService.GET<any>(this.URL + "TblPatient/GetAll").subscribe({
       next: (response) => {
         this.patients = response.data;
+        this.totalRecords = this.patients.length;
+        this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
+        this.PageNumber();
+        this.Paginationrecord();
+
       }
     });
   }
@@ -116,4 +129,27 @@ getdropdown(){
       }
     });
   }
+
+//PAGINATION STOP
+Paginationrecord() {
+  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  const endIndex = startIndex + this.itemsPerPage;
+  this.paginatedList = this.patients.slice(startIndex, endIndex);
 }
+
+//page number
+PageNumber() {
+  this.pageNumbers = [];
+  for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
+    this.pageNumbers.push(i);
+  }
+}
+//change page
+nextpage(page: number) {
+  if (page >= 1 && page <= this.totalPages) {
+    this.currentPage = page;
+    this. Paginationrecord();
+  }
+}
+}
+

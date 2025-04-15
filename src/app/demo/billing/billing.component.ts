@@ -6,6 +6,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import * as jsPDF from 'jspdf';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -20,14 +21,14 @@ import * as jsPDF from 'jspdf';
 export class billingComponent implements OnInit {
 billings: any[]=[];
 patientlist :any[];
-TreatmentId :any[];
-paginatedList: any[] = [];
-paymentMethods: any[] = [];
-currentPage: number = 1;
-totalPages: number = 1;
-totalRecords: number = 5;
-itemsPerPage: number = AppConstant.RecordPerPage;
-pageNumbers: number[] = [];
+ // PAGINATION
+ paginatedList: any[] = [];
+ currentPage: number = 1;
+ totalPages: number = 1;
+ totalRecords: number = 0;
+ itemsPerPage: number = AppConstant.RecordPerPage;
+ pageNumbers: number[] = [];
+
 isShowList:boolean=true;
 selectedbillingId: number | null = null;
 URL=AppConstant.url
@@ -35,57 +36,61 @@ http = inject(HttpClient);
 
 constructor(
   private baseService: BaseService,
-  private toastr: ToastrService
+  private toastr: ToastrService,
+  private route: ActivatedRoute
 ) {}
    ngOnInit() {
     this.getbill();
     this.createFormGroup();
-    this.getTreatmentId();
+    const admitionId = this.route.snapshot.paramMap.get('id');
+  if (admitionId) {
+    this.billingfmGroup.patchValue({
+      treatmentDetailsId: parseInt(admitionId)
+    });
+    this.isShowList = false;
+  }
    }
 
    billingfmGroup:FormGroup;
 
-// -PDF CODE  
+// -PDF CODE
 
    public downloadRowAsPDF(department: any) {
     const doc = new jsPDF('p', 'pt', 'a4');
-  
-  
+
+
     // const user = [
     //   "Full Name: John Doe",
     //   "Total Amount: 1500",
     //   "Payment Method: Credit Card",
     //   "Bill Date: 2025-04-08",
     // ];
-    
+
     const user = [
       `Full Name: ${department.fullName}`,
       `Total Amount: ${department.totalAmount}`,
       `Payment Method: ${department.paymentMethod}`,
       `Bill Date: ${department.billDate}`,
     ];
-  
+
     let y = 40;
     doc.setFontSize(12);
     user.forEach(line => {
       doc.text(line, 40, y);
       y += 20;
     });
-  
+
     doc.save(`${department.fullName}.pdf`);
   }
 
-//  -END 
+//  -END
 
 
      createFormGroup()
      {
       const today = new Date().toISOString().split('T')[0];
       this.billingfmGroup = new FormGroup({
-        //billingId: new FormControl(0),
-        //patientId:new FormControl(),
-        //patientName: new FormControl('', [Validators.required]),
-        PatientId: new FormControl(0, [Validators.required]),
+        billId: new FormControl(0, [Validators.required]),
         paymentMethod: new FormControl('', [Validators.required]),
         billDate: new FormControl(today, [Validators.required]),
         treatmentDetailsId: new FormControl(0, [Validators.required]),
@@ -110,24 +115,12 @@ constructor(
           console.log("GET Response:", response);
           this.billings = response.data;
           this.totalRecords = this.billings.length;
-          this.totalPages = Math.ceil(this.billings.length / this.itemsPerPage); // FIX: Update total pages
-          this.currentPage = 1;
-          this.PageNumber();
-          this.Paginationrecord();
+      this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
+      this.PageNumber();
+      this.Paginationrecord();
           },
           });
     }
-    getTreatmentId() {
-      this.baseService.GET<any>(this.URL + "GetDropDownList/FillTreatmentCode").subscribe({
-        next: (response) => {
-          this.TreatmentId = response.data;
-        },
-        error: (err) => {
-          console.error("Failed to fetch patient list", err);
-        }
-      });
-    }
-
     addbilling() {
       const data = this.billingfmGroup.getRawValue();
       console.log("Submitting Billing Data:", data); // ✅ Debug
@@ -138,6 +131,7 @@ constructor(
             this.toastr.success(response.message, 'Success');
             this.getbill();
             this.isShowList = true;
+            this.currentPage=1;
           } else {
             this.toastr.error(response.message, 'Error');
           }
@@ -149,15 +143,11 @@ constructor(
       });
     }
 
-
-
-
-///PAGINATION STOP
+//PAGINATION STOP
 Paginationrecord() {
   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
   const endIndex = startIndex + this.itemsPerPage;
   this.paginatedList = this.billings.slice(startIndex, endIndex);
-  console.log("Paginated List:", this.paginatedList);
 }
 
 //page number

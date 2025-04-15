@@ -17,12 +17,14 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 })
 export class hospitaldepartmentComponent implements OnInit {
 hospitaldepartments: any[]=[];
+// PAGINATION
 paginatedList: any[] = [];
 currentPage: number = 1;
 totalPages: number = 1;
-totalRecords: number = 5;
+totalRecords: number = 0;
 itemsPerPage: number = AppConstant.RecordPerPage;
 pageNumbers: number[] = [];
+
 isShowList:boolean=true;
 selectedHospitalId: number | null = null;
 URL=AppConstant.url
@@ -65,8 +67,7 @@ constructor(
           console.log("GET Response:", response);
           this.hospitaldepartments = response.data;
           this.totalRecords = this.hospitaldepartments.length;
-          this.totalPages = Math.ceil(this.hospitaldepartments.length / this.itemsPerPage); // FIX: Update total pages
-          this.currentPage = 1;
+          this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
           this.PageNumber();
           this.Paginationrecord();
           },
@@ -80,6 +81,7 @@ constructor(
         console.log("POST Response:", response);
         this.getDept();
         this.isShowList = true;
+        this.currentPage=1;
   }
   else {
     this.toastr.error(response.message, 'Error');
@@ -136,13 +138,11 @@ onDelete(hospitalDepartmentId: number){
     }
   });
 }
-
-///PAGINATION STOP
+//PAGINATION STOP
 Paginationrecord() {
   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
   const endIndex = startIndex + this.itemsPerPage;
   this.paginatedList = this.hospitaldepartments.slice(startIndex, endIndex);
-  console.log("Paginated List:", this.paginatedList);
 }
 
 //page number
@@ -160,5 +160,4 @@ nextpage(page: number) {
   }
 }
 }
-
 
