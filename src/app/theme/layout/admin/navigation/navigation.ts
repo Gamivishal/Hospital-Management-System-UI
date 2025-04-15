@@ -73,14 +73,6 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-home',
         classes: 'nav-item'
       },
-      {
-        id: 'patientdata',
-        title: 'Patient Data',
-        type: 'item',
-        url: '/patientdata',
-        icon: 'feather icon-home',
-        classes: 'nav-item'
-      },
 
       {
         id: 'room type',
@@ -187,6 +179,14 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Billing',
         type: 'item',
         url: '/billing',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
+        id: 'patientdata',
+        title: 'Patient Data',
+        type: 'item',
+        url: '/patientdata',
         icon: 'feather icon-home',
         classes: 'nav-item'
       }

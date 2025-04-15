@@ -21,14 +21,14 @@ import { ActivatedRoute } from '@angular/router';
 export class billingComponent implements OnInit {
 billings: any[]=[];
 patientlist :any[];
-//TreatmentId :any[];
-paginatedList: any[] = [];
-paymentMethods: any[] = [];
-currentPage: number = 1;
-totalPages: number = 1;
-totalRecords: number = 5;
-itemsPerPage: number = AppConstant.RecordPerPage;
-pageNumbers: number[] = [];
+ // PAGINATION
+ paginatedList: any[] = [];
+ currentPage: number = 1;
+ totalPages: number = 1;
+ totalRecords: number = 0;
+ itemsPerPage: number = AppConstant.RecordPerPage;
+ pageNumbers: number[] = [];
+
 isShowList:boolean=true;
 selectedbillingId: number | null = null;
 URL=AppConstant.url
@@ -115,10 +115,9 @@ constructor(
           console.log("GET Response:", response);
           this.billings = response.data;
           this.totalRecords = this.billings.length;
-          this.totalPages = Math.ceil(this.billings.length / this.itemsPerPage); // FIX: Update total pages
-          this.currentPage = 1;
-          this.PageNumber();
-          this.Paginationrecord();
+      this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
+      this.PageNumber();
+      this.Paginationrecord();
           },
           });
     }
@@ -132,6 +131,7 @@ constructor(
             this.toastr.success(response.message, 'Success');
             this.getbill();
             this.isShowList = true;
+            this.currentPage=1;
           } else {
             this.toastr.error(response.message, 'Error');
           }
@@ -143,24 +143,11 @@ constructor(
       });
     }
 
-    // getTreatmentId() {
-    //   this.baseService.GET<any>(this.URL + "GetDropDownList/FillTreatmentCode").subscribe({
-    //     next: (response) => {
-    //       this.TreatmentId = response.data;
-    //     },
-    //     error: (err) => {
-    //       console.error("Failed to fetch patient list", err);
-    //     }
-    //   });
-    // }
-
-
-///PAGINATION STOP
+//PAGINATION STOP
 Paginationrecord() {
   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
   const endIndex = startIndex + this.itemsPerPage;
   this.paginatedList = this.billings.slice(startIndex, endIndex);
-  console.log("Paginated List:", this.paginatedList);
 }
 
 //page number
