@@ -67,7 +67,7 @@ constructor(
     // ];
 
     const user = [
-      `Full Name: ${department.fullName}`,
+      `Full Name: ${department.patientName}`,
       `Total Amount: ${department.totalAmount}`,
       `Payment Method: ${department.paymentMethod}`,
       `Bill Date: ${department.billDate}`,
@@ -80,7 +80,7 @@ constructor(
       y += 20;
     });
 
-    doc.save(`${department.fullName}.pdf`);
+    doc.save(`${department.patientName}.pdf`);
   }
 
 //  -END

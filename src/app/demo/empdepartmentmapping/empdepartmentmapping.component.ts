@@ -53,10 +53,8 @@ export  class EmpDepartmentMapping implements OnInit {
       
       this.empdepartmentmappingfmGroup = new FormGroup({
         employeeDepartmentMappingId: new FormControl(0),
-        // empDeptId: new FormControl(null),
         userId: new FormControl(null, Validators.required),
-        departmentId: new FormControl(null, Validators.required), 
-        // hospitalDepartmentID: new FormControl(null, Validators.required),
+        hospitalDepartmentId: new FormControl(null, Validators.required), 
       });
     }
      
@@ -142,7 +140,7 @@ export  class EmpDepartmentMapping implements OnInit {
       this.empdepartmentmappingfmGroup.patchValue({
         employeeDepartmentMappingId: item.employeeDepartmentMappingId,
         userId: item.userId,
-        departmentId: item.departmentId
+        hospitalDepartmentId: item.hospitalDepartmentId
       });      
     }
     

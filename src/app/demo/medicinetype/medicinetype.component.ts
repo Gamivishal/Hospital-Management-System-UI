@@ -47,7 +47,7 @@ export class MedicineTypeComponent implements OnInit{
   ngOnInit() {
      this.createFormGroup();
      this.getMedicineTypes();
-     this.AddMedicineTypes();
+   //  this.AddMedicineTypes();
 
     }
 
@@ -70,7 +70,7 @@ export class MedicineTypeComponent implements OnInit{
     }
     checkRequired(controlName:any)
     {
-      return this.medicineTypeFormGroup.controls[controlName].errors?.['required'];
+      return this.medicineTypeFormGroup.controls[controlName].touched &&  this.medicineTypeFormGroup.controls[controlName].errors?.['required'];
     }
 
 

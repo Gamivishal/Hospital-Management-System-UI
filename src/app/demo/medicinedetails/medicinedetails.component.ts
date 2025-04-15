@@ -88,7 +88,7 @@ export class medicinedetails implements OnInit{
     }
     checkRequired(controlName:any)
     {
-      return this.medicinedetailsFormGroup.controls[controlName].errors?.['required']; 
+      return this.medicinedetailsFormGroup.controls[controlName].touched && this.medicinedetailsFormGroup.controls[controlName].errors?.['required']; 
     }
 
 

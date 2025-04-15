@@ -28,9 +28,9 @@
                       <tr *ngFor="let item of paginatedList">
                           <td>{{ item.roomType }}</td>
                           <td>{{ item.createdBy }}</td>
-                          <td>{{ item.createdOn | date:'dd/MM/yyyy' }}</td>
+                          <td>{{ item.createdOn | date:'dd/MM/yyyy hh:mm:ss a':'UTC+5:30' }}</td>
                           <td> {{ item.updatedBy }}</td>
-                          <td>{{ item.updatedOn | date:'dd/MM/yyyy' }}</td>
+                          <td>{{ item.updatedOn | date:'dd/MM/yyyy hh:mm:ss a':'UTC+5:30' }}</td>
                           <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
                           <!-- <td>{{ item.versionNo }}</td> -->
 
@@ -40,17 +40,15 @@
                                 <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
                                </svg>	
 
-                           
-
-                              <!-- <svg  (click) = "onDelete(item.roomTypeId)" xmlns="http://www.w3.org/2000/svg" 
+                        
+                              <svg  (click) = "onDelete(item.roomTypeId)" xmlns="http://www.w3.org/2000/svg" 
                                 viewBox="0 0 24 24" width="24" height="24" 
                                 class="main-grid-item-icon delete-icon" fill="none" stroke="red" 
                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                 <circle cx="12" cy="12" r="10" />
                                 <line x1="15" x2="9" y1="9" y2="15" />
                                 <line x1="9" x2="15" y1="15" y2="9" />
-                              </svg> -->
-                              <button type="delete" (click) = "onDelete(item.roomTypeId)">Delete</button>
+                              </svg>
                           </td>
                       </tr>
                       
