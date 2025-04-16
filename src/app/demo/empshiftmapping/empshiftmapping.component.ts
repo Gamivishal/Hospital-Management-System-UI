@@ -64,6 +64,17 @@ export  class empshiftmapping implements OnInit {
     }
     
     
+    // resetForm() {
+    //   this.empshiftmappingfmGroup.reset();
+    //   this.empshiftmappingfmGroup.patchValue({ employeeshiftMappingId: 0 });
+    //   this.employeeshiftMappingId = null;
+    // }
+
+    resetForm(){
+      this.isShowList = false;
+      this.createFormGroup();
+      this.employeeshiftMappingId = null;
+    }
     
     
 
@@ -147,6 +158,7 @@ nextpage(page: number) {
             this.getEmpShiftMapping();  
             this.Paginationrecord();  
             this.isShowList = true;
+            this.currentPage = 1;
           }
           else {
             this.toastr.error(response.message, 'Error');
@@ -165,16 +177,19 @@ nextpage(page: number) {
             debugger
               this.employeeshiftMappingId = item.employeeshiftMappingId;
               this.isShowList = false;
+
+              const dateobj  = new Date(item.employeeshiftMappingStartingDate);
+              const formatdate = dateobj.toISOString().slice(0,10);
+              const dateonj1 = new Date (item.employeeshiftMappingEndingDate);
+              const formatdate1 = dateonj1.toISOString().slice(0,10);
               this.empshiftmappingfmGroup.patchValue({
                 employeeshiftMappingId:item.employeeshiftMappingId,
                 userId: item.userId,
                 shiftId: item.shiftId,
-                employeeshiftMappingStartingDate: item.employeeshiftMappingStartingDate,
-                employeeshiftMappingEndingDate: item.employeeshiftMappingEndingDate
+               employeeshiftMappingStartingDate:formatdate,
+                employeeshiftMappingEndingDate: formatdate1,
               });
             }
-
-
 
 
 

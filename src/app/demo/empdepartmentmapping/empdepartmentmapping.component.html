@@ -3,7 +3,7 @@
     <div class="col-xl-12">
 
         <div class="d-flex justify-content-end mb-3 position-relative">
-            <button type="button" (click)="isShowList=false;" class="btn btn-primary add-master-button">
+            <button type="button" (click)= "resetForm()" class="btn btn-primary add-master-button">
                 Add empdeptmapping
             </button>
         </div>
@@ -94,11 +94,11 @@
 
                         <div class="form-group mt-3">
                             <label for="departmentId">Select Department</label>
-                            <select formControlName="hospitalDepartmentId" class="form-control" required>
+                            <select formControlName="hospitalDepartmentID" class="form-control" required>
                               <option value="" disabled>Select Department</option>
                               <option *ngFor="let dept of lstDepartmentName" [value]="dept.id">{{ dept.name }}</option>
                             </select>
-                            <span *ngIf="checkRequired('hospitalDepartmentId')" class="error-span">This Field Is Required</span>
+                            <span *ngIf="checkRequired('hospitalDepartmentID')" class="error-span">This Field Is Required</span>
                           </div>
 
                         </div>

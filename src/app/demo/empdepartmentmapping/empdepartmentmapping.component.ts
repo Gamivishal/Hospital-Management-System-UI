@@ -54,10 +54,16 @@ export  class EmpDepartmentMapping implements OnInit {
       this.empdepartmentmappingfmGroup = new FormGroup({
         employeeDepartmentMappingId: new FormControl(0),
         userId: new FormControl(null, Validators.required),
-        hospitalDepartmentId: new FormControl(null, Validators.required), 
+        hospitalDepartmentID: new FormControl(null, Validators.required), 
       });
     }
      
+
+    resetForm(){
+      this.isShowList = false;
+      this.createFormGroup();
+      this.EmpDeptId= null;
+    }
 
 
      checkRequired(controlName:any)
@@ -117,6 +123,7 @@ export  class EmpDepartmentMapping implements OnInit {
             this.getEmpDeptMapping();
             this.Paginationrecord(); 
             this.isShowList = true;
+            this.currentPage = 1;
             this.empdepartmentmappingfmGroup.reset();
           }
           else {
@@ -132,19 +139,16 @@ export  class EmpDepartmentMapping implements OnInit {
 
     
 
-
-
       editEmpDeptMapping(item: any) {  
       this.EmpDeptId = item.employeeDepartmentMappingId;
       this.isShowList = false;
       this.empdepartmentmappingfmGroup.patchValue({
         employeeDepartmentMappingId: item.employeeDepartmentMappingId,
         userId: item.userId,
-        hospitalDepartmentId: item.hospitalDepartmentId
+        hospitalDepartmentID: item.hospitalDepartmentID
       });      
     }
     
-
 
 
 
@@ -157,7 +161,8 @@ export  class EmpDepartmentMapping implements OnInit {
               this.getEmpDeptMapping();
               this.isShowList = true;
               this.EmpDeptId = null;
-              this.empdepartmentmappingfmGroup.reset();
+              this.currentPage = 1;
+              // this.empdepartmentmappingfmGroup.reset();
             }
             else {
               this.toastr.error(response.message, 'Error');
