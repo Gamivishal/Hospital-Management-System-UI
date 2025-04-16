@@ -74,7 +74,7 @@ export class medicinedetails implements OnInit{
       this.medicinedetailsFormGroup= new FormGroup({
         medicinedetailsID:new FormControl(0,[Validators.required]),
         treatmentDetailsId :new FormControl(null,[Validators.required]),
-        medicinetypeID:new FormControl(0,[Validators.required]),
+        medicineTypeID:new FormControl(0,[Validators.required]),
        // medicinetype:new FormControl(0),
       //  dieseaseName:new FormControl(0),
         dosage :new FormControl(''),
@@ -106,6 +106,12 @@ export class medicinedetails implements OnInit{
      this.PageNumber(); // FIX: Update page numbers
     });
 }
+add(){
+  this.isShowList =false;
+  this.createFormGroup();
+  this.selectedMedicineID=null;
+}
+
 
 Addmedicinedetails(){
     
@@ -136,10 +142,11 @@ Addmedicinedetails(){
   editmedicinedetails(medicinedetails: any) {
     this.selectedMedicineID = medicinedetails.medicineDetailsID;
     this.isShowList = false; //showList
+  
     this.medicinedetailsFormGroup.patchValue({
       medicinedetailsID: medicinedetails.medicineDetailsID, // Correct patching for the ID
-      treatmentDetailsId: medicinedetails.treatmentdetailsId, 
-        medicinetypeID: medicinedetails.medicinetypeID,
+      treatmentDetailsId: medicinedetails.treatmentDetailsId, 
+      medicineTypeID: medicinedetails.medicineTypeID,
         dosage: medicinedetails.dosage,
         frequency: medicinedetails.frequency,
         duration: medicinedetails.duration,
@@ -179,7 +186,7 @@ Addmedicinedetails(){
           this.medicinedetailsFormGroup.reset({
             medicinedetailsID: 0,
             treatmentdetailsId: 0,
-            medicinetypeID: 0,
+            medicineTypeID: 0,
             dosage: '',
             frequency: '',
             duration: '',

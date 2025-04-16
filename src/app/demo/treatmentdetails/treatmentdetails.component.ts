@@ -12,7 +12,7 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { RouterModule } from '@angular/router';
 
 import { ToastrService } from 'ngx-toastr';
-
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-treatmentdetails',
@@ -46,6 +46,7 @@ export class TreatmentdetailsComponent implements OnInit{
 
    
   http=inject(HttpClient)
+  mydate = new Date().toISOString().slice(0, 10);
 
   constructor(private baseService: BaseService,
     private toastr: ToastrService) {}
@@ -60,6 +61,8 @@ export class TreatmentdetailsComponent implements OnInit{
      
 
     }
+ 
+  
 
     treatmentDetailsFormGroup:FormGroup
     // Pagination properties
@@ -67,7 +70,8 @@ export class TreatmentdetailsComponent implements OnInit{
     itemsPerPage: number = AppConstant.RecordPerPage;
     totalPages: number = 0; //total page
     pageNumbers: number[] = [];//list
-    URL=AppConstant.url
+    URL=AppConstant.url;
+    
 
     createFormGroup(){
 
@@ -84,7 +88,7 @@ export class TreatmentdetailsComponent implements OnInit{
     }
     checkRequired(controlName:any)
     {
-      return this.treatmentDetailsFormGroup.controls[controlName].errors?.['required'];
+      return this.treatmentDetailsFormGroup.controls[controlName].touched && this.treatmentDetailsFormGroup.controls[controlName].errors?.['required'];
     }
 
 
@@ -101,6 +105,11 @@ export class TreatmentdetailsComponent implements OnInit{
     this. Paginationrecord();//update list
      this.PageNumber(); // FIX: Update page numbers
     });
+}
+add(){
+  this.isShowList =false;
+  this.createFormGroup();
+  this.selectedtreatmentDetailsId=null;
 }
 
   Addtreatmentdetails(){
@@ -133,11 +142,14 @@ export class TreatmentdetailsComponent implements OnInit{
   edittreatmentdetails(treatmentdetails: any) {
     this.selectedtreatmentDetailsId = treatmentdetails.treatmentDetailsId;
     this.isShowList = false; //showList
+
+    const dateObj = new Date(treatmentdetails.treatmentDate); 
+     const formattedDate = dateObj.toISOString().slice(0, 10); 
     this.treatmentDetailsFormGroup.patchValue({
       treatmentDetailsId: treatmentdetails.treatmentDetailsId,
       dieseaseTypeID: treatmentdetails.dieseaseTypeID, // ID
       patientId: treatmentdetails.patientId, // NAME
-      treatmentDate: treatmentdetails.treatmentDate,
+      treatmentDate:formattedDate,
        treatmentCode: treatmentdetails.treatmentCode
 
     });
@@ -145,7 +157,7 @@ export class TreatmentdetailsComponent implements OnInit{
 
 
   updatetreatmentdetails() {
-    debugger
+
     this.baseService.PUT(this.URL+"TblTreatmentDetails/Update",this.treatmentDetailsFormGroup.getRawValue())// No ID in the URL
       .subscribe({
         next: (response: any) => {
