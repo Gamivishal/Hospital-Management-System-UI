@@ -37,7 +37,7 @@ constructor(
    ngOnInit() {
     this.getDept();
     this.createFormGroup();
-    this.addHospital();
+    //this.addHospital();
 
    }
    hospitaldeptfmGroup:FormGroup;
