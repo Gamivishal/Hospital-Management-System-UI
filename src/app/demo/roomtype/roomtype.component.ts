@@ -66,6 +66,11 @@ export  class RoomTypesComponent implements OnInit {
       })
      }
 
+      resetForm(){
+        this.isShowList = false;
+        this.createFormGroup();
+        this.selectedRoomTypeId = null;
+      }
 
 
      checkRequired(controlName:any)
