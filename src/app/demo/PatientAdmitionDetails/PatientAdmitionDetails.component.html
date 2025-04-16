@@ -4,7 +4,7 @@
     <div class="col-xl-12">
         <div class="d-flex justify-content-end mb-3 position-relative">
             <button type="button" (click)="isShowList=false;" class="btn btn-primary add-master-button">
-            Add Hospital
+            Add PatientAdmitionDetails
         </button>
         </div>
         <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
@@ -69,7 +69,7 @@
                             <label for="start-date" class="col-sm-3 col-form-label">Admision-Date</label>
                             <div class="col-sm-9">
                                 <input type="datetime-local" formControlName="AdmisionDate" class="form-control" placeholder="Admision-Date" />
-                                <span *ngIf="checkRequired('AdmisionDate')" class="error-span">This fild is ready</span>
+                                <span *ngIf="checkRequired('AdmisionDate')" class="error-span">This fild is Required</span>
                             </div>
                         </div>
 
@@ -94,19 +94,6 @@
                         <option *ngFor="let roomnumber of Roomlist" [value]="roomnumber.id">{{ roomnumber.name}}</option>
                       </select>
                         </div>
-
-                        <!-- <div class="form-group row">
-                            <label for="end-date" class="col-sm-3 col-form-label">TreatmentDetailsId</label>
-                            <div class="col-sm-9">
-                                <input type="text" formControlName="treatmentCode" class="form-control" />
-                                <span *ngIf="checkRequired('treatmentCode')" class="error-span">This fild is incompete</span>
-
-                            </div>
-                        </div> -->
-
-
-                        <!-- Patient ID Dropdown -->
-                        <!-- Patient ID Dropdown -->
                         <div class="input-group mb-3">
                             <label class="col-sm-3 col-form-label">Patient ID</label>
                             <select class="form-select" formControlName="treatmentDetailsId" (change)="onPatientIdChange($event)">
