@@ -2,7 +2,7 @@
   <div class="col-xl-12">
 
     <div class="d-flex justify-content-end mb-3 position-relative">
-      <button type="button" (click)="isShowList=false;" class="btn btn-primary add-master-button">
+      <button type="button" (click)="resetForm()" class="btn btn-primary add-master-button">
         Add EmployeeShift
       </button>
   </div>
@@ -141,9 +141,6 @@
                               <button *ngIf="!employeeshiftMappingId"  type="button" class="btn btn-primary" [disabled]="empshiftmappingfmGroup.invalid" (click)="AddEmpShift()">Submit</button>
                               <button *ngIf="employeeshiftMappingId" type="button" class="btn btn-success" [disabled]="empshiftmappingfmGroup.invalid" (click)="updateEmpShift()">Update</button>
                             </div>
-
-
-                            
                         </div>
                     </div>
       </app-card>

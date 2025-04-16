@@ -3,7 +3,7 @@
   <div class="col-xl-12">
 
     <div class="d-flex justify-content-end mb-3 position-relative">
-        <button type="button" (click)="isShowList=false;" class="btn btn-primary add-master-button">
+        <button type="button" (click)="resetForm()" class="btn btn-primary add-master-button">
             Add Room
     </button>
     </div>
@@ -41,7 +41,7 @@
                                </svg>	
 
                         
-                              <svg  (click) = "onDelete(item.roomTypeId)" xmlns="http://www.w3.org/2000/svg" 
+                              <svg style="cursor: pointer;"  (click) = "onDelete(item.roomTypeId)" xmlns="http://www.w3.org/2000/svg" 
                                 viewBox="0 0 24 24" width="24" height="24" 
                                 class="main-grid-item-icon delete-icon" fill="none" stroke="red" 
                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
