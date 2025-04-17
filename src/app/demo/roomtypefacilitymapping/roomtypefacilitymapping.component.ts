@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @angular-eslint/component-class-suffix */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component,inject,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
@@ -26,6 +28,14 @@ export  class roomtypefacilitymapping implements OnInit {
   lstFacilityName: any[] = [];
   roomfacID: number | null = null;
   facility: any;
+  roomtypefacilitymappingfmGroup:FormGroup;
+
+     // Page NAvigation
+     currentPage: number = 1; //currect page number
+     itemsPerPage: number = 5; //total data in page
+     totalPages: number = 0; //total page
+     pageNumbers: number[] = [];//list
+     URL=AppConstant.url
 
 
    constructor(private baseService: BaseService,
@@ -36,29 +46,22 @@ export  class roomtypefacilitymapping implements OnInit {
       this.getroomname();
       this.getfacilityname();
       this.getroomtypefacilitymapping();
-    
+
      }
 
-     roomtypefacilitymappingfmGroup:FormGroup;
-
-     // Page NAvigation 
-     currentPage: number = 1; //currect page number
-     itemsPerPage: number = 5; //total data in page
-     totalPages: number = 0; //total page
-     pageNumbers: number[] = [];//list
-     URL=AppConstant.url
+     
 
      createFormGroup() {
-      
+
       this.roomtypefacilitymappingfmGroup = new FormGroup({
         roomtypefacilitymappingid: new FormControl(0),
         roomID: new FormControl(null, Validators.required),
-        facilityID: new FormControl(null, Validators.required), 
-        
+        facilityID: new FormControl(null, Validators.required),
+
       });
 
     }
-     
+
 
 
      checkRequired(controlName:any)
@@ -74,16 +77,22 @@ export  class roomtypefacilitymapping implements OnInit {
 
 
 
-  
+
     //get roomname
-    
     getroomname() {
-      this.baseService.GET<any>(this.URL+"GetDropDownList/FillRoomtype")
+      this.baseService.GET<any>(this.URL + "GetDropDownList/FillRoomtype")
         .subscribe(response => {
-          console.log("Room Name:", response);
+          console.log("Room Name Response:", response); // Debugging log
           this.lstRoomName = response.data;
         });
     }
+    // getroomname() {
+    //   this.baseService.GET<any>(this.URL+"GetDropDownList/FillRoomtype")
+    //     .subscribe(response => {
+    //       console.log("Room Name:", response);
+    //       this.lstRoomName = response.data;
+    //     });
+    // }
 
     //get facilityname
 
@@ -100,6 +109,7 @@ export  class roomtypefacilitymapping implements OnInit {
 
 
     getroomtypefacilitymapping(){
+      debugger
       this.baseService.GET<any>(this.URL+"TblRoomTypeFacilityMapping/GetAll").subscribe(response =>{
         console.log("GET Response:", response);
         this.lstroomtypefacilitymapping = response.data;
@@ -113,13 +123,14 @@ export  class roomtypefacilitymapping implements OnInit {
     //add roomtypefacilitymapping
 
     Addroomtypefacilitymapping() {
-      console.log(this.roomtypefacilitymappingfmGroup.getRawValue())
+      debugger
+      // console.log(this.roomtypefacilitymappingfmGroup.getRawValue())
       this.baseService.POST(this.URL + "TblRoomTypeFacilityMapping/Add", this.roomtypefacilitymappingfmGroup.getRawValue())
         .subscribe({next: (response:any) => {
           if (response.statusCode === 200) {
             this.toastr.success(response.message, 'Success');
             this.getroomtypefacilitymapping();
-            this.Paginationrecord(); 
+            this.Paginationrecord();
             this.isShowList = true;
             this.roomtypefacilitymappingfmGroup.reset();
           }
@@ -130,15 +141,15 @@ export  class roomtypefacilitymapping implements OnInit {
         error: () => {
           this.toastr.error('Failed to Add', 'Error');
         }
-        
+
         });
       }
 
-    
+
 
       //edit roomtypefacilitymapping
-   
-      editroomtypefacilitymapping(item: any) {  
+
+      editroomtypefacilitymapping(item: any) {
         this.roomfacID = item.roomTypeFacilityMappingID;
         this.isShowList = false;
         this.roomtypefacilitymappingfmGroup.patchValue({
@@ -147,9 +158,9 @@ export  class roomtypefacilitymapping implements OnInit {
           facilityID: item.facilityID
         });
       }
-      
+
       //update roomtypefacilitymapping
-    
+
     updateroomtypefacilitymapping() {
       this.baseService.PUT(this.URL + "TblRoomTypeFacilityMapping/Update", this.roomtypefacilitymappingfmGroup.getRawValue())
         .subscribe({next: (response:any) => {
@@ -168,11 +179,11 @@ export  class roomtypefacilitymapping implements OnInit {
         error: () => {
           this.toastr.error('Failed to Update', 'Error');
         }
-        
+
         });
     }
-      
-      
+
+
 
       //delete roomtypefacilitymapping
       onDelete(id: number) {
@@ -184,16 +195,16 @@ export  class roomtypefacilitymapping implements OnInit {
       }
 
 
-      
+
        //PAGINATION STOP
-       Paginationrecord() {          
+       Paginationrecord() {
           const startIndex = (this.currentPage - 1) * this.itemsPerPage;
           const endIndex = startIndex + this.itemsPerPage;
           this.paginatedList = this.lstroomtypefacilitymapping.slice(startIndex, endIndex);
         }
 
           //page number
-          PageNumber() {          
+          PageNumber() {
             this.pageNumbers = [];
             for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
               this.pageNumbers.push(i);
@@ -206,5 +217,5 @@ export  class roomtypefacilitymapping implements OnInit {
               this. Paginationrecord();
             }
           }
-          }  
+          }
 
