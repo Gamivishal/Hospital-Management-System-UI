@@ -25,7 +25,7 @@ export default class AuthSigninComponent {
 
 
   OnLogin(){
-    debugger;
+    ;
     const apiurl = this.URL+`TblUser/ValidateCredential?email=${encodeURIComponent(this.email)}&password=${encodeURIComponent(this.password)}`;
 
     this.baseService.GET<any>(apiurl).subscribe(response=>{

@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @angular-eslint/component-class-suffix */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component,OnInit } from '@angular/core';
+import { Component,inject,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
-
+import { Observable } from 'rxjs';
+import { AppConstant } from '../baseservice/baseservice.service';
+// import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
 
+
+
 @Component({
-  selector: 'app-room',
+  selector: 'app-roomtypeess',
   standalone: true,
   imports: [SharedModule],
   templateUrl:'./room.component.html',
@@ -20,179 +24,199 @@ export  class roomsComponent implements OnInit {
   lstroom: any [] = [];
   paginatedList: any[] = [];
   isShowList:boolean=true;
-  selectedroomId: number | null = null;
-
-  constructor(private baseService: BaseService,
-    private toastr: ToastrService) {}
-
-     ngOnInit() {
-      this.createFormGroup();
-      this.getroom();
-
-     }
-
-     roomfmGroup:FormGroup;
+  lstRoomName: any[] = [];
+  lstFacilityName: any[] = [];
+  room: number | null = null;
+  facility: any;
+  roomfmGroup:FormGroup;
 
      // Page NAvigation
      currentPage: number = 1; //currect page number
-     itemsPerPage: number =AppConstant.RecordPerPage;  //total data in page
+     itemsPerPage: number = 5; //total data in page
      totalPages: number = 0; //total page
      pageNumbers: number[] = [];//list
      URL=AppConstant.url
 
 
+   constructor(private baseService: BaseService,
+      private toastr: ToastrService) {}
 
+     ngOnInit() {
+      this.createFormGroup();
+      this.getroom();
+      //this.getroom();
 
-     createFormGroup()
-     {
-      this.roomfmGroup = new FormGroup({
-        roomId: new FormControl(0, [Validators.required]),
-        room: new FormControl(null, [Validators.required,Validators.minLength(3)]),
-      })
      }
+     resetForm(){
+      this.isShowList = false;
+      this.createFormGroup();
+      this.room = null;
+    }
+  
+
+     
+
+     createFormGroup() {
+
+      this.roomfmGroup = new FormGroup({
+       // roomtypefacilitymappingid: new FormControl(0),
+        roomID: new FormControl(null, Validators.required),
+        room: new FormControl(null, Validators.required),
+
+      });
+
+    }
 
 
 
      checkRequired(controlName:any)
     {
-     return this.roomfmGroup.controls[controlName].touched && this.roomfmGroup.controls[controlName].errors?.['required'];
+     return this.roomfmGroup.controls[controlName].errors?.['required'];
     }
 
 
     checkminlength(controlName:any)
     {
-       return this.roomfmGroup.controls[controlName].touched && this.roomfmGroup.controls[controlName].errors?.['minlength']
+       return this.roomfmGroup.controls[controlName].errors?.['minlength']
     }
-
-
+    //PAGINATION STOP
     Paginationrecord() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       this.paginatedList = this.lstroom.slice(startIndex, endIndex);
     }
 
-    //page number
-    PageNumber() {
-      this.pageNumbers = [];
-      for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
-        this.pageNumbers.push(i);
+      //page number
+      PageNumber() {
+        this.pageNumbers = [];
+        for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
+          this.pageNumbers.push(i);
+         }
       }
-    }
-    //change page
-    nextpage(page: number) {
-      if (page >= 1 && page <= this.totalPages) {
-        this.currentPage = page;
-        this. Paginationrecord();
+      //change page
+      nextpage(page: number) {
+        if (page >= 1 && page <= this.totalPages) {
+          this.currentPage = page;
+          this. Paginationrecord();
+        }
       }
-    }
+      
 
 
 
 
-
-
-     getroom(){
-       this.baseService.GET<any>(this.URL+"Tblroom/GetAll").subscribe(response=>{
-       console.log("GET Response:", response);
-       this.lstroom = response.data;
-       this.totalPages = Math.ceil(this.lstroom.length / this.itemsPerPage);
-       this. Paginationrecord();
-       this.PageNumber();
-       });
-      }
-
-      Addroom()
-      {
-       this.baseService.POST(this.URL+"Tblroom/Add", this.roomfmGroup.getRawValue())
-       .subscribe({
-        next: (response:any) => {
-        if (response.statusCode === 200) {
-        this.toastr.success(response.message, 'Success');
-        console.log("POST Response:", response);
-        this.getroom(); // Refresh list
-        this.isShowList = true;
-
-        this.roomfmGroup.reset({
-          roomId: 0,
-          room: ''
-        });
-      }
-      else {
-        this.toastr.error(response.message, 'Error');
-      }
-    },
-    error: () => {
-      this.toastr.error('Failed to update ', 'Error');
-    }
-    });
-}
-
-
-      editRoom(room: any) {
-        this.selectedroomId = room.roomId;
-        this.isShowList = false;
-        this.roomfmGroup.patchValue({
-            roomId: room.roomId,
-            room: room.room
+    //get roomname
+    getroomname() {
+      this.baseService.GET<any>(this.URL + "GetDropDownList/FillRoomtype")
+        .subscribe(response => {
+          console.log("Room Name Response:", response); // Debugging log
+          this.lstRoomName = response.data;
         });
     }
+   
+
+    
+
+    //get room
 
 
-      updateRoom() {
-        this.baseService.PUT(this.URL+"Tblroom/Update", this.roomfmGroup.getRawValue())
-          .subscribe({
-            next: (response: any) => {
-              if (response.statusCode === 200) {
-                this.toastr.success(response.message, 'Success');
-            console.log("PUT Response:", response);
+    getroom(){
+      
+      this.baseService.GET<any>(this.URL+"TblRoom/GetAll").subscribe(response =>{
+        console.log("GET Response:", response);
+        this.lstroom = response.data;
+        this.totalPages = Math.ceil(this.lstroom.length / this.itemsPerPage);
+        this.Paginationrecord();
+        this.PageNumber();
+      });
+    }
+
+
+    //add room
+
+    Addroom() {
+      
+      // console.log(this.roomtypefacilitymappingfmGroup.getRawValue())
+      this.baseService.POST(this.URL + "Tblroom/Add", this.roomfmGroup.getRawValue())
+        .subscribe({next: (response:any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
             this.getroom();
+            this.Paginationrecord();
             this.isShowList = true;
-            this.currentPage = 1;
-          } else {
+            this.roomfmGroup.reset();
+          }
+          else {
             this.toastr.error(response.message, 'Error');
           }
         },
         error: () => {
-          this.toastr.error('Failed to update ', 'Error');
+          this.toastr.error('Failed to Add', 'Error');
         }
-      });
+
+        });
       }
 
 
-    //   onDelete(hospitalTypeID: number){
-    //     this.baseService.DELETE(this.URL+"TblHospitalType/Delete?id=" + hospitalTypeID).subscribe({
-    //       next: (response: any) => {
-    //         if (response.statusCode === 200) {
-    //           this.toastr.success(response.message, 'Success');
-    //       console.log("DELETE Response:", response);
-    //       this.gethospitaltypelist();
-    //       this.isShowList = true;
-    //     } else {
-    //       this.toastr.error(response.message, 'Error');
-    //     }
-    //   },
-    //   error: () => {
-    //     this.toastr.error('Failed to delete ', 'Error');
-    //   }
-    // });
-    //   }
+
+      //edit room
+
+      editRoom(item: any) {
+        this.room = item.roomID;
+        this.isShowList = false;
+        this.roomfmGroup.patchValue({
+        roomID: item.roomID,
+        facilityID: item.facilityID
+        });
+      }
+
+      //update room
+
+      updateRoom() {
+      this.baseService.PUT(this.URL + "Tblroom/Update", this.roomfmGroup.getRawValue())
+        .subscribe({next: (response:any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
+          console.log("PUT Response", response)
+            this.getroom();
+            this.isShowList = true;
+            this.room = null;
+            this.roomfmGroup.reset();
+          }
+          else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to Update', 'Error');
+        }
+
+        });
+    }
 
 
+
+    //delete room
+    
       onDelete(roomId: number){
-        this.baseService.DELETE(URL+"Tblroom/delete?id=" +roomId).subscribe({
-          next: (response: any) => {
-            if (response.statusCode === 200) {
-              this.toastr.success(response.message, 'Success');
-          console.log("DELETE Response:", response);
-          this.getroom();
-          this.isShowList = true;
-      } else {
-        this.toastr.error(response.message, 'Error');
+                this.baseService.DELETE(URL+"Tblroom/delete?id=" +roomId).subscribe({
+                  next: (response: any) => {
+                    if (response.statusCode === 200) {
+                      this.toastr.success(response.message, 'Success');
+                  console.log("DELETE Response:", response);
+                  this.getroomname();
+                  this.isShowList = true;
+              } else {
+                this.toastr.error(response.message, 'Error');
+              }
+            },
+            error: () => {
+              this.toastr.error('Failed to delete ', 'Error');
+            }
+          });
       }
-    },
-    error: () => {
-      this.toastr.error('Failed to delete ', 'Error');
     }
-  });
-    }
-}
+
+
+       
+

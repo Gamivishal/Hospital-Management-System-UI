@@ -19,13 +19,14 @@ export default class AuthSignupComponent implements OnInit {
   URL=AppConstant.url
 
 
-
+  
   constructor(
     private baseService: BaseService ) {
 
   }
 
-
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
   createFormGroup(){
     this.singupformgoup= new FormGroup({
       FullName: new FormControl(null, [Validators.required, Validators.minLength(3)]),
@@ -48,6 +49,13 @@ export default class AuthSignupComponent implements OnInit {
   ngOnInit(){
     this.createFormGroup();
     //this.signup()
+  }
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   checkRequired(controlName: any) {
