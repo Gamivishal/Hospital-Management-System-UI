@@ -69,7 +69,7 @@ pageNumbers: number[] = [];//list
       //PatientId: new FormControl(0, [Validators.required]),
       UserId: new FormControl(0, [Validators.required]),
       TreatmentDetailsId: new FormControl('', [Validators.required]),
-      IsActive: new FormControl(true)
+      //IsActive: new FormControl(true)
 
       
        // lastName: new FormControl('', []),
