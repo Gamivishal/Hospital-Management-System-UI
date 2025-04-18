@@ -44,7 +44,6 @@ export class shiftComponent implements OnInit {
     ngOnInit() {
       this.createFormGroup();
       this.getShifts();
-      this.addShifts();
       //this.onDelete();
 
       // this.shiftfmGroup.patchValue({
@@ -79,15 +78,18 @@ export class shiftComponent implements OnInit {
 
     checkRequired(controlName:any)
     {
-      return this.shiftfmGroup.controls[controlName].errors?.['required'];
+      return this.shiftfmGroup.controls[controlName].touched && this.shiftfmGroup.controls[controlName].errors?.['required'];
     }
 
 
     checkminlength(controlName:any)
     {
-       return this.shiftfmGroup.controls[controlName].errors?.['minlength'];
+       return this.shiftfmGroup.controls[controlName].touched && this.shiftfmGroup.controls[controlName].errors?.['minlength'];
     }
 
+    checkPattern(controlName: any) {
+      return this.shiftfmGroup.controls[controlName].touched && this.shiftfmGroup.controls[controlName].errors?.['pattern'];
+    }
 
     getShifts()
     {
