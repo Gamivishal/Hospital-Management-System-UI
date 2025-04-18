@@ -72,6 +72,13 @@ TreatmentDetailsCodelist:any[]=[];
      }
 
 
+     resetForm(){
+      this.isShowList = false;
+      this.createFormGroup();
+      this.selectedHospitalId;
+    }
+
+
      checkRequired(controlName:any)
      {
       return this.PatientAdmitionDetailsformGroup.controls[controlName].touched &&  this.PatientAdmitionDetailsformGroup.controls[controlName].errors?.['required'];
