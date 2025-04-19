@@ -49,7 +49,7 @@ export  class roomtypefacilitymapping implements OnInit {
 
      }
 
-     
+
 
      createFormGroup() {
 
@@ -109,7 +109,7 @@ export  class roomtypefacilitymapping implements OnInit {
 
 
     getroomtypefacilitymapping(){
-      debugger
+
       this.baseService.GET<any>(this.URL+"TblRoomTypeFacilityMapping/GetAll").subscribe(response =>{
         console.log("GET Response:", response);
         this.lstroomtypefacilitymapping = response.data;
@@ -123,7 +123,7 @@ export  class roomtypefacilitymapping implements OnInit {
     //add roomtypefacilitymapping
 
     Addroomtypefacilitymapping() {
-      debugger
+
       // console.log(this.roomtypefacilitymappingfmGroup.getRawValue())
       this.baseService.POST(this.URL + "TblRoomTypeFacilityMapping/Add", this.roomtypefacilitymappingfmGroup.getRawValue())
         .subscribe({next: (response:any) => {

@@ -13,7 +13,7 @@
                     <thead>
                         <tr>
                             <th>patientName</th>
-                            <th>treatmentCode</th>
+                            <th>DieseaseName</th>
                             <th>admisionDate</th>
                             <th>roomNumber</th>
                             <th>CreatedBy</th>
@@ -24,7 +24,7 @@
                     <tbody>
                         <tr *ngFor="let item of paginatedList">
                             <td>{{ item.patientName }}</td>
-                            <td>{{item.treatmentCode}}</td>
+                            <td>{{item.dieseaseName}}</td>
                             <td>{{ item.admisionDate | date:'yyyy/MM/dd'}}</td>
                             <td>{{ item.roomNumber }}</td>
                             <td>{{item.createdBy}}</td>

@@ -48,14 +48,10 @@ TreatmentDetailsCodelist:any[]=[];
       this.createFormGroup();
       this.getPatientAdmitionDetails();
       this.Roomame();
-      // this.PatientName();
       this.TreatmentDetailsCodes();
 
 
     }
-
-
-
      PatientAdmitionDetailsformGroup:FormGroup;
 
      createFormGroup()
@@ -63,10 +59,10 @@ TreatmentDetailsCodelist:any[]=[];
 
       this.PatientAdmitionDetailsformGroup = new FormGroup({
       PatientAdmitionDetailsId:new FormControl(0,[Validators.required]),
-      //userId:new FormControl(null,[Validators.required]),
       AdmisionDate:new FormControl(null,[Validators.required]),
       roomID :new FormControl(null,[Validators.required]),
       treatmentDetailsId :new FormControl(null,[Validators.required])
+
 
       })
      }
@@ -78,10 +74,6 @@ TreatmentDetailsCodelist:any[]=[];
      }
 
 
-    //  checkminlength(controlName:any)
-    //  {
-    //     return this.PatientAdmitionDetailsformGroup.controls[controlName].errors?.['minlength']
-    //  }
 
   getPatientAdmitionDetails() {
     this.baseService.GET<any>(this.URL+"TblPatientAdmitionDetails/GetAll").subscribe(response => {

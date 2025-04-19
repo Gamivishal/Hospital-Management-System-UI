@@ -5,6 +5,9 @@ import { RouterModule } from '@angular/router';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { BaseService } from 'src/app/services/base.service';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { ToastrService } from 'ngx-toastr';
+
+
 
 
 @Component({
@@ -19,11 +22,9 @@ export default class AuthSignupComponent implements OnInit {
   URL=AppConstant.url
 
 
-  
-  constructor(
-    private baseService: BaseService ) {
 
-  }
+  constructor(private baseService: BaseService,
+    private toastr: ToastrService) {}
 
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
@@ -108,11 +109,20 @@ export default class AuthSignupComponent implements OnInit {
     signup() {
 
       this.baseService.POST(this.URL+"TblPatient/Add", this.singupformgoup.getRawValue())
-        .subscribe(response => {
-          console.log("POST Response:", response);
+        .subscribe({next: (response:any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
+          }
+            else {
+              this.toastr.error(response.message, 'Error');
+            }
+          },
+          error: () => {
+            this.toastr.error('Failed to Add', 'Error');
+          }
 
-        });
-      }
+          });
+          }
 
 
     }

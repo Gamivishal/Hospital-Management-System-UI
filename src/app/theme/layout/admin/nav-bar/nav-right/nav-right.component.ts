@@ -16,7 +16,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
   providers: [NgbDropdownConfig]
 })
 export class NavRightComponent {
-  debugger;
+  ;
   userName: string = '';
   private router = inject(Router);
   // public props
