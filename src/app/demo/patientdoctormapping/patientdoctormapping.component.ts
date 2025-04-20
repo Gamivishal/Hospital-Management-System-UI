@@ -7,10 +7,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 @Component({
   selector: 'app-patientdoctormapping',
   standalone: true,
-  imports: [CommonModule,SharedModule],
+  imports: [CommonModule,SharedModule,DatatableComponent],
   templateUrl: './patientdoctormapping.component.html',
   styleUrls: ['./patientdoctormapping.component.scss']
 })
@@ -204,6 +205,10 @@ pageNumbers: number[] = [];//list
           this.toastr.error('Failed to update ', 'Error');
         }
       });
+    }
+
+    onEditpatient(patient: any) {
+      this.editpatient(patient);
     }
 
 
