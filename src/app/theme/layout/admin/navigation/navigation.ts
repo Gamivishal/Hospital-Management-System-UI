@@ -45,7 +45,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Shift Type',
         type: 'item',
         url: '/shift',
-        icon: 'feather icon-disc',
+        icon: 'feather icon-clock',
         classes: 'nav-item'
       },
       {
@@ -137,15 +137,15 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Employee Shift Mapping',
         type: 'item',
         url: '/empshiftmapping',
-        icon: 'feather icon-slack',
+        icon: 'feather icon-watch',
         classes: 'nav-item'
       },
       {
         id: 'Empdepartmentmapping',
-        title: 'Empdepartmentmapping',
+        title: 'Employee Department',
         type: 'item',
         url: '/empdepartmentmapping',
-        icon: 'feather icon-home',
+        icon: 'feather icon-briefcase',
         classes: 'nav-item'
       },
       {
@@ -153,7 +153,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Patient Doctor Mapping',
         type: 'item',
         url: '/patientdoctormapping',
-        icon: 'feather icon-slack',
+        icon: 'feather icon-activity',
         classes: 'nav-item'
       },
       {
@@ -169,7 +169,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Roomtype Facility',
         type: 'item',
         url: '/roomTypeFacilityMapping',
-        icon: 'feather icon-slack',
+        icon: 'feather icon-wifi',
         classes: 'nav-item'
       },
       {
@@ -187,7 +187,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Treatment Details',
         type: 'item',
         url: '/treatmentdetails',
-        icon: 'feather icon-slack',
+        icon: 'feather icon-plus',
         classes: 'nav-item'
       },
       {
