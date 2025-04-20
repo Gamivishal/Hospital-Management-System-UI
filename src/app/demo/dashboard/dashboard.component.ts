@@ -101,7 +101,7 @@ export class DashboardComponent implements OnInit {
         });
       }
 
-      // world-low chart
+      //world-low chart
       AmCharts.makeChart('world-low', {
         type: 'map',
         projection: 'eckert6',

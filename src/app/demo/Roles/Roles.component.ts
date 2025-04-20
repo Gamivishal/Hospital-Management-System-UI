@@ -36,6 +36,11 @@ export class RolesComponent implements OnInit {
     this.createFormGroup();
     this.getRoles();
   }
+  resetForm(){
+    this.isShowList = false;
+    this.createFormGroup();
+    this.selectedroleId = null;
+  }
 
   createFormGroup() {
     this.rolesfmGroup = new FormGroup({

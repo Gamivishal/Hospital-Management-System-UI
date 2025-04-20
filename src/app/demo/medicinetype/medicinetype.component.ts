@@ -128,7 +128,7 @@ add(){
 
 
   updateMedicineTypes() {
-    debugger
+
     this.baseService.PUT(this.URL+"TblMedicineType/Update",this.medicineTypeFormGroup.getRawValue())// No ID in the URL
       .subscribe({
         next: (response: any) => {
@@ -136,19 +136,19 @@ add(){
             this.toastr.success(response.message, 'Success');
           this.getMedicineTypes();
           this.isShowList = true;
-          
+
           // this.medicineTypeFormGroup.reset({
           //   medicineTypeID: 0,
           //   typeName: ''
-  
+
           //     })
             }
             else {
               this.toastr.error(response.message, 'Error');
             }
-  
+
      this.currentPage = 1;
-  
+
           // this.selectedHospitalId = null;
         },
         error: () => {

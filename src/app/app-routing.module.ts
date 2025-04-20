@@ -56,13 +56,6 @@ const routes: Routes = [
 
       },
       {
-        path: 'room',
-        loadComponent: () => import('./demo/room/room.component').then((c) => c.roomsComponent),
-        canActivate: [AuthGuard]
-
-      },
-
-      {
         path: 'hospitaltype',
        loadComponent : () => import('./demo/hospitaltype/hospitaltype.component').then((c) => c.hospitaltypeComponent),
        canActivate: [AuthGuard]
@@ -87,7 +80,6 @@ const routes: Routes = [
         path: 'patientdata',
        loadComponent : () => import('./demo/patientdata/patientdata.component').then((c) => c.PatientDataComponent),canActivate: [AuthGuard]
       },
-
       {
         path: 'patientdoctormapping',
         loadComponent : () => import('./demo/patientdoctormapping/patientdoctormapping.component').then((c) => c.patientdoctormappingComponent),canActivate: [AuthGuard]
@@ -139,6 +131,11 @@ const routes: Routes = [
       {
         path: 'diseasetype',
        loadComponent : () => import('./demo/diseasetype/diseasetype.component').then((c) => c.DiseaseTypeComponent),
+       canActivate: [AuthGuard]
+      },
+      {
+        path: 'room',
+       loadComponent : () => import('./demo/room/room.component').then((c) => c.roomsComponent),
        canActivate: [AuthGuard]
       },
       {
