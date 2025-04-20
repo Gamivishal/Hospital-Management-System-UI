@@ -80,6 +80,8 @@
                             <input type="text" formControlName="departmentName" class="form-control" placeholder="Enter Hospital dept" required />
                             <span *ngIf="checkRequired('departmentName')" class="error-span">This Field Is Required</span><br>
                             <span *ngIf="checkminlength('departmentName')" class="error-span">Minimum 3 characters required</span>
+                            <span *ngIf="checkmaxlength('departmentName')" class="error-span">Maximum 15 characters allowed</span>
+
                         </div>
                         <div class="mt-3">
                             <button *ngIf="!selectedHospitalId" type="button" class="btn btn-primary" [disabled]="hospitaldeptfmGroup.invalid" (click)="addHospital()">Submit</button>
