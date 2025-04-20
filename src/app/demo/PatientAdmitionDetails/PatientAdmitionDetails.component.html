@@ -72,12 +72,10 @@
                                 <span *ngIf="checkRequired('AdmisionDate')" class="error-span">This fild is Required</span>
                             </div>
                         </div>
-
-
-                        <!-- Disabled input showing selected patient name -->
+                        <!-- Displaying selected Patient ID in a disabled input -->
                         <div class="input-group mb-3">
-                            <label class="col-sm-3 col-form-label">Patient Name</label>
-                            <input class="form-control" [value]="selectedPatientName" disabled />
+                            <label class="col-sm-3 col-form-label">Patient ID</label>
+                            <input class="form-control" [value]="selectedHospitalId" disabled />
                         </div>
                     </form>
                 </div>
@@ -94,12 +92,13 @@
                         <option *ngFor="let roomnumber of Roomlist" [value]="roomnumber.id">{{ roomnumber.name}}</option>
                       </select>
                         </div>
+                        <!-- Patient Name Dropdown -->
                         <div class="input-group mb-3">
-                            <label class="col-sm-3 col-form-label">Patient ID</label>
-                            <select class="form-select" formControlName="treatmentDetailsId" (change)="onPatientIdChange($event)">
-    <option value="" disabled selected>Select Patient ID</option>
+                            <label class="col-sm-3 col-form-label">Patient Name</label>
+                            <select class="form-select" formControlName="treatmentDetailsId" (change)="onPatientNameChange($event)">
+    <option value="" disabled selected>Select Patient Name</option>
     <option *ngFor="let user of TreatmentDetailsCodelist" [value]="user.id">
-      {{ user.id }}
+      {{ user.name }}
     </option>
   </select>
                         </div>
@@ -121,8 +120,9 @@
 
 
 
-                    <button type="button" *ngIf="!selectedHospitalId" class="btn btn-primary" [disabled]="PatientAdmitionDetailsformGroup.invalid" (click)="addPatientAdmitionDetails()">Submit</button>
-                    <button type="button" *ngIf="selectedHospitalId" class="btn btn-primary" [disabled]="PatientAdmitionDetailsformGroup.invalid" (click)="updatetreatmentDetailsId()">Update</button>
+                    <button type="button" class="btn btn-primary" [disabled]="PatientAdmitionDetailsformGroup.invalid" (click)="addPatientAdmitionDetails()">
+                    Submit
+                  </button>
 
 
 

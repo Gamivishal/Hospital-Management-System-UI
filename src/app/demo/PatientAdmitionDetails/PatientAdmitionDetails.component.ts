@@ -138,64 +138,28 @@ TreatmentDetailsCodes(){
 }
 
 
-onPatientIdChange(event: any) {
+onPatientNameChange(event: any) {
   const selectedId = +event.target.value;
   const selectedPatient = this.TreatmentDetailsCodelist.find(p => p.id === selectedId);
-  this.selectedPatientName = selectedPatient ? selectedPatient.name : '';
+
+  if (selectedPatient) {
+    this.selectedPatientName = selectedPatient.name;
+    this.selectedHospitalId = selectedPatient.id;
+
+    this.PatientAdmitionDetailsformGroup.patchValue({
+      treatmentDetailsId: selectedPatient.id
+    });
+  }
 }
 
-    editHospital(hospital: any) {
-debugger
-      this. selectedHospitalId = hospital.patientAdmitionDetailsId
-      this.isShowList = false;
-      this.PatientAdmitionDetailsformGroup.patchValue({
-        PatientAdmitionDetailsId: hospital.patientAdmitionDetailsId,
-        AdmisionDate: hospital.admisionDate,
-        roomID:hospital.roomID,
-        treatmentDetailsId: hospital.treatmentDetailsId,
-      });
-    }
-
-    updatetreatmentDetailsId() {
 
 
-      this.baseService.PUT(this.URL+"TblPatientAdmitionDetails/Update",this.PatientAdmitionDetailsformGroup.getRawValue()) // No ID in the URL
-        .subscribe({
-          next: (response: any) => {
-            if (response.statusCode === 200) {
-              this.toastr.success(response.message, 'Success');
-            console.log("PUT Response:", response);
-            this.getPatientAdmitionDetails();
-            this.selectedHospitalId=null
-            this.isShowList = true;
-          } else {
-            this.toastr.error(response.message, 'Error');
-          }
-        },
-        error: () => {
-          this.toastr.error('Failed to update ', 'Error');
-        }
-      });
-      }
 
-        onDelete(patientAdmitionDetailsId: number){
 
-          this.baseService.DELETE(this.URL+"TblPatientAdmitionDetails/delete?DeleteId="+patientAdmitionDetailsId).subscribe({
-            next: (response: any) => {
-              if (response.statusCode === 200) {
-                this.toastr.success(response.message, 'Success');
-            console.log("DELETE Response:", response);
-            this.getPatientAdmitionDetails();
-            this.isShowList = true;
-          } else {
-            this.toastr.error(response.message, 'Error');
-          }
-        },
-        error: () => {
-          this.toastr.error('Failed to delete ', 'Error');
-        }
-      });
-        }
+
+
+
+
 
 
 //PAGINATION STOP
