@@ -62,7 +62,7 @@ export  class RoomTypesComponent implements OnInit {
      {
       this.roomTypefmGroup = new FormGroup({
         roomTypeId: new FormControl(0, [Validators.required]),
-        roomType: new FormControl(null, [Validators.required,Validators.minLength(3)]),
+        roomType: new FormControl(null, [Validators.required,Validators.minLength(3),Validators.maxLength(255)]),
       })
      }
 
@@ -82,6 +82,11 @@ export  class RoomTypesComponent implements OnInit {
     checkminlength(controlName:any)
     {
        return this.roomTypefmGroup.controls[controlName].touched && this.roomTypefmGroup.controls[controlName].errors?.['minlength']
+    }
+
+    checkmaxlength(controlName:any)
+    {
+       return this.roomTypefmGroup.controls[controlName].touched && this.roomTypefmGroup.controls[controlName].errors?.['maxLength']
     }
 
 
@@ -131,7 +136,7 @@ export  class RoomTypesComponent implements OnInit {
         console.log("POST Response:", response);
         this.getRoomType(); // Refresh list
         this.isShowList = true;
-
+        this.currentPage = 1
         this.roomTypefmGroup.reset({
           roomTypeId: 0,
           roomType: ''
@@ -181,6 +186,10 @@ export  class RoomTypesComponent implements OnInit {
 
 
       onDelete(roomTypeId: number){
+        
+        if (!window.confirm("DELETE")) 
+           return;
+        
         this.baseService.DELETE(this.URL+"TblRoomType/delete?id="+roomTypeId).subscribe({
           next: (response: any) => {
             if (response.statusCode === 200) {

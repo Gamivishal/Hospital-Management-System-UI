@@ -3,7 +3,7 @@
   @if(isShowList){
   <div class="col-xl-12">
     <div class="d-flex justify-content-end mb-3 position-relative">
-      <button type="button" (click)="isShowList=false;" class="btn btn-primary add-shift-button">
+      <button type="button" (click)="add()" class="btn btn-primary add-shift-button">
         Add TreatmentDetails
       </button>
     </div>
@@ -114,7 +114,7 @@
                       </div>
                       <div class="form-group">
                         <label for="treatmentDate">Treatment Date</label>
-                        <input type="date" formControlName="treatmentDate" name="treatmentDate" class="form-control" placeholder="Enter treatmentDate" required/>
+                        <input type="date" [max]="mydate" formControlName="treatmentDate" name="treatmentDate" class="form-control" placeholder="Enter treatmentDate" required/>
                         <span *ngIf="checkRequired('treatmentDate')" class="error-span">This Field Is Required</span> 
                     </div>
                     <!-- <div class="form-group">

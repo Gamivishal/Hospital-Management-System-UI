@@ -88,6 +88,11 @@ export class MedicineTypeComponent implements OnInit{
      this.PageNumber(); // FIX: Update page numbers
     });
 }
+add(){
+  this.isShowList =false;
+  this.createFormGroup();
+  this.selectedmedicineTypeId=null;
+}
 
   AddMedicineTypes(){
     this.baseService.POST(this.URL+"TblMedicineType/Add",this.medicineTypeFormGroup.getRawValue())

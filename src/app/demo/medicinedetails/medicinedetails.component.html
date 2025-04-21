@@ -4,7 +4,7 @@
     {
 <div class="col-xl-12">
   <div class="d-flex justify-content-end mb-3 position-relative">
-    <button type="button" (click)="isShowList=false;" class="btn btn-primary add-shift-button">
+    <button type="button" (click)="add()" class="btn btn-primary add-shift-button">
       Add Medicinedetails
     </button>
   </div>
@@ -97,8 +97,8 @@
               <form [formGroup]="medicinedetailsFormGroup" action="javascript:">
 
                 <div>
-                  <label for="treatmentdetailsId">Treatmentdetails</label>
-                  <select id="treatmentdetailsId" formControlName="treatmentdetailsId" class="form-control">
+                  <label for="treatmentDetailsId">Treatmentdetails</label>
+                  <select id="treatmentDetailsId" formControlName="treatmentDetailsId" class="form-control">
                     <option value="" disabled>Select TreatmentdetailsId</option>
                     <option *ngFor="let medicine of treatmentdetailsidwithnamelist" [value]="medicine.id">{{medicine.name}}</option>
                   </select>
@@ -106,7 +106,7 @@
 
                     <div >
                       <label for="medicinetypeID">Medicine</label>
-                      <select id="medicinetypeID" formControlName="medicinetypeID" class="form-control">
+                      <select id="medicinetypeID" formControlName="medicineTypeID" class="form-control">
                         <option value="" disabled>Select medicine</option>
                         <option *ngFor="let medicine of medicinetypelist" [value]="medicine.id">{{medicine.name}}</option>
                       </select>

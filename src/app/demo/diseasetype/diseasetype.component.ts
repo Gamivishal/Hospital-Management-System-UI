@@ -5,6 +5,8 @@ import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule, NgIfContext } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+
 
 
 
@@ -36,7 +38,7 @@ export class DiseaseTypeComponent implements OnInit{
   // }
   http=inject(HttpClient)
 
-  constructor(private baseService: BaseService) {}
+  constructor(private baseService: BaseService, private toastr: ToastrService) {}
  
   // life cycle event
   ngOnInit() {
@@ -82,14 +84,22 @@ export class DiseaseTypeComponent implements OnInit{
      this.PageNumber(); // FIX: Update page numbers
     });
 }
-
+add(){
+  this.isShowList =false;
+  this.createFormGroup();
+  this.selecteddieseaseTypeID=null;
+}
   AddDieseaseTypes(){
     
     //Medicine:any [] = [];
   
 
     this.baseService.POST("https://localhost:7272/api/Disease/Add",this.dieseaseTypeFormGroup.getRawValue())
-      .subscribe(response => {
+      .subscribe( {
+        next :(response :any)=>{
+          if (response.statusCode === 200)
+            {
+        this.toastr.success(response.message, 'Success');
         console.log("POST Response:", response);
         this.getDieseaseTypes();
         this.isShowList = true;
@@ -98,10 +108,18 @@ export class DiseaseTypeComponent implements OnInit{
           dieseaseTypeID: 0,
           dieseaseName: ''
 
-            })
+            });
+          }
+          else {
+            this.toastr.error(response.message, 'Error');
+          }
+          this.currentPage = 1;
+        },
 
-   this.currentPage = 1;
-
+  //  this.currentPage = 1;
+   error: () => {
+    this.toastr.error('Failed to update ', 'Error');
+  }
      
     });
 
@@ -118,8 +136,10 @@ export class DiseaseTypeComponent implements OnInit{
 
   updatedieseaseTypes() {
     this.baseService.PUT("https://localhost:7272/api/Disease/Update",this.dieseaseTypeFormGroup.getRawValue())// No ID in the URL
-      .subscribe({
-        next: response => {
+    .subscribe({
+      next: (response: any) => {
+        if (response.statusCode === 200) {
+          this.toastr.success(response.message, 'Success');
           console.log("PUT Response:", response);
           this.getDieseaseTypes();
           this.isShowList = true;
@@ -127,24 +147,42 @@ export class DiseaseTypeComponent implements OnInit{
           this.dieseaseTypeFormGroup.reset({
             dieseaseTypeID: 0,
            dieseaseName: ''
+          });
+              } else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to update ', 'Error');
+        }
+      });
+      }
+
   
-              })
-  
-     this.currentPage = 1;
+     //this.currentPage = 1;
   
           // this.selectedHospitalId = null;
-        },
+    //     },
 
-      });
-    }
+    //   });
+    // }
     onDelete(dieseaseTypeID: number){
-      this.baseService.DELETE("https://localhost:7272/api/Disease/deleteByID?id=" + dieseaseTypeID).subscribe(response => {
+      this.baseService.DELETE("https://localhost:7272/api/Disease/deleteByID?id=" + dieseaseTypeID).subscribe({
+        next: (response: any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
         console.log("DELETE Response:", response);
         this.getDieseaseTypes();
         this.isShowList = true;
-      });
+      } else {
+        this.toastr.error(response.message, 'Error');
+      }
+    },
+    error: () => {
+      this.toastr.error('Failed to delete ', 'Error');
     }
-
+  });
+    }
 
 //record for the page
 Paginationrecord() {

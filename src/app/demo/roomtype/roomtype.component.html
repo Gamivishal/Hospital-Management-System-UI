@@ -90,6 +90,7 @@
                           
 
                           <span *ngIf="checkRequired('roomType')" class="error-span">This Field Is Required</span><br>
+                          <span *ngIf="checkmaxlength('roomType')" class="error-span">255 characters allowed.</span><br>
 
                           <span *ngIf="roomTypefmGroup.controls['roomType'].errors?.['minlength'] && roomTypefmGroup.controls['roomType'].value.length < 3" class="error-span"> Minimum 3 characters required </span>
                         

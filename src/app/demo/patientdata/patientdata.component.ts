@@ -26,7 +26,8 @@ export class PatientDataComponent implements OnInit {
 
   isShowList: boolean = true;
   bloodGroups: string[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
-  selectedPatientId: number | null = null;
+  selectedPatientId: number = 0;
+  selectUserid: number = 0
   URL = AppConstant.url;
   http = inject(HttpClient);
 
@@ -46,7 +47,7 @@ export class PatientDataComponent implements OnInit {
     fullName: new FormControl(''),
     email: new FormControl(''),
     password: new FormControl(''),
-    mobilNumber: new FormControl(''),
+    mobileNumber: new FormControl(''),
     dob: new FormControl(''),
     gender: new FormControl(''),
     address: new FormControl(''),
@@ -79,28 +80,44 @@ getdropdown(){
 
 }
   editPatient(patient: any) {
+    this.selectUserid = patient.userId;
     this.selectedPatientId = patient.patientId;
+    console.log('UserId:', this.selectUserid); // should print number, not undefined
+
+    console.log('UserId:', this.selectUserid);
+  console.log('PatientId:', this.selectedPatientId);
     this.isShowList = false;
     this.patientFormGroup.patchValue(patient);
   }
 
   updatePatient() {
-    this.baseService.PUT(this.URL + "TblPatient/Update", this.patientFormGroup.getRawValue())
-    .subscribe({
-      next: (response: any) => {
-        if (response.statusCode === 200) {
-          this.toastr.success(response.message, 'Success');
-          this.getPatients();
-          this.isShowList = true;
-        } else {
-          this.toastr.error(response.message, 'Error');
+    const updateData = {
+      ...this.patientFormGroup.getRawValue(),
+      userId: this.selectUserid,
+      patientId: this.selectedPatientId,
+      updatedBy: this.selectUserid,
+      updatedOn: new Date(),
+      isActive: true
+    };
+
+    this.baseService.PUT(this.URL + "TblPatient/Update", updateData)
+      .subscribe({
+        next: (response: any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
+            this.getPatients();
+            this.isShowList = true;
+          } else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: (err) => {
+          console.error('Update error:', err);
+          this.toastr.error('Failed to update', 'Error');
         }
-      },
-      error: () => {
-        this.toastr.error('Failed to update', 'Error');
-      }
-    });
+      });
   }
+
 
   onDelete(UserId: number){
     this.baseService.DELETE(this.URL + "TblPatient/Delete?UserId=" + UserId)
