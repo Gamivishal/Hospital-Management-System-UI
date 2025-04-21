@@ -73,14 +73,14 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-disc',
         classes: 'nav-item'
       },
-      {
-        id: 'patientdata',
-        title: 'Patient Data',
-        type: 'item',
-        url: '/patientdata',
-        icon: 'feather icon-disc',
-        classes: 'nav-item'
-      },
+      // {
+      //   id: 'patientdata',
+      //   title: 'Patient Data',
+      //   type: 'item',
+      //   url: '/patientdata',
+      //   icon: 'feather icon-disc',
+      //   classes: 'nav-item'
+      // },
 
       {
         id: 'room type',
@@ -132,6 +132,14 @@ export const NavigationItems: NavigationItem[] = [
     type: 'group',
     icon: 'icon-navigation',
     children: [
+      {
+        id: 'patientdata',
+        title: 'Patient Data',
+        type: 'item',
+        url: '/patientdata',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
       {
         id: 'Empshiftmapping',
         title: 'Employee Shift Mapping',
@@ -195,14 +203,6 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Billing',
         type: 'item',
         url: '/billing',
-        icon: 'feather icon-home',
-        classes: 'nav-item'
-      },
-      {
-        id: 'patientdata',
-        title: 'Patient Data',
-        type: 'item',
-        url: '/patientdata',
         icon: 'feather icon-home',
         classes: 'nav-item'
       }

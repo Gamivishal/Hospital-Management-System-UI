@@ -71,21 +71,18 @@
 
             <!-- Auto-selected Treatment ID (readonly) -->
 <div class="form-group mb-3">
-<label for="treatmentid">Treatment Id</label>
+<!-- <label for="treatmentid">Treatment Id</label>
 <input
   type="text"
-  class="form-control"
-  formControlName="treatmentDetailsId"
-  readonly
-/>
+  class="form-control" formControlName="treatmentDetailsId" /> -->
+<!-- </div>
+<div> -->
+  <label for="treatmentDetailsId">Treatmentdetails</label>
+  <select id="treatmentDetailsId" formControlName="treatmentDetailsId" class="form-control">
+    <option value="" disabled>Select TreatmentdetailsId</option>
+    <option *ngFor="let medicine of treatmentdetailsidwithnamelist" [value]="medicine.id">{{medicine.name}}</option>
+  </select>
 </div>
-<!-- <div class="form-group">
-                      <label for="treatmentCode">Treatment Code</label>
-                    <select formControlName="TreatmentDetailsId" name="treatmentCode" class="form-control"required>
-                        <option value="">Select Patient Name</option>
-                      <option *ngFor="let treatment of TreatmentcodeList" [ngValue]="treatment.id">{{ treatment.patientName }}</option>
-                    </select>
-                  </div> -->
 
              <!-- Total Amount -->
              <input

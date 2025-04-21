@@ -22,6 +22,7 @@ export class billingComponent implements OnInit {
 billings: any[]=[];
 patientlist :any[];
 TreatmentcodeList: any[] = [];
+treatmentdetailsidwithnamelist:any[]=[];
  // PAGINATION
  paginatedList: any[] = [];
  currentPage: number = 1;
@@ -43,6 +44,7 @@ constructor(
    ngOnInit() {
     this.getbill();
     this.createFormGroup();
+    this.gettreatmentdetailsidwithname();
     const admitionId = this.route.snapshot.paramMap.get('id');
   if (admitionId) {
     this.billingfmGroup.patchValue({
@@ -135,7 +137,13 @@ constructor(
         }
       });
     }
-
+    gettreatmentdetailsidwithname(){
+      this.baseService.GET<any>(this.URL+"GetDropDownList/FillTreatmentCode").subscribe(response => {
+        console.log("GET Response:", response);
+        this.treatmentdetailsidwithnamelist = response.data;
+        console.log("treamentdetailslistwithname", this.treatmentdetailsidwithnamelist);
+      })
+    }
 //PAGINATION STOP
 Paginationrecord() {
   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
