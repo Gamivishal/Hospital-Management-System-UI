@@ -44,9 +44,9 @@
              <td>{{item.instruction}}</td>
              <td>{{item.issueDateTime}}</td>
             <td>{{item.createdBy }}</td>
-            <td>{{item.createdOn | date:'dd/MM/yyyy' }}</td>
+            <td>{{item.createdOn | date:'dd/MM/yyyy hh:mm:ss a':'UTC+5:30' }}</td>
             <td>{{item.updatedBy }}</td>
-            <td>{{item.updatedOn | date:'dd/MM/yyyy' }}</td>
+            <td>{{item.updatedOn | date:'dd/MM/yyyy hh:mm:ss a':'UTC+5:30' }}</td>
             <td>{{item.isActive ? 'Active' : 'Inactive' }}</td>
             <!-- <td>{{item.treatmentDetailsId}}</td> -->
             <td> <svg style="cursor: pointer;" (click)="editmedicinedetails(item)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon">

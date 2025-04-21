@@ -63,7 +63,7 @@ export class MedicineTypeComponent implements OnInit{
 
       this.medicineTypeFormGroup = new FormGroup({
         medicineTypeID:new FormControl(0,[Validators.required]),
-        typeName:new FormControl(null,[Validators.required,Validators.minLength(3)]),
+        typeName:new FormControl(null,[Validators.required,Validators.minLength(3),Validators.maxLength(5)]),
 
 
       })
@@ -77,6 +77,10 @@ export class MedicineTypeComponent implements OnInit{
     checkminlength(controlName:any)
     {
        return this.medicineTypeFormGroup.controls[controlName].errors?.['minlength'];
+    }
+    checkmaxlength(controlName:any)
+    {
+      return this.medicineTypeFormGroup.controls[controlName].touched &&  this.medicineTypeFormGroup.controls[controlName].errors?.['maxLength'];
     }
 
   getMedicineTypes(){

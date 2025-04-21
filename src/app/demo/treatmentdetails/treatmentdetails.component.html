@@ -32,11 +32,11 @@
               <td>{{ item.dieseaseName}}</td>
               <td>{{ item.patientName}}</td>
                <td>{{item.treatmentDate}}</td>
-              <!-- <td>{{ item.treatmentCode }}</td> -->
+              <!-- <td>{{ item.treatmentCode }}</td> --> 
               <td>{{item.createdBy}}</td>
               <td>{{ item.updatedBy }}</td>
-              <td>{{ item.createdOn | date:'dd/MM/yyyy' }}</td>
-              <td>{{ item.updatedOn | date:'dd/MM/yyyy' }}</td>
+              <td>{{ item.createdOn | date:'dd/MM/yyyy hh:mm:ss a':'UTC+5:30' }}</td>
+              <td>{{ item.updatedOn | date:'dd/MM/yyyy hh:mm:ss a':'UTC+5:30' }}</td>
               <td>{{ item.versionNo  }}</td>
               <td> <svg (click)="edittreatmentdetails(item)" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon">
                 <path d="M12 20h9" />

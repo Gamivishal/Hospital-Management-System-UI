@@ -30,9 +30,9 @@
               <!-- <td>{{ item.typeName}}</td> -->
                <td>{{item.typeName}}</td>
               <td>{{ item.createdBy }}</td>
-              <td>{{ item.createdOn | date:'dd/MM/yyyy' }}</td>
+              <td>{{ item.createdOn | date:'dd/MM/yyyy hh:mm:ss a':'UTC+5:30' }}</td>
               <td>{{ item.updatedBy }}</td>
-              <td>{{ item.updatedOn | date:'dd/MM/yyyy' }}</td>
+              <td>{{ item.updatedOn | date:'dd/MM/yyyy hh:mm:ss a':'UTC+5:30' }}</td>
               <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
               <td> <svg (click)="editMedicineTypes(item)" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon">
                 <path d="M12 20h9" />
@@ -88,7 +88,8 @@
                           <span *ngIf="checkRequired('typeName')" class="error-span">This Field Is Required</span><br>
 
                           <!-- <span *ngIf="medicineTypeFormGroup.controls['HospitalType'].errors['minlength']!==null" class="error-span">Minimum 3 character required</span> -->
-                          <span *ngIf="checkminlength('typeName')" class="error-span">Minimum 3 characters required</span>
+                          <span *ngIf="checkminlength('typeName')" class="error-span">Minimum 3 characters required</span><br>
+                          <span *ngIf="checkmaxlength('typeName')" class="error-span">Maximum 50 characters Allowed</span>
 
 
                       </div>
