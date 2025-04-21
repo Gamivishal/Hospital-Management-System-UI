@@ -261,27 +261,6 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
-
-// end
-//new start
-{
-  id: 'master',
-  title: 'Master',
-  type: 'group',
-  icon: 'icon-navigation',
-  children: [
-    {
-      id: 'hospitaltype',
-      title: 'hospitaltype',
-      type: 'item',
-      url: '/hospitaltype',
-      icon: 'feather icon-home',
-      classes: 'nav-item'
-    }
-  ]
-},
-//New Start:
-//  END
   {
     id: 'forms',
     title: 'Forms & Tables',
