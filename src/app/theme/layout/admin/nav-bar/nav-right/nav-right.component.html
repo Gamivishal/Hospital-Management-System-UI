@@ -172,15 +172,37 @@
   <!-- Logout/User Section -->
   <li class="nav-item">
     <div class="user-box d-flex align-items-center" style="gap: 10px;">
-      <img src="assets/images/user/avatar-2.jpg" alt="User" class="rounded-circle" style="width: 35px; height: 35px;">
-      <span class="fw-semibold text-dark">{{ userName }}</span>
-
-      <a href="javascript:" 
-         (click)="openLogoutModal()" 
-         title="Logout" 
-         class="logout-icon d-flex align-items-center justify-content-center">
+      <img [src]="profileImage" alt="User" class="rounded-circle" style="width: 35px; height: 35px;">
+      <span class="fw-semibold">{{ userName }}</span>
+    <a href="javascript:" (click)="logout()" title="Logout" class="text-white d-flex align-items-center" style="cursor: pointer;">
         <i class="feather icon-log-out"></i>
-      </a>
+    </a>
+    </div>
+    <div>
+      <label for="profileImage"></label>
+    </div>
+      <label for="profileInput" style="
+          position: absolute;
+          bottom: 2px;
+          right: 2px;
+          background: #ffffff;
+          border-radius: 50%;
+          padding: 4px;
+          cursor: pointer;
+        ">
+        <i class="bi bi-pencil-fill"></i> 
+      </label>
+    
+      <input
+        type="file"
+        id="profileInput"
+        (change)="onFileSelected($event)"
+        accept="image/*"
+        style="display: none;"
+      />   
+  </li>
+</ul>
+
 
       <app-pop-up 
         *ngIf="showLogoutPopup"
@@ -191,8 +213,5 @@
         (confirmDelete)="confirmLogout()"
         (cancelDelete)="cancelLogout()">
       </app-pop-up>
-    </div>
-  </li>
-</ul>
-
+    
 </ul>

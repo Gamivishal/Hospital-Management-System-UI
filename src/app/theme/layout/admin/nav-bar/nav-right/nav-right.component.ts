@@ -20,6 +20,7 @@ import { TranslationService } from 'src/app/translate.service';
 export class NavRightComponent {
   ;
   userName: string = '';
+   profileImage: string = '';
   showLogoutPopup = false;
 
   languages = [
@@ -45,6 +46,7 @@ export class NavRightComponent {
     if (userdata) {
       const parsedata = JSON.parse(userdata);
       this.userName = parsedata?.useName || '';
+      this.profileImage = parsedata?.profileImage 
     }
 
     this.translationService.load(this.selectedLang);
@@ -63,6 +65,19 @@ async ngOnInit() {
     this.translationService.load(langCode); 
   }
 
+    onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => { 
+        const base64 = reader.result as string;
+        let data = JSON.parse(localStorage.getItem('data') || '{}');
+        data.profileImage = base64;
+        localStorage.setItem('data', JSON.stringify(data));
+      };
+      reader.readAsDataURL(file);
+    }
+  }
   logout(): void {
     localStorage.clear();
     this.router.navigate(['/auth/signin']);
