@@ -76,11 +76,11 @@ export class MedicineTypeComponent implements OnInit{
 
     checkminlength(controlName:any)
     {
-       return this.medicineTypeFormGroup.controls[controlName].errors?.['minlength'];
+       return this.medicineTypeFormGroup.controls[controlName].touched && this.medicineTypeFormGroup.controls[controlName].errors?.['minlength'];
     }
     checkmaxlength(controlName:any)
     {
-      return this.medicineTypeFormGroup.controls[controlName].touched &&  this.medicineTypeFormGroup.controls[controlName].errors?.['maxLength'];
+      return this.medicineTypeFormGroup.controls[controlName].touched &&  this.medicineTypeFormGroup.controls[controlName].errors?.['maxlength'];
     }
 
   getMedicineTypes(){
