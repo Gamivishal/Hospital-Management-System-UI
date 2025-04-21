@@ -73,14 +73,14 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-disc',
         classes: 'nav-item'
       },
-      {
-        id: 'patientdata',
-        title: 'Patient Data',
-        type: 'item',
-        url: '/patientdata',
-        icon: 'feather icon-disc',
-        classes: 'nav-item'
-      },
+      // {
+      //   id: 'patientdata',
+      //   title: 'Patient Data',
+      //   type: 'item',
+      //   url: '/patientdata',
+      //   icon: 'feather icon-disc',
+      //   classes: 'nav-item'
+      // },
 
       {
         id: 'room type',
@@ -132,6 +132,14 @@ export const NavigationItems: NavigationItem[] = [
     type: 'group',
     icon: 'icon-navigation',
     children: [
+      {
+        id: 'patientdata',
+        title: 'Patient Data',
+        type: 'item',
+        url: '/patientdata',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
       {
         id: 'Empshiftmapping',
         title: 'Employee Shift Mapping',
@@ -197,14 +205,6 @@ export const NavigationItems: NavigationItem[] = [
         url: '/billing',
         icon: 'feather icon-home',
         classes: 'nav-item'
-      },
-      {
-        id: 'patientdata',
-        title: 'Patient Data',
-        type: 'item',
-        url: '/patientdata',
-        icon: 'feather icon-home',
-        classes: 'nav-item'
       }
     ]
   },
@@ -261,27 +261,6 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
-
-// end
-//new start
-{
-  id: 'master',
-  title: 'Master',
-  type: 'group',
-  icon: 'icon-navigation',
-  children: [
-    {
-      id: 'hospitaltype',
-      title: 'hospitaltype',
-      type: 'item',
-      url: '/hospitaltype',
-      icon: 'feather icon-home',
-      classes: 'nav-item'
-    }
-  ]
-},
-//New Start:
-//  END
   {
     id: 'forms',
     title: 'Forms & Tables',
