@@ -21,6 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 export class billingComponent implements OnInit {
 billings: any[]=[];
 patientlist :any[];
+TreatmentcodeList: any[] = [];
  // PAGINATION
  paginatedList: any[] = [];
  currentPage: number = 1;
@@ -58,14 +59,6 @@ constructor(
    public downloadRowAsPDF(department: any) {
     const doc = new jsPDF('p', 'pt', 'a4');
 
-
-    // const user = [
-    //   "Full Name: John Doe",
-    //   "Total Amount: 1500",
-    //   "Payment Method: Credit Card",
-    //   "Bill Date: 2025-04-08",
-    // ];
-
     const user = [
       `Full Name: ${department.patientName}`,
       `Total Amount: ${department.totalAmount}`,
@@ -94,20 +87,20 @@ constructor(
         paymentMethod: new FormControl('', [Validators.required]),
         billDate: new FormControl(today, [Validators.required]),
         treatmentDetailsId: new FormControl(0, [Validators.required]),
-        totalAmount: new FormControl(0, [Validators.required])
+        totalAmount: new FormControl('', [Validators.required])
       });
       console.log("Form Initialized:", this.billingfmGroup.value);
      }
 
-     checkRequired(controlName:any)
-     {
-      return this.billingfmGroup.controls[controlName].errors?.['required'];
-     }
-
-    checkminlength(controlName:any)
-    {
-      return this.billingfmGroup.controls[controlName].errors?.['minlength'];
+     limitTotalAmount(event: any) {
+      let val = event.target.value;
+      if (val.replace('.', '').length > 7) {
+        val = val.slice(0, 11); // 10 digits + dot (if present)
+        event.target.value = val;
+        this.billingfmGroup.get('totalAmount')?.setValue(val);
+      }
     }
+
 
     getbill() {
           this.baseService.GET<any>(this.URL+"TblBill/GetAll").subscribe({
@@ -165,6 +158,3 @@ nextpage(page: number) {
   }
 }
 }
-
-
-

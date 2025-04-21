@@ -36,12 +36,12 @@ export  class empshiftmapping implements OnInit {
       this.getUserNames();
       this.getEmpShiftMapping();
       // this.AddEmpShift();
-    
+
      }
 
      empshiftmappingfmGroup:FormGroup;
 
-     // Page NAvigation 
+     // Page NAvigation
      paginatedList: any[] = [];
      currentPage: number = 1;
      totalPages: number = 1;
@@ -56,14 +56,14 @@ export  class empshiftmapping implements OnInit {
      createFormGroup() {
       this.empshiftmappingfmGroup = new FormGroup({
         employeeshiftMappingId:new FormControl(0,[Validators.required]),
-        userId: new FormControl(null, [Validators.required]),  
+        userId: new FormControl(null, [Validators.required]),
         shiftId: new FormControl(null, [Validators.required]),
         employeeshiftMappingStartingDate: new FormControl(null, [Validators.required]),
         employeeshiftMappingEndingDate: new FormControl(null, [Validators.required])
       });
     }
-    
-    
+
+
     // resetForm() {
     //   this.empshiftmappingfmGroup.reset();
     //   this.empshiftmappingfmGroup.patchValue({ employeeshiftMappingId: 0 });
@@ -75,8 +75,8 @@ export  class empshiftmapping implements OnInit {
       this.createFormGroup();
       this.employeeshiftMappingId = null;
     }
-    
-    
+
+
 
      checkRequired(controlName:any)
     {
@@ -122,9 +122,9 @@ nextpage(page: number) {
         });
     }
 
-    
 
-   
+
+
 
 
     getUserNames() {
@@ -142,7 +142,7 @@ nextpage(page: number) {
        this.lstempshiftmapping = response.data;
        this.totalPages = Math.ceil(this.lstempshiftmapping.length / this.itemsPerPage); // FIX: Update total pages
        this. Paginationrecord();
-       this.PageNumber(); 
+       this.PageNumber();
        });
       }
 
@@ -155,8 +155,8 @@ nextpage(page: number) {
             next: (response:any) => {
             if (response.statusCode === 200) {
             console.log("POST Response:", response);
-            this.getEmpShiftMapping();  
-            this.Paginationrecord();  
+            this.getEmpShiftMapping();
+            this.Paginationrecord();
             this.isShowList = true;
             this.currentPage = 1;
           }
@@ -167,14 +167,14 @@ nextpage(page: number) {
         error: () => {
           this.toastr.error('Failed to Add ', 'Error');
         }
-        
+
         });
         }
-    
+
 
 
           editEmpShift(item: any) {
-            debugger
+
               this.employeeshiftMappingId = item.employeeshiftMappingId;
               this.isShowList = false;
 
@@ -194,7 +194,7 @@ nextpage(page: number) {
 
 
       updateEmpShift() {
-        debugger
+
         this.baseService.PUT(this.URL+"TblEmployeeshiftMapping/Update", this.empshiftmappingfmGroup.getRawValue())
           .subscribe({
             next: (response:any) => {
@@ -202,7 +202,7 @@ nextpage(page: number) {
             console.log("PUT Response:", response);
             this.getEmpShiftMapping();
             this.isShowList = true;
-            this.currentPage = 1; 
+            this.currentPage = 1;
           }
           else {
             this.toastr.error(response.message, 'Error');
@@ -211,7 +211,7 @@ nextpage(page: number) {
         error: () => {
           this.toastr.error('Failed to Update ', 'Error');
         }
-        
+
         });
         }
 
@@ -223,7 +223,7 @@ nextpage(page: number) {
             next: (response:any) => {
             if (response.statusCode === 200) {
             console.log("DELETE Response:", response);
-            this.getEmpShiftMapping(); 
+            this.getEmpShiftMapping();
           }
           else {
             this.toastr.error(response.message, 'Error');
@@ -232,9 +232,9 @@ nextpage(page: number) {
         error: () => {
           this.toastr.error('Failed to Delete ', 'Error');
         }
-        
+
         });
         }
-    
-  
+
+
 }

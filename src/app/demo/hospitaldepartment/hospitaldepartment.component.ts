@@ -46,7 +46,7 @@ constructor(
      {
       this.hospitaldeptfmGroup = new FormGroup({
         hospitalDepartmentId: new FormControl(0, [Validators.required]),
-        departmentName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        departmentName: new FormControl('', [Validators.required, Validators.minLength(3),Validators.maxLength(15)]),
 
       });
      }
@@ -58,8 +58,14 @@ constructor(
 
     checkminlength(controlName:any)
     {
-      return this.hospitaldeptfmGroup.controls[controlName].errors?.['minlength'];
+      return this.hospitaldeptfmGroup.controls[controlName].errors?.['minlength'] ;
     }
+    checkmaxlength(controlName:any)
+    {
+      return this.hospitaldeptfmGroup.controls[controlName].errors?.['maxlength'];
+    }
+
+
 
     getDept() {
           this.baseService.GET<any>(this.URL+"TblHospitalDept/GetAll").subscribe({

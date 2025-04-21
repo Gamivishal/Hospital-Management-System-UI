@@ -63,7 +63,7 @@ export class MedicineTypeComponent implements OnInit{
 
       this.medicineTypeFormGroup = new FormGroup({
         medicineTypeID:new FormControl(0,[Validators.required]),
-        typeName:new FormControl(null,[Validators.required,Validators.minLength(3)]),
+        typeName:new FormControl(null,[Validators.required,Validators.minLength(3),Validators.maxLength(5)]),
 
 
       })
@@ -76,7 +76,11 @@ export class MedicineTypeComponent implements OnInit{
 
     checkminlength(controlName:any)
     {
-       return this.medicineTypeFormGroup.controls[controlName].errors?.['minlength'];
+       return this.medicineTypeFormGroup.controls[controlName].touched && this.medicineTypeFormGroup.controls[controlName].errors?.['minlength'];
+    }
+    checkmaxlength(controlName:any)
+    {
+      return this.medicineTypeFormGroup.controls[controlName].touched &&  this.medicineTypeFormGroup.controls[controlName].errors?.['maxlength'];
     }
 
   getMedicineTypes(){
@@ -128,7 +132,7 @@ add(){
 
 
   updateMedicineTypes() {
-    debugger
+
     this.baseService.PUT(this.URL+"TblMedicineType/Update",this.medicineTypeFormGroup.getRawValue())// No ID in the URL
       .subscribe({
         next: (response: any) => {
@@ -136,19 +140,19 @@ add(){
             this.toastr.success(response.message, 'Success');
           this.getMedicineTypes();
           this.isShowList = true;
-          
+
           // this.medicineTypeFormGroup.reset({
           //   medicineTypeID: 0,
           //   typeName: ''
-  
+
           //     })
             }
             else {
               this.toastr.error(response.message, 'Error');
             }
-  
+
      this.currentPage = 1;
-  
+
           // this.selectedHospitalId = null;
         },
         error: () => {

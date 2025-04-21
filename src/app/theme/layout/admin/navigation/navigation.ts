@@ -45,7 +45,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Shift Type',
         type: 'item',
         url: '/shift',
-        icon: 'feather icon-home',
+        icon: 'feather icon-clock',
         classes: 'nav-item'
       },
       {
@@ -53,7 +53,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Hospital Type',
         type: 'item',
         url: '/hospitaltype',
-        icon: 'feather icon-home',
+        icon: 'feather icon-disc',
         classes: 'nav-item'
       },
       {
@@ -61,7 +61,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Medicine Type',
         type: 'item',
         url: '/medicinetype',
-        icon: 'feather icon-home',
+        icon: 'feather icon-disc',
         classes: 'nav-item'
       },
 
@@ -70,7 +70,15 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Hospital Department',
         type: 'item',
         url: '/hospitaldepartment',
-        icon: 'feather icon-home',
+        icon: 'feather icon-disc',
+        classes: 'nav-item'
+      },
+      {
+        id: 'patientdata',
+        title: 'Patient Data',
+        type: 'item',
+        url: '/patientdata',
+        icon: 'feather icon-disc',
         classes: 'nav-item'
       },
 
@@ -79,7 +87,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Room Type',
         type: 'item',
         url: '/roomtype',
-        icon: 'feather icon-home',
+        icon: 'feather icon-disc',
         classes: 'nav-item'
       },
       {
@@ -95,7 +103,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Roles',
         type: 'item',
         url: '/roles',
-        icon: 'feather icon-home',
+        icon: 'feather icon-disc',
         classes: 'nav-item'
       },
       {
@@ -103,7 +111,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Facility Type',
         type: 'item',
         url: '/facilitytype',
-        icon: 'feather icon-home',
+        icon: 'feather icon-disc',
         classes: 'nav-item'
       },
 
@@ -112,7 +120,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Disease Type',
         type: 'item',
         url: '/diseasetype',
-        icon: 'feather icon-home',
+        icon: 'feather icon-disc',
         classes: 'nav-item'
       },
     ]
@@ -126,60 +134,60 @@ export const NavigationItems: NavigationItem[] = [
     children: [
       {
         id: 'Empshiftmapping',
-        title: 'EmpShiftMapping',
+        title: 'Employee Shift Mapping',
         type: 'item',
         url: '/empshiftmapping',
-        icon: 'feather icon-home',
+        icon: 'feather icon-watch',
         classes: 'nav-item'
       },
       {
         id: 'Empdepartmentmapping',
-        title: 'Empdepartmentmapping',
+        title: 'Employee Department',
         type: 'item',
         url: '/empdepartmentmapping',
-        icon: 'feather icon-home',
+        icon: 'feather icon-briefcase',
         classes: 'nav-item'
       },
       {
         id: 'patientdoctormapping',
-        title: 'PatientDoctorMapping',
+        title: 'Patient Doctor Mapping',
         type: 'item',
         url: '/patientdoctormapping',
-        icon: 'feather icon-home',
+        icon: 'feather icon-activity',
         classes: 'nav-item'
       },
       {
         id: 'medicinedetails',
-        title: 'Medicinedetails',
+        title: 'Medicine Details',
         type: 'item',
         url: '/medicinedetails',
-        icon: 'feather icon-home',
+        icon: 'feather icon-slack',
         classes: 'nav-item'
       },
       {
         id: 'roomTypeFacilityMapping',
-        title: 'roomTypeFacilityMapping',
+        title: 'Roomtype Facility',
         type: 'item',
         url: '/roomTypeFacilityMapping',
-        icon: 'feather icon-home',
+        icon: 'feather icon-wifi',
         classes: 'nav-item'
       },
       {
         id: 'PatientAdmitionDetails',
-        title: 'PatientAdmitionDetails',
+        title: 'Patient Admition Details',
         type: 'item',
         url: '/PatientAdmitionDetails',
-        icon: 'feather icon-home',
+        icon: 'feather icon-slack',
         classes: 'nav-item'
       },
 
 
       {
         id: 'treatmentdetails',
-        title: 'Treatmentdetails',
+        title: 'Treatment Details',
         type: 'item',
         url: '/treatmentdetails',
-        icon: 'feather icon-home',
+        icon: 'feather icon-plus',
         classes: 'nav-item'
       },
       {

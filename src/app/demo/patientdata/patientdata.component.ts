@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup,Validators} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
@@ -46,8 +46,13 @@ export class PatientDataComponent implements OnInit {
   patientFormGroup = new FormGroup({
     fullName: new FormControl(''),
     email: new FormControl(''),
-    password: new FormControl(''),
-    mobileNumber: new FormControl(''),
+    // password: new FormControl(''),
+    mobileNumber: new FormControl('',[
+      Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(10),
+      Validators.pattern(/^[0-9]*$/)
+    ]),
     dob: new FormControl(''),
     gender: new FormControl(''),
     address: new FormControl(''),
@@ -56,6 +61,22 @@ export class PatientDataComponent implements OnInit {
     medical_History: new FormControl(''),
 
   });
+  checkValidation(controlName: string) {
+    const control = this.patientFormGroup.controls[controlName];
+    if (control.errors) {
+      if (control.errors['minlength']) {
+        return 'Minimum length is ' + control.errors['minlength'].requiredLength + ' digits.';
+      }
+      if (control.errors['maxlength']) {
+        return 'Maximum length is ' + control.errors['maxlength'].requiredLength + ' digits.';
+      }
+      if (control.errors['pattern']) {
+        return 'Only numbers are allowed.';
+      }
+    }
+    return null;
+  }
+
 
 
 
