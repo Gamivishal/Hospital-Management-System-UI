@@ -135,7 +135,7 @@ const routes: Routes = [
       },
       {
         path: 'room',
-       loadComponent : () => import('./demo/room/room.component').then((c) => c.roomsComponent),
+       loadComponent : () => import('./demo/room/room.component').then((c) => c.room),
        canActivate: [AuthGuard]
       },
       {
