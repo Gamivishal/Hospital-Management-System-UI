@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+//* eslint-disable @typescript-eslint/no-unused-vars */
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { BaseService } from 'src/app/services/base.service';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import * as CryptoJS from 'crypto-js';  // Import CryptoJS
 
 @Component({
   selector: 'app-auth-signin',
@@ -20,16 +23,23 @@ export default class AuthSigninComponent {
   objlogin:any;
   URL=AppConstant.url
 
-
-
-
+  // AES 256
+  encryptPassword(password: string): string {
+    const key = CryptoJS.enc.Utf8.parse('12345678901234567890123456789012');
+    const iv = CryptoJS.enc.Utf8.parse('1234567890123456');
+    return CryptoJS.AES.encrypt(password, key, { iv }).toString();
+  }
 
   OnLogin(){
-    ;
-    const apiurl = this.URL+`TblUser/ValidateCredential?email=${encodeURIComponent(this.email)}&password=${encodeURIComponent(this.password)}`;
+
+
+const encryptedPassword = this.encryptPassword(this.password);
+const apiurl = this.URL + `TblUser/ValidateCredential?email=${encodeURIComponent(this.email)}&password=${encodeURIComponent(encryptedPassword)}`;
+
+
 
     this.baseService.GET<any>(apiurl).subscribe(response=>{
-      
+
       console.log("GET Response:", response);
       this.objlogin = response.data;
 
@@ -44,9 +54,9 @@ export default class AuthSigninComponent {
         this.toastr.success(response.message);
       } else {
         this.toastr.error(response.message, 'Envalid credentials');
-      } 
-    })  
+      }
+    })
   }
-  
-  
+
+
 }

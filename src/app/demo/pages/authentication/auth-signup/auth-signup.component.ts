@@ -1,8 +1,12 @@
+/* eslint-disable no-debugger */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import * as CryptoJS from 'crypto-js';
+//import CryptoJS = require('crypto-js');
 
 @Component({
   selector: 'app-signup',
@@ -33,7 +37,7 @@ export class SignupComponent implements OnInit {
       {
         FullName: new FormControl(null, [Validators.required, Validators.minLength(3)]),
         Email: new FormControl(null, [Validators.required, Validators.email, Validators.maxLength(100)]),
-        Password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
+        Password: new FormControl(null, [Validators.required]),
         ConfirmPassword: new FormControl(null, [Validators.required]),
         MobileNumber: new FormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
         Gender: new FormControl(null, [Validators.required]),
@@ -98,30 +102,42 @@ export class SignupComponent implements OnInit {
   }
 
   signup() {
-    // Check if the form is valid before making the API call
     if (this.signupForm.valid) {
-      // Form data
-      const formData = this.signupForm.value;
-      console.log('Form Data:', formData); // Log the form data to see it in the console
-  
-      // API call to the backend
-      this.http.post('https://localhost:7272/api/TblPatient/Add', formData).subscribe({
+
+      debugger;
+      const key = CryptoJS.enc.Utf8.parse('12345678901234567890123456789012');
+      const iv = CryptoJS.enc.Utf8.parse('1234567890123456');
+
+      const password = this.signupForm.get('Password')?.value;
+      const confirmPassword = this.signupForm.get('ConfirmPassword')?.value;
+
+
+      const encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv }).toString();
+      const encryptedConfirmPassword = CryptoJS.AES.encrypt(confirmPassword, key, { iv }).toString();
+
+      const encryptedData = {
+        ...this.signupForm.value,
+        Password: encryptedPassword,
+        ConfirmPassword: encryptedConfirmPassword
+      };
+
+
+      console.log('Encrypted Form Data:', this.signupForm.value);
+
+      // Send POST request with encrypted password
+      this.http.post('https://localhost:7272/api/TblPatient/Add',encryptedData).subscribe({
         next: (response) => {
-          // Success response
-          console.log('Signup successful:', response);
+          this.signupForm.reset();
           alert('Signup successful!');
-          this.signupForm.reset();  // Reset form after successful submission
+          //this.signupForm.reset();
         },
         error: (err) => {
-          // Error response
           console.error('Signup failed:', err);
           alert('Signup failed. Try again later.');
         }
       });
     } else {
-      // If the form is invalid, mark all fields as touched to show validation messages
       this.signupForm.markAllAsTouched();
     }
   }
-  
 }
