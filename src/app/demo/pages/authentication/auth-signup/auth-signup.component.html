@@ -150,17 +150,22 @@
                 </div>
               </div>
             </div>
-  
-            <button type="button" class="btn btn-primary mt-3" (click)="signup()" [disabled]="signupForm.invalid">
+            <div>
+            <button type="button" class="btn btn-primary shadow-2 mb-4" (click)="signup()" [disabled]="signupForm.invalid" [routerLink]="['/auth/signin']">Sign up</button>
+ 
+            <p class="mb-0 text-muted">
+                Already have an account? <a [routerLink]="['/auth/signin']">Log in</a>
+            </p>
+            <!-- <button type="button" class="btn btn-primary mt-3" (click)="signup()" [disabled]="signupForm.invalid">
               Sign Up
             </button>
           </form>
   
           <p class="mb-0 text-muted mt-2">
             Already have an account? <a [routerLink]="['/auth/signin']">Log in</a>
-          </p>
+          </p> -->
         </div>
-      </div>
-    </div>
-  </div>
+      <!-- </div> -->
+    <!-- </div> -->
+  <!-- </div> -->
   
