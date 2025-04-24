@@ -1,0 +1,124 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-debugger */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @angular-eslint/component-class-suffix */
+import { Component, OnInit } from '@angular/core';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { BaseService } from 'src/app/services/base.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
+import { ToastrService } from 'ngx-toastr';
+
+@Component({
+  selector: 'app-hospitaltype',
+  standalone: true,
+  imports: [SharedModule],
+  templateUrl: './MenuPermission.component.html',
+  styleUrls: ['./MenuPermission.component.scss']
+})
+export class MenuPermission implements OnInit {
+  TblMenuPermissionlist: any[] = [];
+  MenuPermissionlist : any []=[];
+  selectedRoleId: number | null = null;
+  // paginatedList: any[] = [];
+  // currentPage: number = 1;
+  // totalPages: number = 1;
+  // totalRecords: number = 0;
+  // itemsPerPage: number = AppConstant.RecordPerPage;
+  // pageNumbers: number[] = [];
+  isShowList: boolean = true;
+  selectedHospitalId: number | null = null;
+  URL = AppConstant.url;
+
+
+
+  constructor(private baseService: BaseService, private toastr: ToastrService) {}
+
+  ngOnInit() {
+    //this.createFormGroup();
+    this.getMenuPermissionlist();
+    this.getdisease()
+  }
+
+  // Submit all menu permissions to backend
+  submitMenuPermissions() {
+    this.baseService.POST(this.URL + "TblMenuPermission/Add", this.TblMenuPermissionlist)
+      .subscribe({
+        next: (response: any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
+           // this.isShowList=true;
+          } else {
+            this.toastr.error(response.message, 'Error');
+          }
+        },
+        error: () => {
+          this.toastr.error('Failed to submit menu permissions', 'Error');
+        }
+      });
+  }
+
+  // createFormGroup() {
+  //   this.hospitalTypefmGroup = new FormGroup({
+  //     HospitalTypeID: new FormControl(0, [Validators.required]),
+  //     HospitalType: new FormControl(null, [Validators.required, Validators.minLength(3)]),
+  //     isActive: new FormControl(false)  // Binding the checkbox to this form control
+  //   });
+  // }
+
+  // checkRequired(controlName: any) {
+  //   return (
+  //     this.hospitalTypefmGroup.controls[controlName].touched &&
+  //     this.hospitalTypefmGroup.controls[controlName].errors?.['required']
+  //   );
+  // }
+
+  // checkminlength(controlName: any) {
+  //   return (
+  //     this.hospitalTypefmGroup.controls[controlName].touched &&
+  //     this.hospitalTypefmGroup.controls[controlName].errors?.['minlength']
+  //   );
+  // }
+  getdisease(){
+    this.baseService.GET<any>(this.URL+"GetDropDownList/FillRoles").subscribe(response => {
+      console.log("GET Response:", response);
+      this.MenuPermissionlist = response.data;
+      this.selectedRoleId = this.MenuPermissionlist[0]?.id;
+      this.getMenuPermissionlist();
+    })
+  }
+
+
+  // getMenuPermissionlist() {
+  //   this.baseService.GET<any>(this.URL + "TblMenuPermission/GetAll").subscribe(response => {
+  //     this.TblMenuPermissionlist = response.data || [];
+
+
+  //   });
+  // }
+  getMenuPermissionlist() {
+    const roleIdParam = this.selectedRoleId ? `?roleId=${this.selectedRoleId}` : '';
+    this.baseService.GET<any>(`${this.URL}TblMenuPermission/GetAll${roleIdParam}`)
+      .subscribe(response => {
+        this.TblMenuPermissionlist = response.data || [];
+      });
+  }
+
+
+
+
+  //checkbox
+  onCheckboxChange(item: any, field: string) {
+    const updatePayload = {
+      menuRoleMappingID: item.menuRoleMappingID,
+      roleID: item.roleID,
+      menuID: item.menuID,
+      [field]: item[field], // dynamic key
+      // Optional: add other permission values if your API expects them
+      isEdit: item.isEdit,
+      isAdd: item.isAdd,
+      isDelete: item.isDelete,
+      isView: item.isView
+    };
+  }
+}
