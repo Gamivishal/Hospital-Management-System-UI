@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule, NgIfContext } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 
@@ -14,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-diseasetype',
   standalone: true,
-  imports: [CommonModule,SharedModule],
+  imports: [CommonModule,SharedModule, DatatableComponent],
   templateUrl: './diseasetype.component.html',
   styleUrls: ['./diseasetype.component.scss']
 })
@@ -37,6 +38,16 @@ export class DiseaseTypeComponent implements OnInit{
   //   "typeName":"",
   // }
   http=inject(HttpClient)
+
+  tableHeaders = [
+    { label: 'DieseaseName', key: 'dieseaseName' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
+
 
   constructor(private baseService: BaseService, private toastr: ToastrService) {}
  
@@ -182,6 +193,21 @@ add(){
       this.toastr.error('Failed to delete ', 'Error');
     }
   });
+    }
+
+    onTableAction(event: { action: string; row: any }) {
+      const actionHandlers: { [key: string]: () => void } = {
+        edit: () => this.editdieseaseTypes(event.row),
+        delete: () => this.onDelete(event.row.dieseaseTypeID),
+      };
+    
+      const actionKey = event.action.toLowerCase();
+    
+      if (actionHandlers[actionKey]) {
+        actionHandlers[actionKey]();
+      } else {
+        console.warn('Unknown action:', event.action);
+      }
     }
 
 //record for the page

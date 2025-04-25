@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { AppConstant } from '../baseservice/baseservice.service';
 // import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 
@@ -18,8 +19,8 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [SharedModule],
-  templateUrl: './room.component.html',
+  imports: [SharedModule, DatatableComponent],
+  templateUrl:'./room.component.html',
   styleUrls: ['./room.component.scss']
 })
 export class room implements OnInit {
@@ -32,17 +33,27 @@ export class room implements OnInit {
 
   roomfmGroup: FormGroup;
 
-  currentPage = 1;
-  itemsPerPage = 5;
-  totalPages = 0;
-  pageNumbers: number[] = [];
+     // Page NAvigation
+     currentPage: number = 1; //currect page number
+     itemsPerPage: number = 5; //total data in page
+     totalPages: number = 0; //total page
+     pageNumbers: number[] = [];//list
+     URL=AppConstant.url
 
-  URL = AppConstant.url;
+     tableHeaders = [
+      { label: 'Room no', key: 'roomNumber' },
+      { label: 'Room typename', key: 'roomType' },
+      { label: 'Created By', key: 'createdBy' },
+      { label: 'Created On', key: 'createdOn' },
+      { label: 'Updated By', key: 'updatedBy' },
+      { label: 'Updated On', key: 'updatedOn' },
+      { label: 'Is Active', key: 'isActive' }
+    ];
+  
 
-  constructor(
-    private baseService: BaseService,
-    private toastr: ToastrService
-  ) {}
+
+   constructor(private baseService: BaseService,
+      private toastr: ToastrService) {}
 
   ngOnInit() {
     this.createFormGroup();
@@ -199,32 +210,64 @@ export class room implements OnInit {
     });
   }
 
-  onDelete(id: number) {
-    this.baseService.DELETE(this.URL + "TblRoom/Delete?id=" + id).subscribe(() => {
-      this.toastr.success("Deleted successfully");
-      this.getroom();
-    });
-  }
 
-  Paginationrecord() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedList = this.lstroom.slice(startIndex, endIndex);
-  }
 
-  PageNumber() {
-    this.pageNumbers = [];
-    for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
-      this.pageNumbers.push(i);
+    //delete room
+    
+      onDelete(roomId: number){
+                this.baseService.DELETE(URL+"Tblroom/delete?id=" +roomId).subscribe({
+                  next: (response: any) => {
+                    if (response.statusCode === 200) {
+                      this.toastr.success(response.message, 'Success');
+                  console.log("DELETE Response:", response);
+                  this.getroomname();
+                  this.isShowList = true;
+              } else {
+                this.toastr.error(response.message, 'Error');
+              }
+            },
+            error: () => {
+              this.toastr.error('Failed to delete ', 'Error');
+            }
+          });
+      }
+
+      onTableAction(event: { action: string; row: any }) {
+        const actionHandlers: { [key: string]: () => void } = {
+          edit: () => this.editroom(event.row),
+          delete: () => this.onDelete(event.row.roomId),
+        };
+      
+        const actionKey = event.action.toLowerCase();
+      
+        if (actionHandlers[actionKey]) {
+          actionHandlers[actionKey]();
+        } else {
+          console.warn('Unknown action:', event.action);
+        }
+      }
+  
+      Paginationrecord() {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        this.paginatedList = this.lstroom.slice(startIndex, endIndex);
+      }
+    
+      PageNumber() {
+        this.pageNumbers = [];
+        for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
+          this.pageNumbers.push(i);
+        }
+      }
+    
+      nextpage(page: number) {
+        if (page >= 1 && page <= this.totalPages) {
+          this.currentPage = page;
+          this.Paginationrecord();
+        }
+      }
     }
-  }
 
-  nextpage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.Paginationrecord();
-    }
-  }
-}
 
+       
 

@@ -8,7 +8,17 @@
     </button>
     </div>
       <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
-          <div class="table-responsive">
+        <div class="table-responsive">
+            <table class="table table-striped">
+          <app-datatable
+          [tableHeaders]="tableHeaders"
+          [tableData]="paginatedList"
+          [actionButtons]="['edit', 'delete']"
+          (actionClicked)="onTableAction($event)">
+          </app-datatable>
+            </table>
+          </div>
+          <!-- <div class="table-responsive">
               <table class="table table-striped">
                   <thead>
                       <tr>
@@ -18,7 +28,6 @@
                         <th>Updated By</th>
                         <th>Updated On</th>
                         <th>Status</th> 
-                        <!-- <th>Version No</th> -->
                         <th>
                            action 
                         </th>
@@ -32,7 +41,6 @@
                           <td> {{ item.updatedBy }}</td>
                           <td>{{ item.updatedOn | date:'dd/MM/yyyy hh:mm:ss a':'UTC+5:30' }}</td>
                           <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
-                          <!-- <td>{{ item.versionNo }}</td> -->
 
                           
                           <td>
@@ -54,7 +62,7 @@
                       
                   </tbody>
               </table>
-          </div>
+          </div> -->
           <nav aria-label="Page navigation">
             <ul class="pagination justify-content-end">
                 <li class="page-item" [class.disabled]="currentPage === 1">

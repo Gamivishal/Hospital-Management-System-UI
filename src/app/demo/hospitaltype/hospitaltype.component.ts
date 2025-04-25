@@ -5,10 +5,11 @@ import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 @Component({
   selector: 'app-hospitaltype',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule,DatatableComponent],
 
   templateUrl:'./hospitaltype.component.html',
   styleUrls: ['./hospitaltype.component.scss']
@@ -27,6 +28,16 @@ export  class hospitaltypeComponent implements OnInit {
   isShowList:boolean=true;
   selectedHospitalId: number | null = null;
  URL=AppConstant.url;
+
+ tableHeaders = [
+  { label: 'Hospital Type', key: 'hospitalType' },
+  { label: 'Created By', key: 'createdBy' },
+  { label: 'Created On', key: 'createdOn' },
+  { label: 'Updated By', key: 'updatedBy' },
+  { label: 'Updated On', key: 'updatedOn' },
+  { label: 'Is Active', key: 'isActive' }
+];
+
 
 
   constructor(
@@ -147,6 +158,21 @@ export  class hospitaltypeComponent implements OnInit {
       });
         }
 
+        onTableAction(event: { action: string; row: any }) {
+          const actionHandlers: { [key: string]: () => void } = {
+            edit: () => this.editHospital(event.row),
+            delete: () => this.onDelete(event.row.hospitalTypeID),
+          };
+        
+          const actionKey = event.action.toLowerCase();
+        
+          if (actionHandlers[actionKey]) {
+            actionHandlers[actionKey]();
+          } else {
+            console.warn('Unknown action:', event.action);
+          }
+        }
+    
 
 //PAGINATION STOP
 Paginationrecord() {

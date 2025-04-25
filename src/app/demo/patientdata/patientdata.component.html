@@ -8,6 +8,16 @@
     <app-card cardTitle="Patient Data Table" [options]="false" blockClass="table-border-style">
       <div class="table-responsive">
         <table class="table table-striped">
+      <app-datatable
+      [tableHeaders]="tableHeaders"
+      [tableData]="paginatedList"
+      [actionButtons]="['edit', 'delete']"
+      (actionClicked)="onTableAction($event)">
+      </app-datatable>
+        </table>
+      </div>
+      <!-- <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Patient ID</th>
@@ -60,7 +70,7 @@
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> -->
       <nav aria-label="Page navigation">
         <ul class="pagination justify-content-end">
             <li class="page-item" [class.disabled]="currentPage === 1">

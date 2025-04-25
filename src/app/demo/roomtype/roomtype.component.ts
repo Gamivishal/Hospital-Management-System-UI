@@ -8,11 +8,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 @Component({
   selector: 'app-roomtypeess',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, DatatableComponent],
   templateUrl:'./roomtype.component.html',
   styleUrls: ['./roomtype.component.scss']
 })
@@ -22,6 +23,16 @@ export  class RoomTypesComponent implements OnInit {
   isShowList:boolean=true;
   selectedRoomTypeId: number | null = null;
   URL=AppConstant.url
+
+  tableHeaders = [
+    { label: 'Room Type', key: 'roomType' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
+
 //   roomtypepost : any ={
 //       "createBy": 0,
 //       "createdOn": "",
@@ -197,4 +208,20 @@ export  class RoomTypesComponent implements OnInit {
     }
   });
     }
+
+    onTableAction(event: { action: string; row: any }) {
+      const actionHandlers: { [key: string]: () => void } = {
+        edit: () => this.editRoom(event.row),
+        delete: () => this.onDelete(event.row.roomTypeId),
+      };
+    
+      const actionKey = event.action.toLowerCase();
+    
+      if (actionHandlers[actionKey]) {
+        actionHandlers[actionKey]();
+      } else {
+        console.warn('Unknown action:', event.action);
+      }
+    }
+
 }

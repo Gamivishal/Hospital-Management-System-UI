@@ -10,13 +10,14 @@ import { Observable } from 'rxjs';
 import { AppConstant } from '../baseservice/baseservice.service';
 // import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 
 @Component({
   selector: 'app-roomtypeess',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, DatatableComponent],
   templateUrl:'./roomtypefacilitymapping.component.html',
   styleUrls: ['./roomtypefacilitymapping.component.scss']
 })
@@ -36,6 +37,18 @@ export  class roomtypefacilitymapping implements OnInit {
      totalPages: number = 0; //total page
      pageNumbers: number[] = [];//list
      URL=AppConstant.url
+
+     tableHeaders = [
+      { label: 'Room Number', key: 'roomNumber' },
+      { label: 'RoomType', key: 'roomType' },
+      { label: 'Facility Name', key: 'facilityName' },
+      { label: 'Created By', key: 'createdBy' },
+      { label: 'Created On', key: 'createdOn' },
+      { label: 'Updated By', key: 'updatedBy' },
+      { label: 'Updated On', key: 'updatedOn' },
+      { label: 'Is Active', key: 'isActive' }
+    ];
+  
 
 
    constructor(private baseService: BaseService,
@@ -217,5 +230,21 @@ export  class roomtypefacilitymapping implements OnInit {
               this. Paginationrecord();
             }
           }
+
+          onTableAction(event: { action: string; row: any }) {
+            const actionHandlers: { [key: string]: () => void } = {
+              edit: () => this.editroomtypefacilitymapping(event.row),
+              delete: () => this.onDelete(event.row.id),
+            };
+          
+            const actionKey = event.action.toLowerCase();
+          
+            if (actionHandlers[actionKey]) {
+              actionHandlers[actionKey]();
+            } else {
+              console.warn('Unknown action:', event.action);
+            }
           }
+      
+}
 

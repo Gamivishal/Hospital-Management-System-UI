@@ -5,13 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 
 @Component({
   selector: 'app-hospitaldepartment',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, DatatableComponent],
   templateUrl: './hospitaldepartment.component.html',
   styleUrls: ['./hospitaldepartment.component.scss']
 })
@@ -29,6 +30,16 @@ isShowList:boolean=true;
 selectedHospitalId: number | null = null;
 URL=AppConstant.url
 http = inject(HttpClient);
+
+tableHeaders = [
+  { label: 'DepartmentName', key: 'departmentName' },
+  { label: 'Created By', key: 'createdBy' },
+  { label: 'Created On', key: 'createdOn' },
+  { label: 'Updated By', key: 'updatedBy' },
+  { label: 'Updated On', key: 'updatedOn' },
+  { label: 'Is Active', key: 'isActive' }
+];
+
 
 constructor(
   private baseService: BaseService,
@@ -144,6 +155,22 @@ onDelete(hospitalDepartmentId: number){
     }
   });
 }
+
+onTableAction(event: { action: string; row: any }) {
+  const actionHandlers: { [key: string]: () => void } = {
+    edit: () => this.editHospital(event.row),
+    delete: () => this.onDelete(event.row.hospitalDepartmentId),
+  };
+
+  const actionKey = event.action.toLowerCase();
+
+  if (actionHandlers[actionKey]) {
+    actionHandlers[actionKey]();
+  } else {
+    console.warn('Unknown action:', event.action);
+  }
+}
+
 //PAGINATION STOP
 Paginationrecord() {
   const startIndex = (this.currentPage - 1) * this.itemsPerPage;

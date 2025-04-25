@@ -7,7 +7,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule, NgIfContext } from '@angular/common';
 import { AppConstant } from '../baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 
@@ -16,7 +17,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-medicinedetails',
   standalone: true,
-  imports: [SharedModule,CommonModule,RouterModule],
+  imports: [SharedModule,CommonModule,RouterModule, DatatableComponent],
   templateUrl: './medicinedetails.component.html',
   styleUrls: ['./medicinedetails.component.scss']
   
@@ -34,6 +35,20 @@ export class medicinedetails implements OnInit{
   URL=AppConstant.url
   // selected  // Store selected hospital ID for update
   
+  tableHeaders = [
+    { label: 'Medicine', key: 'typeName' },
+    { label: 'DieseaseName', key: 'dieseaseName' },
+    { label: 'Dosage', key: 'dosage' },
+    { label: 'Frequency', key: 'frequency' },
+    { label: 'Duration', key: 'duration' },
+    { label: 'Instruction', key: 'instruction' },
+    { label: 'Issue Date', key: 'issueDateTime' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
 
   
   // medicinetypepost:any={
@@ -48,7 +63,7 @@ export class medicinedetails implements OnInit{
   // // }
   // http=inject(HttpClient)
 
-  constructor(private baseService: BaseService,private toastr: ToastrService) {}
+  constructor(private baseService: BaseService,private toastr: ToastrService, private router: Router) {}
 
  
   // life cycle event
@@ -257,6 +272,22 @@ gettreatmentdetailsidwithname(){
   })
 }
  
+
+onTableAction(event: { action: string; row: any }) {
+  const actionHandlers: { [key: string]: () => void } = {
+    edit: () => this.editmedicinedetails(event.row),
+    delete: () => this.onDelete(event.row.medicineDetailsID),
+    bill: () => this.router.navigate(['/billing', event.row.treatmentDetailsId]),
+  };
+
+  const actionKey = event.action.toLowerCase();
+
+  if (actionHandlers[actionKey]) {
+    actionHandlers[actionKey]();
+  } else {
+    console.warn('Unknown action:', event.action);
+  }
+}
 
 //record for the page
 Paginationrecord() {

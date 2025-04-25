@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 
@@ -14,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-empshiftmapping',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, DatatableComponent],
   templateUrl:'./empshiftmapping.component.html',
   styleUrls: ['./empshiftmapping.component.scss']
 })
@@ -25,6 +26,19 @@ export  class empshiftmapping implements OnInit {
   lstShifts: any[] = [];
   lstUserNames: any[] = [];
 
+
+
+  tableHeaders = [
+    { label: 'fullName', key: 'fullName' },
+    { label: 'shiftname', key: 'shiftname' },
+    { label: 'StartingDate', key: 'employeeshiftMappingStartingDate' },
+    { label: 'EndingDate', key: 'employeeshiftMappingStartingDate' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
 
 
   constructor(private baseService: BaseService,
@@ -236,5 +250,19 @@ nextpage(page: number) {
         });
         }
 
+        onTableAction(event: { action: string; row: any }) {
+          const actionHandlers: { [key: string]: () => void } = {
+            edit: () => this.editEmpShift(event.row),
+            delete: () => this.onDelete(event.row.employeeshiftMappingId),
+          };
+        
+          const actionKey = event.action.toLowerCase();
+        
+          if (actionHandlers[actionKey]) {
+            actionHandlers[actionKey]();
+          } else {
+            console.warn('Unknown action:', event.action);
+          }
+        }
 
 }

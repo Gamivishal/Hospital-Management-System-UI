@@ -8,13 +8,14 @@ import { Observable } from 'rxjs';
 import { AppConstant } from '../baseservice/baseservice.service';
 // import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 
 @Component({
   selector: 'app-roomtypeess',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, DatatableComponent],
   templateUrl:'./empdepartmentmapping.component.html',
   styleUrls: ['./empdepartmentmapping.component.scss']
 })
@@ -25,6 +26,16 @@ export  class EmpDepartmentMapping implements OnInit {
   lstUserNames: any[] = [];
   lstDepartmentName: any[] = [];
   EmpDeptId: number | null = null;
+
+  tableHeaders = [
+    { label: 'Name', key: 'fullName' },
+    { label: 'Department Name', key: 'departmentName' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
 
 
    constructor(private baseService: BaseService,
@@ -195,6 +206,21 @@ export  class EmpDepartmentMapping implements OnInit {
         }
         
         });
+        }
+
+        onTableAction(event: { action: string; row: any }) {
+          const actionHandlers: { [key: string]: () => void } = {
+            edit: () => this.editEmpDeptMapping(event.row),
+            delete: () => this.onDelete(event.row.employeeDepartmentMappingId),
+          };
+        
+          const actionKey = event.action.toLowerCase();
+        
+          if (actionHandlers[actionKey]) {
+            actionHandlers[actionKey]();
+          } else {
+            console.warn('Unknown action:', event.action);
+          }
         }
 
 

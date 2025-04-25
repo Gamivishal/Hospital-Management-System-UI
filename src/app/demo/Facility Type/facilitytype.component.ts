@@ -11,12 +11,13 @@ import { CommonModule,  } from '@angular/common';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 @Component({
   selector: 'app-facilitytype',
   standalone: true,
-  imports: [CommonModule,SharedModule],
+  imports: [CommonModule,SharedModule,DatatableComponent],
   templateUrl: './facilitytype.component.html',
   styleUrls: ['./facilitytype.component.scss']
 })
@@ -30,6 +31,15 @@ export class FacilityTypeComponent implements OnInit{
 
  
   http=inject(HttpClient)
+
+  tableHeaders = [
+    { label: 'facilityName', key: 'facilityName' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
 
   constructor(private baseService: BaseService,
     private toastr: ToastrService) {}
@@ -152,6 +162,20 @@ AddFacilityType(){
  }
 
    
+ onTableAction(event: { action: string; row: any }) {
+  const actionHandlers: { [key: string]: () => void } = {
+    edit: () => this.editFacilityType(event.row),
+    delete: () => this.onDelete(event.row.facilityTypeID),
+  };
+
+  const actionKey = event.action.toLowerCase();
+
+  if (actionHandlers[actionKey]) {
+    actionHandlers[actionKey]();
+  } else {
+    console.warn('Unknown action:', event.action);
+  }
+}
 
 
 //record for the page

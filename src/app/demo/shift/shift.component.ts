@@ -9,10 +9,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 @Component({
   selector: 'app-shift',
   standalone: true,
-  imports: [CommonModule,SharedModule],
+  imports: [CommonModule,SharedModule, DatatableComponent],
   templateUrl: './shift.component.html',
   styleUrls: ['./shift.component.scss']
 })
@@ -24,6 +25,16 @@ export class shiftComponent implements OnInit {
   selectedshiftId: number | null = null;  // Store selected hospital ID for update
   URL=AppConstant.url
 
+  tableHeaders = [
+    { label: 'Start Time', key: 'startTime' },
+    { label: 'End Time', key: 'endTime' },
+    { label: 'Shift Name', key: 'shiftname' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
 
 
   // hopitaltypepost : any ={
@@ -202,6 +213,21 @@ export class shiftComponent implements OnInit {
       if (page >= 1 && page <= this.totalPages) {
         this.currentPage = page;
         this. Paginationrecord();
+      }
+    }
+
+    onTableAction(event: { action: string; row: any }) {
+      const actionHandlers: { [key: string]: () => void } = {
+        edit: () => this.editshift(event.row),
+        delete: () => this.onDelete(event.row.shiftId),
+      };
+    
+      const actionKey = event.action.toLowerCase();
+    
+      if (actionHandlers[actionKey]) {
+        actionHandlers[actionKey]();
+      } else {
+        console.warn('Unknown action:', event.action);
       }
     }
 
