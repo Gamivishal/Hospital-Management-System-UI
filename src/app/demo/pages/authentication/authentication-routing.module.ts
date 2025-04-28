@@ -11,7 +11,7 @@ const routes: Routes = [
       },
       {
         path: 'signup',
-        loadComponent: () => import('./auth-signup/auth-signup.component')
+        loadComponent: () => import('./auth-signup/auth-signup.component').then(m => m.SignupComponent)
       },
       {
         path: 'forget-password',

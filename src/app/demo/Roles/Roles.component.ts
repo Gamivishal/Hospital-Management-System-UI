@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-Role',
   standalone: true,
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, SharedModule, DatatableComponent],
   templateUrl: './roles.component.html',
   styleUrls: ['./roles.component.scss']
 })
@@ -27,6 +28,17 @@ export class RolesComponent implements OnInit {
   totalPages: number = 0;
   pageNumbers: number[] = [];
   URL=AppConstant.url
+
+  tableHeaders = [
+    { label: 'Role Name', key: 'roleName' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
+
+
 
   roleData :any
   constructor(private baseService: BaseService,
@@ -132,4 +144,21 @@ export class RolesComponent implements OnInit {
       }
     });
   }
+
+  onTableAction(event: { action: string; row: any }) {
+    const actionHandlers: { [key: string]: () => void } = {
+      edit: () => this.editRole(event.row),
+      //delete: () => this.onDeletepatient(event.row.pateintDoctormappingId),
+    };
+  
+    const actionKey = event.action.toLowerCase();
+  
+    if (actionHandlers[actionKey]) {
+      actionHandlers[actionKey]();
+    } else {
+      console.warn('Unknown action:', event.action);
+    }
+  }
+
+
 }

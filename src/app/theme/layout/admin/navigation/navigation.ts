@@ -33,6 +33,22 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+  {
+    id: 'MenuPermissionModel',
+    title: 'Menu Permission',
+    type: 'group',
+    icon: 'icon-navigation',
+    children: [
+      {
+        id: 'patientdata',
+        title: 'Menu Permission',
+        type: 'item',
+        url: '/MenuPermissionModel',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+    ]
+  },
 
   {
     id: 'master',
@@ -126,6 +142,7 @@ export const NavigationItems: NavigationItem[] = [
     ]
 
   },
+
   {
     id: 'data',
     title: 'Data',

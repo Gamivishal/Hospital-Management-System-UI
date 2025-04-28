@@ -13,11 +13,12 @@ import { RouterModule } from '@angular/router';
 
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 @Component({
   selector: 'app-treatmentdetails',
   standalone: true,
-  imports: [CommonModule,SharedModule,RouterModule],
+  imports: [CommonModule,SharedModule,RouterModule,DatatableComponent],
   templateUrl: './treatmentdetails.component.html',
   styleUrls: ['./treatmentdetails.component.scss']
   
@@ -30,6 +31,17 @@ export class TreatmentdetailsComponent implements OnInit{
   selectedtreatmentDetailsId: number | null = null;  // Store selected hospital ID for update
   diseaselist: any []=[];
   patientlist:any []=[];
+
+  tableHeaders = [
+    { label: 'DieseaseName', key: 'dieseaseName' },
+    { label: 'Patient Name', key: 'patientName' },
+    { label: 'TreatmentDate', key: 'treatmentDate' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
 
    
   // medicinetypepost:any={
@@ -254,6 +266,23 @@ nextpage(page: number) {
     this. Paginationrecord();
   }
 }
+
+onTableAction(event: { action: string; row: any }) {
+  const actionHandlers: { [key: string]: () => void } = {
+    edit: () => this.edittreatmentdetails(event.row),
+    delete: () => this.onDelete(event.row.treatmentDetailsId),
+  };
+
+  const actionKey = event.action.toLowerCase();
+
+  if (actionHandlers[actionKey]) {
+    actionHandlers[actionKey]();
+  } else {
+    console.warn('Unknown action:', event.action);
+  }
+}
+
+
 }
 
 

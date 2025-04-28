@@ -91,7 +91,7 @@ const routes: Routes = [
       {
         path: 'empshiftmapping',
         loadComponent : () => import ('./demo/empshiftmapping/empshiftmapping.component').then((c) => c.empshiftmapping),canActivate: [AuthGuard]
-        
+
       },
       {
         path: 'empdepartmentmapping',
@@ -135,7 +135,7 @@ const routes: Routes = [
       },
       {
         path: 'room',
-       loadComponent : () => import('./demo/room/room.component').then((c) => c.roomsComponent),
+       loadComponent : () => import('./demo/room/room.component').then((c) => c.room),
        canActivate: [AuthGuard]
       },
       {
@@ -162,6 +162,13 @@ const routes: Routes = [
         loadComponent: () => import('./demo/extra/sample-page/sample-page.component'),
         canActivate: [AuthGuard]
       },
+
+      {
+        path: 'MenuPermissionModel',
+        loadComponent: () => import('./demo/MenuPermission/MenuPermission.component').then((c) => c.MenuPermission),
+        canActivate: [AuthGuard]
+
+      }
 
     ]
   },

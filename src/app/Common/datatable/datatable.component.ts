@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output, SimpleChanges } from '@angular/core';
 import { CardComponent } from 'src/app/theme/shared/components/card/card.component';
 
 @Component({
@@ -10,21 +10,20 @@ import { CardComponent } from 'src/app/theme/shared/components/card/card.compone
   styleUrl: './datatable.component.scss'
 })
 export class DatatableComponent {
-  //@Input() tableHeaders: string[] = [];
-  //@Input() tableKeys: string[] = [];
+  @Input() tableHeaders: { label: string, key: string }[] = [];
   @Input() tableData: any[] = [];
-  @Input() hiddenColumns: string[] = [];
+  @Input() actionButtons: string[] = [];
+  //@Input() hiddenColumns: string[] = [];
+  //@Input() primaryKey: string = 'id';
   //@Output() edit = new EventEmitter<any>();
   //@Output() delete = new EventEmitter<any>();
+  @Output() actionClicked = new EventEmitter<{ action: string, row: any }>();
 
 
   displayedColumns: string[] = [];
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['tableData'] && this.tableData.length > 0) {
-      const allKeys = Object.keys(this.tableData[0]);
-      this.displayedColumns = allKeys.filter(key => !this.hiddenColumns.includes(key));
-    }
+  onButtonClick(action: string, row: any) {
+    this.actionClicked.emit({ action, row });
   }
 
   // onEdit(row: any): void {

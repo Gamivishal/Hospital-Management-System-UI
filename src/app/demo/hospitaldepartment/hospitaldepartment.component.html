@@ -7,9 +7,18 @@
         <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
             <div class="table-responsive">
                 <table class="table table-striped">
+              <app-datatable
+              [tableHeaders]="tableHeaders"
+              [tableData]="paginatedList"
+              [actionButtons]="['edit', 'delete']"
+              (actionClicked)="onTableAction($event)">
+              </app-datatable>
+                </table>
+              </div>
+            <!-- <div class="table-responsive">
+                <table class="table table-striped">
                     <thead>
                         <tr>
-                            <!-- <th>hospitalDepartmentId</th> -->
                             <th>DepartmentName</th>
                             <th>CreatedBy </th>
                             <th>CreatedOn</th>
@@ -17,27 +26,26 @@
                             <th>UpdateOn</th>
                             <th>IsActive</th>
 
-                            <!-- <th>VersionNo</th> -->
+                            
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let department of paginatedList">
 
-                            <!-- <td>{{ department.hospitalDepartmentId }}</td> -->
                             <td>{{ department.departmentName }}</td>
                             <td>{{ department.createdBy }}</td>
                             <td>{{ department.createdOn | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                             <td>{{ department.updatedBy }}</td>
                             <td>{{ department.updatedOn | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                             <td>{{ department.isActive ? 'Yes' : 'No' }}</td>
-                            <!-- <td>{{ department.versionNo }}</td> -->
+                            
                             <td>
-                                <!-- https://feathericons.dev/?search=activity&iconset=feather -->
+                           
                                 <svg style="cursor: pointer;" (click)="editHospital(department)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
               <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
             </svg>
-                                <!-- https://feathericons.dev/?search=xcircle&iconset=feather -->
+                                
                                 <svg style="cursor: pointer;" (click)="onDelete(department.hospitalDepartmentId)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
   <circle cx="12" cy="12" r="10" />
   <line x1="15" x2="9" y1="9" y2="15" />
@@ -48,7 +56,7 @@
                             </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> -->
             <nav aria-label="Page navigation">
               <ul class="pagination justify-content-end">
                   <li class="page-item" [class.disabled]="currentPage === 1">

@@ -7,11 +7,12 @@ import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 @Component({
   selector: 'app-hospitaltype',
   standalone: true,
-  imports: [SharedModule, RouterModule],
+  imports: [SharedModule, RouterModule,DatatableComponent],
 
   templateUrl:'./PatientAdmitionDetails.component.html',
   styleUrls: ['./PatientAdmitionDetails.component.scss']
@@ -38,9 +39,21 @@ TreatmentDetailsCodelist:any[]=[];
   selectedHospitalId: number | null = null;
  URL=AppConstant.url;
 
+  tableHeaders = [
+    { label: 'patientName', key: 'patientName' },
+    { label: 'DieseaseName', key: 'dieseaseName' },
+    { label: 'admisionDate', key: 'admisionDate' },
+    { label: 'roomNumber', key: 'roomNumber' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
+
 
   constructor(
-    private baseService: BaseService,private toastr: ToastrService ) {
+    private baseService: BaseService,private toastr: ToastrService,private router: Router ) {
 
   }
 
@@ -162,11 +175,21 @@ onPatientNameChange(event: any) {
 
 
 
-
-
-
-
-
+        onTableAction(event: { action: string; row: any }) {
+          const actionHandlers: { [key: string]: () => void } = {
+            //edit: () => this.onPatientNameChange(event.row),
+            //delete: () => this.onDelete(event.row.PatientAdmitionDetailsId),
+            bill: () => this.router.navigate(['/billing', event.row.treatmentDetailsId]),
+          };
+        
+          const actionKey = event.action.toLowerCase();
+        
+          if (actionHandlers[actionKey]) {
+            actionHandlers[actionKey]();
+          } else {
+            console.warn('Unknown action:', event.action);
+          }
+        }
 
 
 //PAGINATION STOP

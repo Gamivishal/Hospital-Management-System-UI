@@ -11,10 +11,11 @@
         <div class="table-responsive">
           <table class="table table-striped">
         <app-datatable
-          [tableData]="paginatedList"
-          [hiddenColumns]="['versionNo']"
-          [hiddenColumns]="['pateintDoctormappingId']"
-          ></app-datatable>
+        [tableHeaders]="tableHeaders"
+        [tableData]="paginatedList"
+        [actionButtons]="['edit', 'delete']"
+        (actionClicked)="onTableAction($event)">
+        </app-datatable>
           </table>
         </div>
         <!-- <div class="table-responsive">

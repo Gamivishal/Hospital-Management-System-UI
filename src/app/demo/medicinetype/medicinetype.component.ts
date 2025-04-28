@@ -11,12 +11,13 @@ import { CommonModule,  } from '@angular/common';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 @Component({
   selector: 'app-medicinetype',
   standalone: true,
-  imports: [CommonModule,SharedModule],
+  imports: [CommonModule,SharedModule, DatatableComponent],
   templateUrl: './medicinetype.component.html',
   styleUrls: ['./medicinetype.component.scss']
 })
@@ -39,6 +40,16 @@ export class MedicineTypeComponent implements OnInit{
   //   "typeName":"",
   // }
   http=inject(HttpClient)
+
+  tableHeaders = [
+    { label: 'MedicineType', key: 'typeName' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
+
 
   constructor(private baseService: BaseService,
     private toastr: ToastrService) {}
@@ -178,6 +189,23 @@ add(){
     }
   });
     }
+
+
+    onTableAction(event: { action: string; row: any }) {
+      const actionHandlers: { [key: string]: () => void } = {
+        edit: () => this.editMedicineTypes(event.row),
+        delete: () => this.onDelete(event.row.medicineTypeID),
+      };
+    
+      const actionKey = event.action.toLowerCase();
+    
+      if (actionHandlers[actionKey]) {
+        actionHandlers[actionKey]();
+      } else {
+        console.warn('Unknown action:', event.action);
+      }
+    }
+
 
 
 //record for the page

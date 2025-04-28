@@ -5,11 +5,12 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup,Validators} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 @Component({
   selector: 'app-patientdata',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, DatatableComponent],
   templateUrl: './patientdata.component.html',
   styleUrls: ['./patientdata.component.scss']
 })
@@ -30,6 +31,23 @@ export class PatientDataComponent implements OnInit {
   selectUserid: number = 0
   URL = AppConstant.url;
   http = inject(HttpClient);
+
+  tableHeaders = [
+    { label: 'Patient ID', key: 'patientId' },
+    { label: 'Full Name', key: 'fullName' },
+    { label: 'DOB', key: 'dob'},
+    { label: 'Gender', key: 'gender' },
+    { label: 'Address', key: 'address' },
+    { label: 'Blood Group', key: 'blood_Group' },
+    { label: 'Emergency Contact', key: 'emergency_Contact' },
+    { label: 'Medical History', key: 'medical_History' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
+
 
   constructor(
     private baseService: BaseService,
@@ -157,6 +175,22 @@ getdropdown(){
       }
     });
   }
+
+  onTableAction(event: { action: string; row: any }) {
+    const actionHandlers: { [key: string]: () => void } = {
+      edit: () => this.editPatient(event.row),
+      delete: () => this.onDelete(event.row.UserId),
+    };
+  
+    const actionKey = event.action.toLowerCase();
+  
+    if (actionHandlers[actionKey]) {
+      actionHandlers[actionKey]();
+    } else {
+      console.warn('Unknown action:', event.action);
+    }
+  }
+
 
 //PAGINATION STOP
 Paginationrecord() {

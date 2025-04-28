@@ -20,6 +20,7 @@ import '../../../assets/charts/amchart/worldLow.js';
 import dataJson from 'src/fake-data/map_data';
 import mapColor from 'src/fake-data/map-color-data.json';
 import { BaseService } from 'src/app/services/base.service';
+import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,30 +29,40 @@ import { BaseService } from 'src/app/services/base.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  constructor(private baseService: BaseService) {}
+  constructor(private baseService: BaseService) {
+
+  }
+  URL = AppConstant.url;
+  globalVarTotalPatientsVisitedToday: number = 100;
+  globalVarTotalMedicineStock: number = 100;
+  globalVarTotalAmountOfBillGeneratedToday: number = 100;
+  sales: any[] = [];
+
   // life cycle event
   ngOnInit() {
 
-    this.baseService.GET("https://jsonplaceholder.typicode.com/todos/1").subscribe(response=>{
-      console.log("GET Response:", response);
-    });
-    // POST request
-    this.baseService.POST("https://jsonplaceholder.typicode.com/posts", { title: 'foo', body: 'bar', userId: 1 })
-      .subscribe(response => {
-        console.log("POST Response:", response);
-      });
+    this.getAllDashboardCardDetails();
 
-    // PUT request
-    this.baseService.PUT("https://jsonplaceholder.typicode.com/posts/1", { id: 1, title: 'updated', body: 'updated content', userId: 1 })
-      .subscribe(response => {
-        console.log("PUT Response:", response);
-      });
+    // this.baseService.GET("https://jsonplaceholder.typicode.com/todos/1").subscribe(response => {
+    //   console.log("GET Response:", response);
+    // });
+    // // POST request
+    // this.baseService.POST("https://jsonplaceholder.typicode.com/posts", { title: 'foo', body: 'bar', userId: 1 })
+    //   .subscribe(response => {
+    //     console.log("POST Response:", response);
+    //   });
 
-    //  DELETE request
-    this.baseService.DELETE("https://jsonplaceholder.typicode.com/posts/1")
-      .subscribe(response => {
-        console.log("DELETE Response:", response);
-      });
+    // // PUT request
+    // this.baseService.PUT("https://jsonplaceholder.typicode.com/posts/1", { id: 1, title: 'updated', body: 'updated content', userId: 1 })
+    //   .subscribe(response => {
+    //     console.log("PUT Response:", response);
+    //   });
+
+    // //  DELETE request
+    // this.baseService.DELETE("https://jsonplaceholder.typicode.com/posts/1")
+    //   .subscribe(response => {
+    //     console.log("DELETE Response:", response);
+    //   });
     setTimeout(() => {
       const latlong = dataJson;
 
@@ -254,39 +265,63 @@ export class DashboardComponent implements OnInit {
           }
         ]
       });
-    }, 500);
+    }, 1000);
+  }
+
+
+  dashboardCarDetailsArray: any[] = [];
+  getAllDashboardCardDetails() {
+    this.baseService.GET<any>(this.URL + "DashboardCardDetail/getAllDashboardCardDetails")
+      .subscribe(response => {
+        this.globalVarTotalPatientsVisitedToday = response.data.totalPatientsVisitedToday;
+        this.globalVarTotalMedicineStock = response.data.totalMedicineStock;
+        this.globalVarTotalAmountOfBillGeneratedToday = response.data.totalAmountOfBillGeneratedToday;
+
+        // console.log(this.dashboardCarDetailsArray);
+        // this.globalVarTotalAmountOfBillGeneratedToday = 600;
+        // console.log("after edit total amount of bill " + this.globalVarTotalAmountOfBillGeneratedToday);
+        // console.log("patients visited today " + response.data.totalPatientsVisitedToday);
+
+        //call method to update sales array data
+        this.updateSalesArrayData();
+
+      });
+  }
+
+  updateSalesArrayData() {
+    this.sales = [
+      {
+        title: 'Patients paid vist today',
+        icon: 'icon-arrow-up text-c-green',
+        amount: this.globalVarTotalPatientsVisitedToday,
+        percentage: '67%',
+        progress: 50,
+        design: 'col-md-6',
+        progress_bg: 'progress-c-theme'
+      },
+      {
+        title: 'Medicine stock',
+        icon: 'icon-arrow-down text-c-red',
+        amount: this.globalVarTotalMedicineStock,
+        percentage: '36%',
+        progress: 35,
+        design: 'col-md-6',
+        progress_bg: 'progress-c-theme2'
+      },
+      {
+        title: 'Total amount of bills generated today',
+        icon: 'icon-arrow-up text-c-green',
+        amount: this.globalVarTotalAmountOfBillGeneratedToday,
+        percentage: '80%',
+        progress: 70,
+        design: 'col-md-12',
+        progress_bg: 'progress-c-theme'
+      }
+    ];
   }
 
   // public method
-  sales = [
-    {
-      title: 'Daily Sales',
-      icon: 'icon-arrow-up text-c-green',
-      amount: '$249.95',
-      percentage: '67%',
-      progress: 50,
-      design: 'col-md-6',
-      progress_bg: 'progress-c-theme'
-    },
-    {
-      title: 'Monthly Sales',
-      icon: 'icon-arrow-down text-c-red',
-      amount: '$2,942.32',
-      percentage: '36%',
-      progress: 35,
-      design: 'col-md-6',
-      progress_bg: 'progress-c-theme2'
-    },
-    {
-      title: 'Yearly Sales',
-      icon: 'icon-arrow-up text-c-green',
-      amount: '$8,638.32',
-      percentage: '80%',
-      progress: 70,
-      design: 'col-md-12',
-      progress_bg: 'progress-c-theme'
-    }
-  ];
+
 
   card = [
     {

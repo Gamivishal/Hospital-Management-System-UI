@@ -1,16 +1,23 @@
 <div class="row" *ngIf="lstroom">
-    @if(isShowList){
+    @if (isShowList) {
     <div class="col-xl-12">
       <div class="d-flex justify-content-end mb-3 position-relative">
         <button type="button" (click)= "resetForm()" class="btn btn-primary add-master-button">
             Add
         </button>
     </div>
-        <!-- <div class="d-flex justify-content-end mb-3 position-relative">
-            <button type="button" (click)="isShowList=false;" class="btn btn-primary add-room-button" style="color: black;">Add Room</button>
-        </div> -->
         <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
-            <div class="table-responsive">
+          <div class="table-responsive">
+            <table class="table table-striped">
+          <app-datatable
+          [tableHeaders]="tableHeaders"
+          [tableData]="paginatedList"
+          [actionButtons]="['edit', 'delete']"
+          (actionClicked)="onTableAction($event)">
+          </app-datatable>
+            </table>
+          </div>
+            <!-- <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -49,7 +56,7 @@
                         
                     </tbody>
                 </table>
-            </div>
+            </div> -->
             <nav aria-label="Page navigation">
               <ul class="pagination justify-content-end">
                   <li class="page-item" [class.disabled]="currentPage === 1">
@@ -68,78 +75,60 @@
         </app-card>
     </div>
     }
-     @if(!isShowList){
-        <div *ngIf="!isShowList">
-            <div class="col-sm-12">
-              <app-card cardTitle="Basic Component" [options]="false">
-                <h5>Form controls</h5>
-                <hr />
-                <div class="row">
-                  <div class="col-md-6">
-                    <form [formGroup]="roomfmGroup">
-          
-                      <!-- Role Name Input - TOP -->
-                      <div class="form-group">
-                        <label for="room number">Room Number</label>
-                        <input type="text" formControlName="roomnumber" class="form-control" placeholder="Enter roomNumber" required />
-                        <span *ngIf="checkRequired('roomnumber')" class="error-span">This Field Is Required</span><br />
-                        <span *ngIf="roomfmGroup.controls['roomnumber']?.errors?.['minlength']" class="error-span" > Minimum 3 characters required </span>
-                      </div>
-          
-                      <!-- Room Type Dropdown - BOTTOM -->
-                      <div class="form-group mt-3">
-                        <label for="roomID">Select Room Type</label>
-                        <select formControlName="roomID" class="form-control" required>
-                          <option value="">Select RoomType</option>
-                          <option *ngFor="let room of lstRoomName" [value]="room.id">{{ room.name }}</option>
-                        </select>
-                        <span *ngIf="checkRequired('roomID')" class="error-span">This Field Is Required</span>
-                      </div>
-          
-                      <!-- Submit / Update Buttons -->
-                      <div class="mt-3">
-                        <button *ngIf="!room" type="button" class="btn btn-primary" [disabled]="roomfmGroup.invalid" (click)="Addroom()" > Submit </button>
-                        <button *ngIf="room" type="button" class="btn btn-success" [disabled]="roomfmGroup.invalid" (click)="updateRoom()" > Update </button>
-                      </div>
-          
-                    </form>
-                  </div>
-                </div>
-              </app-card>
-            </div>
+  
+    @if (!isShowList) {
+    <div class="col-sm-12">
+      <app-card cardTitle="Room Form" [options]="false">
+        <h5>Form controls</h5>
+        <hr />
+        <form [formGroup]="roomfmGroup" action="javascript:">
+  
+          <!-- Room Number Field (Text for Add, Dropdown for Update) -->
+          <div class="form-group">
+            <label>Room Number</label>
+  
+            <!-- Add Mode: Textbox -->
+            <input
+              *ngIf="!roomID"
+              type="text"
+              formControlName="roomNumber"
+              class="form-control"
+              placeholder="Enter Room Number" />
+  
+            <!-- Update Mode: Dropdown -->
+            <select
+              *ngIf="roomID"
+              formControlName="roomNumber"
+              class="form-control">
+              <option value="">Select Room Number</option>
+              <option *ngFor="let room of lstroom" [value]="room.roomNumber">
+                {{ room.roomNumber }}
+              </option>
+            </select>
+  
+            <span *ngIf="checkRequired('roomNumber')" class="error-span">
+              This Field Is Required
+            </span>
           </div>
-        }
-          
   
-    <!-- <div class="col-sm-12">
-        <app-card cardTitle="Basic Component" [options]="false">
-            <h5>Form controls</h5>
-            <hr />
-            <div class="row">
-                <div class="col-md-6">
-                    <form [formGroup]="roomfmGroup" action="javascript:">
-  
-                        <div class="form-group">
-                            <label for="room">Room Type</label>
-            <div class="form-group">
-                <label for="roomID">Select Room</label>
-               <select formControlName="roomID" class="form-control" required>
-                  <option value="">Select RoomType</option>
-                  <option *ngFor="let room of lstRoomName" [value]="room.id">{{ room.name }}</option>
-                </select>
-                <span *ngIf="checkRequired('roomID')" class="error-span">This Field Is Required</span>
-              </div>
-                        </div>
-                        <div class="mt-3">
-                            <div class="mt-3">
-                            <button *ngIf="!room" type="button" class="btn btn-primary" [disabled]="roomfmGroup.invalid"  (click)="Addroom()">Submit</button>
-                            <button *ngIf="room" type="button" class="btn btn-success" [disabled]="roomfmGroup.invalid" (click)="updateRoom()">Update</button>
-                          </div>                                    
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </app-card>
+          <!-- Room Type Field -->
+          <div class="form-group">
+            <label>Room Type</label>
+            <select formControlName="roomTypeID" class="form-control">
+              <option value="">Select Room Type</option>
+              <option *ngFor="let room of lstRoomName" [value]="room.id">{{ room.name }}</option>
+            </select>
+            <span *ngIf="checkRequired('roomTypeID')" class="error-span">
+              This Field Is Required
+            </span>
+          </div>
+          <div class="mt-3">
+            <button *ngIf="!roomID" type="button" class="btn btn-primary" [disabled]="roomfmGroup.invalid" (click)="Addroom()">Submit</button>
+            <button *ngIf="roomID" type="button" class="btn btn-success" [disabled]="roomfmGroup.invalid" (click)="updateroom()">Update</button>
+          </div>
+        </form>
+      </app-card>
     </div>
     }
-   -->
+  </div>
+  

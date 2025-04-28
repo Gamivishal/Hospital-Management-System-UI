@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import * as jsPDF from 'jspdf';
 import { ActivatedRoute } from '@angular/router';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 
@@ -14,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-billing',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, DatatableComponent],
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss']
 })
@@ -35,6 +36,20 @@ isShowList:boolean=true;
 selectedbillingId: number | null = null;
 URL=AppConstant.url
 http = inject(HttpClient);
+
+tableHeaders = [
+  { label: 'FullName', key: 'patientName' },
+  { label: 'Bill ID', key: 'billid' },
+  { label: 'totalAmount', key: 'totalAmount' },
+  { label: 'paymentMethod', key: 'paymentMethod' },
+  { label: 'billDate', key: 'billDate' },
+  { label: 'Created By', key: 'createdBy' },
+  { label: 'Created On', key: 'createdOn' },
+  { label: 'Updated By', key: 'updatedBy' },
+  { label: 'Updated On', key: 'updatedOn' },
+  { label: 'Is Active', key: 'isActive' }
+];
+
 
 constructor(
   private baseService: BaseService,
@@ -137,6 +152,21 @@ constructor(
         }
       });
     }
+
+    onTableAction(event: { action: string; row: any }) {
+      const actionHandlers: { [key: string]: () => void } = {
+        download: () => this.downloadRowAsPDF(event.row),
+      };
+    
+      const actionKey = event.action.toLowerCase();
+    
+      if (actionHandlers[actionKey]) {
+        actionHandlers[actionKey]();
+      } else {
+        console.warn('Unknown action:', event.action);
+      }
+    }
+
     gettreatmentdetailsidwithname(){
       this.baseService.GET<any>(this.URL+"GetDropDownList/FillTreatmentCode").subscribe(response => {
         console.log("GET Response:", response);

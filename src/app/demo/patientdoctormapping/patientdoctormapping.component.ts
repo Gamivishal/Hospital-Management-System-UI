@@ -16,6 +16,7 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./patientdoctormapping.component.scss']
 })
 export class patientdoctormappingComponent implements OnInit {
+  router: any;
   constructor(private baseService: BaseService,
     private toastr: ToastrService) {}
   isShowList:boolean=true;
@@ -27,6 +28,17 @@ export class patientdoctormappingComponent implements OnInit {
   selectedpateintDoctormappingId: number | null = null;  // Store selected shift ID for update
   URL=AppConstant.url
 
+
+  tableHeaders = [
+    { label: 'Doctor Name', key: 'docterName' },
+    { label: 'Patient Name', key: 'patientName' },
+    { label: 'Treatment Name', key: 'treatmentDetailsId' },
+    { label: 'Created By', key: 'createdBy' },
+    { label: 'Created On', key: 'createdOn' },
+    { label: 'Updated By', key: 'updatedBy' },
+    { label: 'Updated On', key: 'updatedOn' },
+    { label: 'Is Active', key: 'isActive' }
+  ];
 
 
   objpentientdoctor:any
@@ -185,8 +197,6 @@ pageNumbers: number[] = [];//list
       });
     }
     updatePatientDoctor() {
-
-
       this.baseService.PUT(this.URL+"TblPateintDoctormapping/Update",this.petientdoctorfmGroup.getRawValue()) // No ID in the URL
         .subscribe({
           next: (response: any) => {
@@ -207,9 +217,9 @@ pageNumbers: number[] = [];//list
       });
     }
 
-    onEditpatient(patient: any) {
-      this.editpatient(patient);
-    }
+    // onEditpatient(patient: any) {
+    //   this.editpatient(patient);
+    // }
 
 
     onDeletepatient(pateintDoctormappingId: number){
@@ -228,6 +238,38 @@ pageNumbers: number[] = [];//list
       this.toastr.error('Failed to delete ', 'Error');
     }
   });
+    }
+
+
+    // onTableAction(event: { action: string; row: any }) {
+    //   switch (event.action) {
+    //     case 'edit':
+    //       this.editpatient(event.row);
+    //       break;
+    //     case 'delete':
+    //       this.onDeletepatient(event.row.pateintDoctormappingId);
+    //       break;
+    //     // case 'Bill':
+    //     //   console.log('Billing logic for:', event.row);
+    //     //   break;
+    //     default:
+    //       console.warn('Unknown action:', event.action);
+    //   }
+    // }
+
+    onTableAction(event: { action: string; row: any }) {
+      const actionHandlers: { [key: string]: () => void } = {
+        edit: () => this.editpatient(event.row),
+        delete: () => this.onDeletepatient(event.row.pateintDoctormappingId),
+      };
+    
+      const actionKey = event.action.toLowerCase();
+    
+      if (actionHandlers[actionKey]) {
+        actionHandlers[actionKey]();
+      } else {
+        console.warn('Unknown action:', event.action);
+      }
     }
 
 

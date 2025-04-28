@@ -10,25 +10,28 @@ import { Observable } from 'rxjs';
 import { AppConstant } from '../baseservice/baseservice.service';
 // import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
+
+// ... Imports remain same
 
 @Component({
-  selector: 'app-roomtypeess',
+  selector: 'app-rooms',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, DatatableComponent],
   templateUrl:'./room.component.html',
   styleUrls: ['./room.component.scss']
 })
-export  class roomsComponent implements OnInit {
-  lstroom: any [] = [];
+export class room implements OnInit {
+  lstroom: any[] = [];
   paginatedList: any[] = [];
-  isShowList:boolean=true;
+  isShowList: boolean = true;
   lstRoomName: any[] = [];
-  lstFacilityName: any[] = [];
-  room: number | null = null;
-  facility: any;
-  roomfmGroup:FormGroup;
+  lstroomnumber: any[] = [];
+  roomID: number | null = null;
+
+  roomfmGroup: FormGroup;
 
      // Page NAvigation
      currentPage: number = 1; //currect page number
@@ -37,162 +40,175 @@ export  class roomsComponent implements OnInit {
      pageNumbers: number[] = [];//list
      URL=AppConstant.url
 
+     tableHeaders = [
+      { label: 'Room no', key: 'roomNumber' },
+      { label: 'Room typename', key: 'roomType' },
+      { label: 'Created By', key: 'createdBy' },
+      { label: 'Created On', key: 'createdOn' },
+      { label: 'Updated By', key: 'updatedBy' },
+      { label: 'Updated On', key: 'updatedOn' },
+      { label: 'Is Active', key: 'isActive' }
+    ];
+  
+
 
    constructor(private baseService: BaseService,
       private toastr: ToastrService) {}
 
-     ngOnInit() {
-      this.createFormGroup();
-      this.getroom();
-      //this.getroom();
+  ngOnInit() {
+    this.createFormGroup();
+    this.getroomname();
+    this.getroom();
+    this.getroomnumber();
+  }
 
-     }
-     resetForm(){
-      this.isShowList = false;
-      this.createFormGroup();
-      this.room = null;
-    }
+  createFormGroup() {
+    this.roomfmGroup = new FormGroup({
+      roomID: new FormControl(null),
+      roomNumber: new FormControl(null, Validators.required),
+      roomTypeID: new FormControl(null, Validators.required)
+    });
+  }
+
+  checkRequired(controlName: string) {
+    return this.roomfmGroup.controls[controlName].errors?.['required'];
+  }
+
+  resetForm() {
+    this.isShowList = false;
+    this.createFormGroup();
+    this.roomID = null;
+  }
+  getroomnumber() {
+    this.baseService.GET<any>(this.URL+"GetDropDownList/FillRoomNo")
+      .subscribe(response => {
+        console.log("Facility Name:", response);
+        this.lstroomnumber = response.data;
+      });
+  }
+
+  getroomname() {
+    this.baseService.GET<any>(this.URL + "GetDropDownList/FillRoomtype")
+      .subscribe(response => {
+      this.lstRoomName = response.data;
+    });
+  }
   
 
-     
+  getroom() {
+    this.baseService.GET<any>(this.URL + "TblRoom/GetAll").subscribe(response => {
+      this.lstroom = response.data;
+      this.totalPages = Math.ceil(this.lstroom.length / this.itemsPerPage);
+      this.Paginationrecord();
+      this.PageNumber();
+    });
+  }
 
-     createFormGroup() {
-
-      this.roomfmGroup = new FormGroup({
-       // roomtypefacilitymappingid: new FormControl(0),
-        roomID: new FormControl(null, Validators.required),
-        room: new FormControl(null, Validators.required),
-
-      });
-
+  // Addroom() {
+  //   this.baseService.POST(this.URL + "TblRoom/Add", this.roomfmGroup.getRawValue()).subscribe({
+  //     next: (response: any) => {
+  //       if (response.statusCode === 200) {
+  //         this.toastr.success(response.message, 'Success');
+  //         this.getroom();
+  //         this.roomfmGroup.reset();
+  //         this.isShowList = true;
+  //       } else {
+  //         this.toastr.error(response.message, 'Error');
+  //       }
+  //     },
+  //     error: () => {
+  //       this.toastr.error('Failed to Add', 'Error');
+  //     }
+  //   });
+  // }
+  Addroom() {
+    const formValues = this.roomfmGroup.getRawValue();
+    console.log("Form Values Before Add:", formValues); // Debugging log
+  
+    if (this.roomfmGroup.invalid) {
+      this.toastr.error('Please fill all required fields', 'Error');
+      return;
     }
-
-
-
-     checkRequired(controlName:any)
-    {
-     return this.roomfmGroup.controls[controlName].errors?.['required'];
-    }
-
-
-    checkminlength(controlName:any)
-    {
-       return this.roomfmGroup.controls[controlName].errors?.['minlength']
-    }
-    //PAGINATION STOP
-    Paginationrecord() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      this.paginatedList = this.lstroom.slice(startIndex, endIndex);
-    }
-
-      //page number
-      PageNumber() {
-        this.pageNumbers = [];
-        for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
-          this.pageNumbers.push(i);
-         }
-      }
-      //change page
-      nextpage(page: number) {
-        if (page >= 1 && page <= this.totalPages) {
-          this.currentPage = page;
-          this. Paginationrecord();
+  
+    this.baseService.POST(this.URL + "TblRoom/Add", this.roomfmGroup.getRawValue()).subscribe({
+      next: (response: any) => {
+        if (response.statusCode === 200) {
+          this.toastr.success(response.message, 'Success');
+          this.getroom();
+          this.roomfmGroup.reset();
+          this.isShowList = true;
+        } else {
+          this.toastr.error(response.message, 'Error');
         }
+      },
+      error: (error) => {
+        console.error("POST Error:", error); // Log error for debugging
+        this.toastr.error('Failed to Add', 'Error');
       }
-      
+    });
+  }
+  // Addroom() {
+  //   if (this.roomfmGroup.invalid) {
+  //     this.toastr.error('Please fill all required fields', 'Error');
+  //     return;
+  //   }
+  
+  //   const formValues = this.roomfmGroup.getRawValue();
+  
+  //   const payload = {
+  //     tblRoom: {
+  //       roomNumber: formValues.roomNumber,
+  //       roomTypeID: +formValues.roomTypeID
+  //     }
+  //   };
+  
+  //   this.baseService.POST(this.URL + "TblRoom/Add", payload).subscribe({
+  //     next: (response: any) => {
+  //       if (response.statusCode === 200) {
+  //         this.toastr.success(response.message, 'Success');
+  //         this.getroom();
+  //         this.roomfmGroup.reset();
+  //         this.isShowList = true;
+  //       } else {
+  //         this.toastr.error(response.message, 'Error');
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.error("POST Error:", error);
+  //       this.toastr.error('Failed to Add', 'Error');
+  //     }
+  //   });
+  // }
+  
 
+  editroom(item: any) {
+    this.roomID = item.roomID;
+    this.isShowList = false;
+    this.roomfmGroup.patchValue({
+      roomID: item.roomID,
+      roomNumber: item.roomNumber,
+      roomTypeID: item.roomTypeID 
+    });
+  }
 
-
-
-    //get roomname
-    getroomname() {
-      this.baseService.GET<any>(this.URL + "GetDropDownList/FillRoomtype")
-        .subscribe(response => {
-          console.log("Room Name Response:", response); // Debugging log
-          this.lstRoomName = response.data;
-        });
-    }
-   
-
-    
-
-    //get room
-
-
-    getroom(){
-      
-      this.baseService.GET<any>(this.URL+"TblRoom/GetAll").subscribe(response =>{
-        console.log("GET Response:", response);
-        this.lstroom = response.data;
-        this.totalPages = Math.ceil(this.lstroom.length / this.itemsPerPage);
-        this.Paginationrecord();
-        this.PageNumber();
-      });
-    }
-
-
-    //add room
-
-    Addroom() {
-      
-      // console.log(this.roomtypefacilitymappingfmGroup.getRawValue())
-      this.baseService.POST(this.URL + "Tblroom/Add", this.roomfmGroup.getRawValue())
-        .subscribe({next: (response:any) => {
-          if (response.statusCode === 200) {
-            this.toastr.success(response.message, 'Success');
-            this.getroom();
-            this.Paginationrecord();
-            this.isShowList = true;
-            this.roomfmGroup.reset();
-          }
-          else {
-            this.toastr.error(response.message, 'Error');
-          }
-        },
-        error: () => {
-          this.toastr.error('Failed to Add', 'Error');
+  updateroom() {
+    this.baseService.PUT(this.URL + "TblRoom/Update", this.roomfmGroup.getRawValue()).subscribe({
+      next: (response: any) => {
+        if (response.statusCode === 200) {
+          this.toastr.success(response.message, 'Updated');
+          this.getroom();
+          this.roomfmGroup.reset();
+          this.roomID = null;
+          this.isShowList = true;
+        } else {
+          this.toastr.error(response.message, 'Error');
         }
-
-        });
+      },
+      error: () => {
+        this.toastr.error('Failed to Update', 'Error');
       }
-
-
-
-      //edit room
-
-      editRoom(item: any) {
-        this.room = item.roomID;
-        this.isShowList = false;
-        this.roomfmGroup.patchValue({
-        roomID: item.roomID,
-        facilityID: item.facilityID
-        });
-      }
-
-      //update room
-
-      updateRoom() {
-      this.baseService.PUT(this.URL + "Tblroom/Update", this.roomfmGroup.getRawValue())
-        .subscribe({next: (response:any) => {
-          if (response.statusCode === 200) {
-            this.toastr.success(response.message, 'Success');
-          console.log("PUT Response", response)
-            this.getroom();
-            this.isShowList = true;
-            this.room = null;
-            this.roomfmGroup.reset();
-          }
-          else {
-            this.toastr.error(response.message, 'Error');
-          }
-        },
-        error: () => {
-          this.toastr.error('Failed to Update', 'Error');
-        }
-
-        });
-    }
+    });
+  }
 
 
 
@@ -214,6 +230,41 @@ export  class roomsComponent implements OnInit {
               this.toastr.error('Failed to delete ', 'Error');
             }
           });
+      }
+
+      onTableAction(event: { action: string; row: any }) {
+        const actionHandlers: { [key: string]: () => void } = {
+          edit: () => this.editroom(event.row),
+          delete: () => this.onDelete(event.row.roomId),
+        };
+      
+        const actionKey = event.action.toLowerCase();
+      
+        if (actionHandlers[actionKey]) {
+          actionHandlers[actionKey]();
+        } else {
+          console.warn('Unknown action:', event.action);
+        }
+      }
+  
+      Paginationrecord() {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        this.paginatedList = this.lstroom.slice(startIndex, endIndex);
+      }
+    
+      PageNumber() {
+        this.pageNumbers = [];
+        for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
+          this.pageNumbers.push(i);
+        }
+      }
+    
+      nextpage(page: number) {
+        if (page >= 1 && page <= this.totalPages) {
+          this.currentPage = page;
+          this.Paginationrecord();
+        }
       }
     }
 
