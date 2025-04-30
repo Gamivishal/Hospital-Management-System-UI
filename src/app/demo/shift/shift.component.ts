@@ -9,11 +9,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 @Component({
   selector: 'app-shift',
   standalone: true,
-  imports: [CommonModule,SharedModule, DatatableComponent],
+  imports: [CommonModule,SharedModule,PopUpComponent, DatatableComponent],
   templateUrl: './shift.component.html',
   styleUrls: ['./shift.component.scss']
 })
@@ -36,6 +37,8 @@ export class shiftComponent implements OnInit {
     { label: 'Is Active', key: 'isActive' }
   ];
 
+    showPopup = false
+    shiftIdDelete: number | null = null
 
   // hopitaltypepost : any ={
   //   "createBy": 0,
@@ -194,6 +197,31 @@ export class shiftComponent implements OnInit {
 
 
 
+    openDeleteModal(id: number) {
+      this.shiftIdDelete = id;
+      this.showPopup = true;
+    }
+    
+    confirmDelete() {
+      if (this.shiftIdDelete !== null) {
+        this.onDelete(this.shiftIdDelete);
+      }
+      this.cleanupPopup();
+    }
+    
+    
+    cancelDelete() {
+      this.cleanupPopup();
+    }
+    
+    // hide the modal  and reset the ID 
+    private cleanupPopup() {
+      this.shiftIdDelete = null;
+      this.showPopup = false;
+    }
+
+
+
     //record for the page
     Paginationrecord() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -219,7 +247,7 @@ export class shiftComponent implements OnInit {
     onTableAction(event: { action: string; row: any }) {
       const actionHandlers: { [key: string]: () => void } = {
         edit: () => this.editshift(event.row),
-        delete: () => this.onDelete(event.row.shiftId),
+        delete: () => this.openDeleteModal(event.row.shiftId),
       };
     
       const actionKey = event.action.toLowerCase();

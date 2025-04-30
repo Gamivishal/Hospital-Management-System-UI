@@ -14,11 +14,12 @@ import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 
 @Component({
   selector: 'app-treatmentdetails',
   standalone: true,
-  imports: [CommonModule,SharedModule,RouterModule,DatatableComponent],
+  imports: [CommonModule,SharedModule,RouterModule,DatatableComponent,PopUpComponent],
   templateUrl: './treatmentdetails.component.html',
   styleUrls: ['./treatmentdetails.component.scss']
   
@@ -59,6 +60,10 @@ export class TreatmentdetailsComponent implements OnInit{
    
   http=inject(HttpClient)
   mydate = new Date().toISOString().slice(0, 10);
+
+
+  showPopup = false
+  treatmentDetailsIdDelete: number | null = null
 
   constructor(private baseService: BaseService,
     private toastr: ToastrService) {}
@@ -211,6 +216,32 @@ add(){
     }
 
 
+
+    
+    openDeleteModal(id: number) {
+      this.treatmentDetailsIdDelete = id;
+      this.showPopup = true;
+    }
+    
+    confirmDelete() {
+      if (this.treatmentDetailsIdDelete !== null) {
+        this.onDelete(this.treatmentDetailsIdDelete);
+      }
+      this.cleanupPopup();
+    }
+    
+    
+    cancelDelete() {
+      this.cleanupPopup();
+    }
+    
+    // hide the modal  and reset the ID 
+    private cleanupPopup() {
+      this.treatmentDetailsIdDelete = null;
+      this.showPopup = false;
+    }
+
+
     // getdisease() {
     //     this.baseService.GET<any>(this.URL+"GetDropDownList/FillDiseaseName").subscribe(response => {
     //       console.log("Get response:", response);
@@ -270,7 +301,7 @@ nextpage(page: number) {
 onTableAction(event: { action: string; row: any }) {
   const actionHandlers: { [key: string]: () => void } = {
     edit: () => this.edittreatmentdetails(event.row),
-    delete: () => this.onDelete(event.row.treatmentDetailsId),
+    delete: () => this.openDeleteModal(event.row.treatmentDetailsId),
   };
 
   const actionKey = event.action.toLowerCase();

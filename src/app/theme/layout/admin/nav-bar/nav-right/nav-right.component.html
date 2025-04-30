@@ -112,12 +112,24 @@
     </div>
   </li> -->
   <li class="nav-item" style="line-height: 45px; padding-right: 40px;">
-    <div class="d-flex align-items-center bg-primary text-white rounded px-3 py-2" style="gap: 10px;">
+    <div class="d-flex align-items-center bg-primary text-black rounded px-3 py-2" style="gap: 10px;">
       <img src="assets/images/user/avatar-2.jpg" alt="User" class="rounded-circle" style="width: 35px; height: 35px;">
       <span class="fw-semibold">{{ userName }}</span>
-    <a href="javascript:" (click)="logout()" title="Logout" class="text-white d-flex align-items-center" style="cursor: pointer;">
+    <a href="javascript:" (click)="openLogoutModal()" title="Logout" class="text-white d-flex align-items-center" style="cursor: pointer;">
         <i class="feather icon-log-out"></i>
     </a>
+
+     
+    <app-pop-up 
+  *ngIf="showLogoutPopup"
+  [title]="'Confirm Logout'"
+  [message]="'Are you sure you want to logout?'"
+  [ButtonText]="'Logout'"
+  [show]="showLogoutPopup"
+  (confirmDelete)="confirmLogout()"
+  (cancelDelete)="cancelLogout()">
+</app-pop-up>
+
     </div>
   </li>
 </ul>

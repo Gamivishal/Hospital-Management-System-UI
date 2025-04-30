@@ -11,13 +11,14 @@ import { CommonModule,  } from '@angular/common';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 import { ToastrService } from 'ngx-toastr';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 @Component({
   selector: 'app-facilitytype',
   standalone: true,
-  imports: [CommonModule,SharedModule,DatatableComponent],
+  imports: [CommonModule,SharedModule, PopUpComponent,DatatableComponent],
   templateUrl: './facilitytype.component.html',
   styleUrls: ['./facilitytype.component.scss']
 })
@@ -31,6 +32,11 @@ export class FacilityTypeComponent implements OnInit{
 
  
   http=inject(HttpClient)
+
+
+  showPopup = false;
+  facilityTypeIDDelete: number | null = null;
+
 
   tableHeaders = [
     { label: 'facilityName', key: 'facilityName' },
@@ -161,11 +167,35 @@ AddFacilityType(){
   });
  }
 
+
+ openDeleteModal(id: number) {
+  this.facilityTypeIDDelete = id;
+  this.showPopup = true;
+}
+
+confirmDelete() {
+  if (this.facilityTypeIDDelete !== null) {
+    this.onDelete(this.facilityTypeIDDelete);
+  }
+  this.cleanupPopup();
+}
+
+
+cancelDelete() {
+  this.cleanupPopup();
+}
+
+// hide the modal  and reset the ID 
+private cleanupPopup() {
+  this.facilityTypeIDDelete = null;
+  this.showPopup = false;
+}
+
    
  onTableAction(event: { action: string; row: any }) {
   const actionHandlers: { [key: string]: () => void } = {
     edit: () => this.editFacilityType(event.row),
-    delete: () => this.onDelete(event.row.facilityTypeID),
+    delete: () => this.openDeleteModal(event.row.facilityTypeID),
   };
 
   const actionKey = event.action.toLowerCase();

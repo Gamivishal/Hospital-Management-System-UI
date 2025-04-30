@@ -4,13 +4,14 @@ import { Router } from '@angular/router';
 
 // bootstrap import
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-nav-right',
-  imports: [SharedModule],
+  imports: [SharedModule,PopUpComponent],
   templateUrl: './nav-right.component.html',
   styleUrls: ['./nav-right.component.scss'],
   providers: [NgbDropdownConfig]
@@ -21,6 +22,8 @@ export class NavRightComponent {
   private router = inject(Router);
   // public props
 
+
+  showLogoutPopup = false;
   // constructor
   constructor() {
     const config = inject(NgbDropdownConfig);
@@ -39,4 +42,26 @@ export class NavRightComponent {
     localStorage.removeItem('data');
     this.router.navigate(['/auth/signin']);
   }
+
+
+
+  
+
+openLogoutModal() {
+  this.showLogoutPopup = true;
+}
+
+confirmLogout() {
+  this.logout();
+  this.cleanupLogoutPopup();
+}
+
+cancelLogout() {
+  this.cleanupLogoutPopup();
+}
+
+private cleanupLogoutPopup() {
+  this.showLogoutPopup = false;
+}
+
 }

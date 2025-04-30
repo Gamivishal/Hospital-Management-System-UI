@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule, NgIfContext } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
@@ -15,7 +16,7 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
 @Component({
   selector: 'app-diseasetype',
   standalone: true,
-  imports: [CommonModule,SharedModule, DatatableComponent],
+  imports: [CommonModule,SharedModule, PopUpComponent, DatatableComponent],
   templateUrl: './diseasetype.component.html',
   styleUrls: ['./diseasetype.component.scss']
 })
@@ -48,6 +49,10 @@ export class DiseaseTypeComponent implements OnInit{
     { label: 'Is Active', key: 'isActive' }
   ];
 
+
+
+  showPopup = false;
+  dieseaseTypeIDDelete: number | null = null;
 
   constructor(private baseService: BaseService, private toastr: ToastrService) {}
  
@@ -198,7 +203,7 @@ add(){
     onTableAction(event: { action: string; row: any }) {
       const actionHandlers: { [key: string]: () => void } = {
         edit: () => this.editdieseaseTypes(event.row),
-        delete: () => this.onDelete(event.row.dieseaseTypeID),
+        delete: () => this.openDeleteModal(event.row.dieseaseTypeID),
       };
     
       const actionKey = event.action.toLowerCase();
@@ -231,6 +236,31 @@ nextpage(page: number) {
     this. Paginationrecord();
   }
 }
+
+
+openDeleteModal(id: number) {
+  this.dieseaseTypeIDDelete = id;
+  this.showPopup = true;
+}
+
+confirmDelete() {
+  if (this.dieseaseTypeIDDelete !== null) {
+    this.onDelete(this.dieseaseTypeIDDelete);
+  }
+  this.cleanupPopup();
+}
+
+
+cancelDelete() {
+  this.cleanupPopup();
+}
+
+// hide the modal  and reset the ID 
+private cleanupPopup() {
+  this.dieseaseTypeIDDelete = null;
+  this.showPopup = false;
+}
+
 }
     
 

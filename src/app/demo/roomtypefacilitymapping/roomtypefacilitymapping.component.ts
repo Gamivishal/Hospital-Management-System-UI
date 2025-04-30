@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { AppConstant } from '../baseservice/baseservice.service';
 // import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
@@ -17,7 +18,7 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
 @Component({
   selector: 'app-roomtypeess',
   standalone: true,
-  imports: [SharedModule, DatatableComponent],
+  imports: [SharedModule,PopUpComponent, DatatableComponent],
   templateUrl:'./roomtypefacilitymapping.component.html',
   styleUrls: ['./roomtypefacilitymapping.component.scss']
 })
@@ -38,6 +39,10 @@ export  class roomtypefacilitymapping implements OnInit {
      pageNumbers: number[] = [];//list
      URL=AppConstant.url
 
+
+
+      showPopup = false
+      idDelete: number | null = null;
      tableHeaders = [
       { label: 'Room Number', key: 'roomNumber' },
       { label: 'RoomType', key: 'roomType' },
@@ -208,6 +213,34 @@ export  class roomtypefacilitymapping implements OnInit {
       }
 
 
+    
+
+
+      
+openDeleteModal(id: number) {
+  this.idDelete = id;
+  this.showPopup = true;
+}
+
+confirmDelete() {
+  if (this.idDelete !== null) {
+    this.onDelete(this.idDelete);
+  }
+  this.cleanupPopup();
+}
+
+
+cancelDelete() {
+  this.cleanupPopup();
+}
+
+// hide the modal  and reset the ID 
+private cleanupPopup() {
+  this.idDelete = null;
+  this.showPopup = false;
+}
+
+
 
        //PAGINATION STOP
        Paginationrecord() {
@@ -234,7 +267,7 @@ export  class roomtypefacilitymapping implements OnInit {
           onTableAction(event: { action: string; row: any }) {
             const actionHandlers: { [key: string]: () => void } = {
               edit: () => this.editroomtypefacilitymapping(event.row),
-              delete: () => this.onDelete(event.row.id),
+              delete: () => this.openDeleteModal(event.row.roomTypeFacilityMappingID),
             };
           
             const actionKey = event.action.toLowerCase();

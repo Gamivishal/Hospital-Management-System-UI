@@ -52,6 +52,13 @@
           </tbody>
         </table>
       </div> -->
+      <app-pop-up 
+                   *ngIf="showPopup"
+                   [message]="'Are you sure you want to delet this TreatmentDetails?'"
+                   [show]="showPopup"
+                   (confirmDelete)="confirmDelete()"
+                   (cancelDelete)="cancelDelete()">
+                  </app-pop-up>
       <nav aria-label="Page navigation">
         <ul class="pagination justify-content-end">
             <li class="page-item" [class.disabled]="currentPage === 1">

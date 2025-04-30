@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule, NgIfContext } from '@angular/common';
 import { AppConstant } from '../baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { Router, RouterModule } from '@angular/router';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
@@ -17,7 +18,7 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
 @Component({
   selector: 'app-medicinedetails',
   standalone: true,
-  imports: [SharedModule,CommonModule,RouterModule, DatatableComponent],
+  imports: [SharedModule,CommonModule,RouterModule,PopUpComponent, DatatableComponent],
   templateUrl: './medicinedetails.component.html',
   styleUrls: ['./medicinedetails.component.scss']
   
@@ -62,6 +63,10 @@ export class medicinedetails implements OnInit{
   //   "typeName":"",
   // // }
   // http=inject(HttpClient)
+
+  showPopup = false
+  medicineDetailsIDDelete: number | null = null;
+
 
   constructor(private baseService: BaseService,private toastr: ToastrService, private router: Router) {}
 
@@ -276,7 +281,7 @@ gettreatmentdetailsidwithname(){
 onTableAction(event: { action: string; row: any }) {
   const actionHandlers: { [key: string]: () => void } = {
     edit: () => this.editmedicinedetails(event.row),
-    delete: () => this.onDelete(event.row.medicineDetailsID),
+    delete: () => this.openDeleteModal(event.row.medicineDetailsID),
     bill: () => this.router.navigate(['/billing', event.row.treatmentDetailsId]),
   };
 
@@ -310,6 +315,34 @@ nextpage(page: number) {
     this. Paginationrecord();
   }
 }
+
+
+openDeleteModal(id: number) {
+  this.medicineDetailsIDDelete = id;
+  this.showPopup = true;
+}
+
+confirmDelete() {
+  if (this.medicineDetailsIDDelete !== null) {
+    this.onDelete(this.medicineDetailsIDDelete);
+  }
+  this.cleanupPopup();
+}
+
+
+cancelDelete() {
+  this.cleanupPopup();
+}
+
+// hide the modal  and reset the ID 
+private cleanupPopup() {
+  this.medicineDetailsIDDelete = null;
+  this.showPopup = false;
+}
+
+
+
+
 }
     
 

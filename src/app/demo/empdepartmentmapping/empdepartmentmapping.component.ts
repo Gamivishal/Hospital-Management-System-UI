@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { AppConstant } from '../baseservice/baseservice.service';
 // import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
@@ -15,7 +16,7 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
 @Component({
   selector: 'app-roomtypeess',
   standalone: true,
-  imports: [SharedModule, DatatableComponent],
+  imports: [SharedModule, DatatableComponent, PopUpComponent],
   templateUrl:'./empdepartmentmapping.component.html',
   styleUrls: ['./empdepartmentmapping.component.scss']
 })
@@ -26,6 +27,10 @@ export  class EmpDepartmentMapping implements OnInit {
   lstUserNames: any[] = [];
   lstDepartmentName: any[] = [];
   EmpDeptId: number | null = null;
+
+
+  showPopup = false;
+  employeeDepartmentMappingIdToDelete: number | null = null;
 
   tableHeaders = [
     { label: 'Name', key: 'fullName' },
@@ -88,6 +93,30 @@ export  class EmpDepartmentMapping implements OnInit {
        return this.empdepartmentmappingfmGroup.controls[controlName].errors?.['minlength']
     }
 
+
+
+
+    //PAGINATION STOP
+     Paginationrecord() {          
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      this.paginatedList = this.lstempdeptmapping.slice(startIndex, endIndex);
+      }
+
+      //page number
+      PageNumber() {          
+        this.pageNumbers = [];
+        for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
+          this.pageNumbers.push(i);
+        }
+      }
+      //change page
+      nextpage(page: number) {
+        if (page >= 1 && page <= this.totalPages) {
+          this.currentPage = page;
+          this. Paginationrecord();
+        }
+      }
 
 
   
@@ -189,29 +218,33 @@ export  class EmpDepartmentMapping implements OnInit {
       
 
 
-      onDelete(id: number) {
-        this.baseService.DELETE(this.URL + "TblEmployeeDepartmentMapping/Delete?id=" + id)
-          .subscribe({next: (response:any) => {
-            if (response.statusCode === 200) {
-              this.toastr.success(response.message, 'Success');
-            this.toastr.success("Deleted successfully");
-            this.getEmpDeptMapping();
+          onDelete(id: number) {
+            this.baseService.DELETE(this.URL + "TblEmployeeDepartmentMapping/Delete?id=" + id)
+              .subscribe({
+                next: (response: any) => {
+                  if (response.statusCode === 200) {
+                    this.toastr.success('Deleted successfully', 'Success'); 
+                    this.getEmpDeptMapping();
+                  } else {
+                    this.toastr.error(response.message, 'Error');
+                  }
+                },
+                error: () => {
+                  this.toastr.error('Failed to Delete', 'Error');
+                }
+              });
           }
-          else {
-            this.toastr.error(response.message, 'Error');
-          }
-        },
-        error: () => {
-          this.toastr.error('Failed to Delete', 'Error');
-        }
-        
-        });
-        }
+          
+
+
+
+
+
 
         onTableAction(event: { action: string; row: any }) {
           const actionHandlers: { [key: string]: () => void } = {
             edit: () => this.editEmpDeptMapping(event.row),
-            delete: () => this.onDelete(event.row.employeeDepartmentMappingId),
+            delete: () => this.openDeleteModal(event.row.employeeDepartmentMappingId),
           };
         
           const actionKey = event.action.toLowerCase();
@@ -224,27 +257,30 @@ export  class EmpDepartmentMapping implements OnInit {
         }
 
 
-      
-       //PAGINATION STOP
-       Paginationrecord() {          
-          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-          const endIndex = startIndex + this.itemsPerPage;
-          this.paginatedList = this.lstempdeptmapping.slice(startIndex, endIndex);
+        
+        openDeleteModal(id: number) {
+          this.employeeDepartmentMappingIdToDelete = id;
+          this.showPopup = true;
         }
-
-          //page number
-          PageNumber() {          
-            this.pageNumbers = [];
-            for (let i = 1; i <= Math.min(this.totalPages, 3); i++) {
-              this.pageNumbers.push(i);
-             }
+        
+        confirmDelete() {
+          if (this.employeeDepartmentMappingIdToDelete !== null) {
+            this.onDelete(this.employeeDepartmentMappingIdToDelete);
           }
-          //change page
-          nextpage(page: number) {
-            if (page >= 1 && page <= this.totalPages) {
-              this.currentPage = page;
-              this. Paginationrecord();
-            }
-          }
+          this.cleanupPopup();
+        }
+        
+        
+        cancelDelete() {
+          this.cleanupPopup();
+        }
+        
+        // hide the modal  aand ResetID
+        private cleanupPopup() {
+          this.employeeDepartmentMappingIdToDelete = null;
+          this.showPopup = false;
+        }
+        
+      
 }  
 

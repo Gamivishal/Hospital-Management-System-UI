@@ -8,12 +8,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 import { ToastrService } from 'ngx-toastr';
+import { ViewChild } from '@angular/core';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
+
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 @Component({
   selector: 'app-roomtypeess',
   standalone: true,
-  imports: [SharedModule, DatatableComponent],
+  imports: [SharedModule,PopUpComponent, DatatableComponent],
   templateUrl:'./roomtype.component.html',
   styleUrls: ['./roomtype.component.scss']
 })
@@ -23,6 +26,16 @@ export  class RoomTypesComponent implements OnInit {
   isShowList:boolean=true;
   selectedRoomTypeId: number | null = null;
   URL=AppConstant.url
+
+
+//   @ViewChild('deleteModal') deleteModal!: PopUpComponent;
+// roomTypeIdToDelete: number | null = null;
+
+
+showPopup = false;
+  roomTypeIdDelete: number | null = null;
+
+
 
   tableHeaders = [
     { label: 'Room Type', key: 'roomType' },
@@ -198,8 +211,7 @@ export  class RoomTypesComponent implements OnInit {
 
       onDelete(roomTypeId: number){
         
-        if (!window.confirm("DELETE")) 
-           return;
+
         
         this.baseService.DELETE(this.URL+"TblRoomType/delete?id="+roomTypeId).subscribe({
           next: (response: any) => {
@@ -218,10 +230,39 @@ export  class RoomTypesComponent implements OnInit {
   });
     }
 
+
+// -----------------
+
+
+openDeleteModal(id: number) {
+  this.roomTypeIdDelete = id;
+  this.showPopup = true;
+}
+
+confirmDelete() {
+  if (this.roomTypeIdDelete !== null) {
+    this.onDelete(this.roomTypeIdDelete);
+  }
+  this.cleanupPopup();
+}
+
+
+cancelDelete() {
+  this.cleanupPopup();
+}
+
+// hide the modal  and reset the ID 
+private cleanupPopup() {
+  this.roomTypeIdDelete = null;
+  this.showPopup = false;
+}
+
+
+
     onTableAction(event: { action: string; row: any }) {
       const actionHandlers: { [key: string]: () => void } = {
         edit: () => this.editRoom(event.row),
-        delete: () => this.onDelete(event.row.roomTypeId),
+        delete: () => this.openDeleteModal(event.row.roomTypeId),
       };
     
       const actionKey = event.action.toLowerCase();

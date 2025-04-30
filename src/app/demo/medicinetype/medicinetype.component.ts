@@ -11,13 +11,14 @@ import { CommonModule,  } from '@angular/common';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
 import { ToastrService } from 'ngx-toastr';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
 @Component({
   selector: 'app-medicinetype',
   standalone: true,
-  imports: [CommonModule,SharedModule, DatatableComponent],
+  imports: [CommonModule,SharedModule,PopUpComponent,DatatableComponent],
   templateUrl: './medicinetype.component.html',
   styleUrls: ['./medicinetype.component.scss']
 })
@@ -50,6 +51,10 @@ export class MedicineTypeComponent implements OnInit{
     { label: 'Is Active', key: 'isActive' }
   ];
 
+
+
+  showPopup = false
+  medicineTypeIDDelete: number | null = null
 
   constructor(private baseService: BaseService,
     private toastr: ToastrService) {}
@@ -191,10 +196,37 @@ add(){
     }
 
 
+
+
+    openDeleteModal(id: number) {
+      this.medicineTypeIDDelete = id;
+      this.showPopup = true;
+    }
+    
+    confirmDelete() {
+      if (this.medicineTypeIDDelete !== null) {
+        this.onDelete(this.medicineTypeIDDelete);
+      }
+      this.cleanupPopup();
+    }
+    
+    
+    cancelDelete() {
+      this.cleanupPopup();
+    }
+    
+    // hide the modal  and reset the ID 
+    private cleanupPopup() {
+      this.medicineTypeIDDelete = null;
+      this.showPopup = false;
+    }
+    
+
+
     onTableAction(event: { action: string; row: any }) {
       const actionHandlers: { [key: string]: () => void } = {
         edit: () => this.editMedicineTypes(event.row),
-        delete: () => this.onDelete(event.row.medicineTypeID),
+        delete: () => this.openDeleteModal(event.row.medicineTypeID),
       };
     
       const actionKey = event.action.toLowerCase();

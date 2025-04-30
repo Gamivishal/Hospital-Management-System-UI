@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
@@ -12,7 +13,7 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
 @Component({
   selector: 'app-hospitaldepartment',
   standalone: true,
-  imports: [SharedModule, DatatableComponent],
+  imports: [SharedModule, PopUpComponent,DatatableComponent],
   templateUrl: './hospitaldepartment.component.html',
   styleUrls: ['./hospitaldepartment.component.scss']
 })
@@ -30,6 +31,12 @@ isShowList:boolean=true;
 selectedHospitalId: number | null = null;
 URL=AppConstant.url
 http = inject(HttpClient);
+
+
+
+  showPopup  = false;
+  hospitalDepartmentIdDelete: number | null = null;
+
 
 tableHeaders = [
   { label: 'DepartmentName', key: 'departmentName' },
@@ -156,10 +163,37 @@ onDelete(hospitalDepartmentId: number){
   });
 }
 
+
+
+openDeleteModal(id: number) {
+  this.hospitalDepartmentIdDelete = id;
+  this.showPopup = true;
+}
+
+confirmDelete() {
+  if (this.hospitalDepartmentIdDelete !== null) {
+    this.onDelete(this.hospitalDepartmentIdDelete);
+  }
+  this.cleanupPopup();
+}
+
+
+cancelDelete() {
+  this.cleanupPopup();
+}
+
+// hide the modal  and reset the ID 
+private cleanupPopup() {
+  this.hospitalDepartmentIdDelete = null;
+  this.showPopup = false;
+}
+
+
+
 onTableAction(event: { action: string; row: any }) {
   const actionHandlers: { [key: string]: () => void } = {
     edit: () => this.editHospital(event.row),
-    delete: () => this.onDelete(event.row.hospitalDepartmentId),
+    delete: () => this.openDeleteModal(event.row.hospitalDepartmentId),
   };
 
   const actionKey = event.action.toLowerCase();

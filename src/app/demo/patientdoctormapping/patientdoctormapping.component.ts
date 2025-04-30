@@ -8,10 +8,11 @@ import { CommonModule } from '@angular/common';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 @Component({
   selector: 'app-patientdoctormapping',
   standalone: true,
-  imports: [CommonModule,SharedModule,DatatableComponent],
+  imports: [CommonModule,SharedModule,DatatableComponent,PopUpComponent],
   templateUrl: './patientdoctormapping.component.html',
   styleUrls: ['./patientdoctormapping.component.scss']
 })
@@ -27,6 +28,11 @@ export class patientdoctormappingComponent implements OnInit {
   paginatedList: any[] = []; // Paginated data
   selectedpateintDoctormappingId: number | null = null;  // Store selected shift ID for update
   URL=AppConstant.url
+
+
+
+    showPopup = false
+    pateintDoctormappingIdDelete: number | null = null;
 
 
   tableHeaders = [
@@ -241,6 +247,32 @@ pageNumbers: number[] = [];//list
     }
 
 
+
+    openDeleteModal(id: number) {
+      this.pateintDoctormappingIdDelete = id;
+      this.showPopup = true;
+    }
+    
+    confirmDelete() {
+      if (this.pateintDoctormappingIdDelete !== null) {
+        this.onDeletepatient(this.pateintDoctormappingIdDelete);
+      }
+      this.cleanupPopup();
+    }
+    
+    
+    cancelDelete() {
+      this.cleanupPopup();
+    }
+    
+    // hide the modal  and reset the ID 
+    private cleanupPopup() {
+      this.pateintDoctormappingIdDelete = null;
+      this.showPopup = false;
+    }
+
+
+
     // onTableAction(event: { action: string; row: any }) {
     //   switch (event.action) {
     //     case 'edit':
@@ -260,7 +292,7 @@ pageNumbers: number[] = [];//list
     onTableAction(event: { action: string; row: any }) {
       const actionHandlers: { [key: string]: () => void } = {
         edit: () => this.editpatient(event.row),
-        delete: () => this.onDeletepatient(event.row.pateintDoctormappingId),
+        delete: () => this.openDeleteModal(event.row.pateintDoctormappingId),
       };
     
       const actionKey = event.action.toLowerCase();

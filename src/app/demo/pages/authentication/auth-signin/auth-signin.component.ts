@@ -53,7 +53,7 @@ const apiurl = this.URL + `TblUser/ValidateCredential?email=${encodeURIComponent
         this.router.navigate(['/dashboard']);
         this.toastr.success(response.message);
       } else {
-        this.toastr.error(response.message, 'Envalid credentials');
+        this.toastr.error(response.message, 'Invalid credentials');
       }
     })
   }

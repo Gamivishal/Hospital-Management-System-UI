@@ -5,11 +5,12 @@ import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 @Component({
   selector: 'app-hospitaltype',
   standalone: true,
-  imports: [SharedModule,DatatableComponent],
+  imports: [SharedModule, PopUpComponent, DatatableComponent],
 
   templateUrl:'./hospitaltype.component.html',
   styleUrls: ['./hospitaltype.component.scss']
@@ -29,6 +30,10 @@ export  class hospitaltypeComponent implements OnInit {
   selectedHospitalId: number | null = null;
  URL=AppConstant.url;
 
+
+
+ showPopup = false
+ hospitalTypeIDDelete: number | null = null;
  tableHeaders = [
   { label: 'Hospital Type', key: 'hospitalType' },
   { label: 'Created By', key: 'createdBy' },
@@ -158,10 +163,38 @@ export  class hospitaltypeComponent implements OnInit {
       });
         }
 
+
+
+        openDeleteModal(id: number) {
+          this.hospitalTypeIDDelete = id;
+          this.showPopup = true;
+        }
+        
+        confirmDelete() {
+          if (this.hospitalTypeIDDelete !== null) {
+            this.onDelete(this.hospitalTypeIDDelete);
+          }
+          this.cleanupPopup();
+        }
+        
+        
+        cancelDelete() {
+          this.cleanupPopup();
+        }
+        
+        // hide the modal  and reset the ID 
+        private cleanupPopup() {
+          this.hospitalTypeIDDelete = null;
+          this.showPopup = false;
+        }
+
+
+
+
         onTableAction(event: { action: string; row: any }) {
           const actionHandlers: { [key: string]: () => void } = {
             edit: () => this.editHospital(event.row),
-            delete: () => this.onDelete(event.row.hospitalTypeID),
+            delete: () => this.openDeleteModal(event.row.hospitalTypeID),
           };
         
           const actionKey = event.action.toLowerCase();

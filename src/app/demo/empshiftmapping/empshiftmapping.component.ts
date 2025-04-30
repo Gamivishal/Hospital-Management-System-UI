@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
@@ -15,7 +16,7 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
 @Component({
   selector: 'app-empshiftmapping',
   standalone: true,
-  imports: [SharedModule, DatatableComponent],
+  imports: [SharedModule,PopUpComponent, DatatableComponent],
   templateUrl:'./empshiftmapping.component.html',
   styleUrls: ['./empshiftmapping.component.scss']
 })
@@ -26,6 +27,10 @@ export  class empshiftmapping implements OnInit {
   lstShifts: any[] = [];
   lstUserNames: any[] = [];
 
+
+
+  showPopup = false;
+  employeeshiftMappingIdToDelete: number | null = null;
 
 
   tableHeaders = [
@@ -173,6 +178,7 @@ nextpage(page: number) {
             this.Paginationrecord();
             this.isShowList = true;
             this.currentPage = 1;
+            this.toastr.success(' Added Successfully!', 'Success');
           }
           else {
             this.toastr.error(response.message, 'Error');
@@ -217,6 +223,7 @@ nextpage(page: number) {
             this.getEmpShiftMapping();
             this.isShowList = true;
             this.currentPage = 1;
+            this.toastr.success(' Updated Successfully!', 'Success');
           }
           else {
             this.toastr.error(response.message, 'Error');
@@ -238,6 +245,7 @@ nextpage(page: number) {
             if (response.statusCode === 200) {
             console.log("DELETE Response:", response);
             this.getEmpShiftMapping();
+            this.toastr.success('Deleted successfully!', 'Success');
           }
           else {
             this.toastr.error(response.message, 'Error');
@@ -253,7 +261,7 @@ nextpage(page: number) {
         onTableAction(event: { action: string; row: any }) {
           const actionHandlers: { [key: string]: () => void } = {
             edit: () => this.editEmpShift(event.row),
-            delete: () => this.onDelete(event.row.employeeshiftMappingId),
+            delete: () => this.openDeleteModal(event.row.employeeshiftMappingId),
           };
         
           const actionKey = event.action.toLowerCase();
@@ -265,4 +273,31 @@ nextpage(page: number) {
           }
         }
 
+
+
+
+        
+openDeleteModal(id: number) {
+  this.employeeshiftMappingIdToDelete = id;
+  this.showPopup = true;
+}
+
+
+confirmDelete() {
+  if (this.employeeshiftMappingIdToDelete !== null) {
+    this.onDelete(this.employeeshiftMappingIdToDelete);
+  }
+  this.cleanupPopup();
+}
+
+
+cancelDelete() {
+  this.cleanupPopup();
+}
+
+// hide the modal  aand ResetID
+private cleanupPopup() {
+  this.employeeshiftMappingIdToDelete = null;
+  this.showPopup = false;
+}
 }

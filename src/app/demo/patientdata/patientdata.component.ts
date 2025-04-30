@@ -5,12 +5,13 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup,Validators} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 @Component({
   selector: 'app-patientdata',
   standalone: true,
-  imports: [SharedModule, DatatableComponent],
+  imports: [SharedModule,PopUpComponent, DatatableComponent],
   templateUrl: './patientdata.component.html',
   styleUrls: ['./patientdata.component.scss']
 })
@@ -48,6 +49,10 @@ export class PatientDataComponent implements OnInit {
     { label: 'Is Active', key: 'isActive' }
   ];
 
+
+
+  showPopup = false
+  UserIdDelete: number | null = null;
 
   constructor(
     private baseService: BaseService,
@@ -176,10 +181,37 @@ getdropdown(){
     });
   }
 
+
+  openDeleteModal(id: number) {
+    this.UserIdDelete = id;
+    this.showPopup = true;
+  }
+  
+  confirmDelete() {
+    if (this.UserIdDelete !== null) {
+      this.onDelete(this.UserIdDelete);
+    }
+    this.cleanupPopup();
+  }
+  
+  
+  cancelDelete() {
+    this.cleanupPopup();
+  }
+  
+  // hide the modal  and reset the ID 
+  private cleanupPopup() {
+    this.UserIdDelete = null;
+    this.showPopup = false;
+  }
+
+
+
+
   onTableAction(event: { action: string; row: any }) {
     const actionHandlers: { [key: string]: () => void } = {
       edit: () => this.editPatient(event.row),
-      delete: () => this.onDelete(event.row.UserId),
+      delete: () => this.openDeleteModal(event.row.UserId),
     };
   
     const actionKey = event.action.toLowerCase();

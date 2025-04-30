@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { AppConstant } from '../baseservice/baseservice.service';
 // import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
+import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 
 
@@ -19,7 +20,7 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [SharedModule, DatatableComponent],
+  imports: [SharedModule, PopUpComponent,DatatableComponent],
   templateUrl:'./room.component.html',
   styleUrls: ['./room.component.scss']
 })
@@ -40,6 +41,10 @@ export class room implements OnInit {
      pageNumbers: number[] = [];//list
      URL=AppConstant.url
 
+
+
+     showPopup = false
+     roomIdDelete: number | null = null;
      tableHeaders = [
       { label: 'Room no', key: 'roomNumber' },
       { label: 'Room typename', key: 'roomType' },
@@ -232,10 +237,36 @@ export class room implements OnInit {
           });
       }
 
+      openDeleteModal(id: number) {
+        this.roomIdDelete = id;
+        this.showPopup = true;
+      }
+      
+      confirmDelete() {
+        if (this.roomIdDelete !== null) {
+          this.onDelete(this.roomIdDelete);
+        }
+        this.cleanupPopup();
+      }
+      
+      
+      cancelDelete() {
+        this.cleanupPopup();
+      }
+      
+      // hide the modal  and reset the ID 
+      private cleanupPopup() {
+        this.roomIdDelete = null;
+        this.showPopup = false;
+      }
+
+
+
+
       onTableAction(event: { action: string; row: any }) {
         const actionHandlers: { [key: string]: () => void } = {
           edit: () => this.editroom(event.row),
-          delete: () => this.onDelete(event.row.roomId),
+          delete: () => this.openDeleteModal(event.row.roomId),
         };
       
         const actionKey = event.action.toLowerCase();
