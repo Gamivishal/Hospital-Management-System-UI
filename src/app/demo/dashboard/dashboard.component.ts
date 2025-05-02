@@ -37,11 +37,13 @@ export class DashboardComponent implements OnInit {
   globalVarTotalMedicineStock: number = 100;
   globalVarTotalAmountOfBillGeneratedToday: number = 100;
   sales: any[] = [];
+  lstFeedback: any[] = [];
 
   // life cycle event
   ngOnInit() {
 
     this.getAllDashboardCardDetails();
+    this. getGetFeedbackCardDetails();
 
     // this.baseService.GET("https://jsonplaceholder.typicode.com/todos/1").subscribe(response => {
     //   console.log("GET Response:", response);
@@ -378,7 +380,21 @@ export class DashboardComponent implements OnInit {
       progress_bg_2: 'progress-c-theme2'
     }
   ];
-
+  
+  getGetFeedbackCardDetails() {
+    this.baseService.GET<any>(this.URL + "DashboardCardDetail/GetFeedbackCardDetails")
+      .subscribe(response => {
+        if (Array.isArray(response?.data)) {
+          this.progressing = response.data.map(item => ({
+            number: item.comments || '',
+            amount: item.fullName || '',
+            progress: 100, 
+            progress_bg: 'progress-c-theme'
+          }));
+        }
+      });
+  }
+  
   progressing = [
     {
       number: '5',
