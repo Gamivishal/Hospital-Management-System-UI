@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
-
 //import { PaginationComponent } from 'src/app/theme/shared/components/pagination/pagination.component';
-
 import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,6 +9,11 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PermissionService } from 'src/app/services/permission.service';
+
+
+
+
 @Component({
   selector: 'app-shift',
   standalone: true,
@@ -19,12 +22,27 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./shift.component.scss']
 })
 export class shiftComponent implements OnInit {
+submitForm() {
+throw new Error('Method not implemented.');
+}
+  setPermissions: any;
+  canAdd: boolean = false;
+  canEdit: boolean = false;
+  canDelete: boolean = false;
+  canView : boolean = false;
+
+  // Define table headers
+  permission :any;
   constructor(private baseService: BaseService,
-    private toastr: ToastrService) {}
-  isShowList:boolean=true;
-  paginatedList: any[] = []; // Paginated data
-  selectedshiftId: number | null = null;  // Store selected hospital ID for update
-  URL=AppConstant.url
+    private toastr: ToastrService,
+    private permissionService: PermissionService) {
+    this.permission = this.permissionService.getPermissions("Shift");
+    }
+    isShowList:boolean=true;
+    paginatedList: any[] = []; // Paginated data
+    selectedshiftId: number | null = null;  // Store selected hospital ID for update
+    URL=AppConstant.url
+    actionButtons = ['edit', 'delete']; // Define action buttons for the table
 
   tableHeaders = [
     { label: 'Start Time', key: 'startTime' },
@@ -58,12 +76,16 @@ export class shiftComponent implements OnInit {
     ngOnInit() {
       this.createFormGroup();
       this.getShifts();
-      //this.onDelete();
-
-      // this.shiftfmGroup.patchValue({
-      //   HospitalType:'Naitik',
-      //   HospitalTypeID:1
-      // });
+      this.setPermissions = this.permissionService.getPermissions("Shift");
+      if (this.setPermissions.isEdit === true) {
+        this.actionButtons.push("edit");
+      }
+    
+      if (this.setPermissions.isDelete === true) {
+        this.actionButtons.push("delete");
+      }
+      
+     
 
     }
     shiftfmGroup:FormGroup;
@@ -81,13 +103,7 @@ export class shiftComponent implements OnInit {
       Shiftname: new FormControl(null, [Validators.required,Validators.minLength(4)]),
       StartTime: new FormControl(null, [Validators.required]),
       EndTime: new FormControl(null, [Validators.required])
-
-      
-       // lastName: new FormControl('', []),
-       // address: new FormControl('', []),
-       // age: new FormControl('', []),
-       // income: new FormControl('', [])
-     })
+    })
     }
 
     checkRequired(controlName:any)
@@ -108,7 +124,7 @@ export class shiftComponent implements OnInit {
     getShifts()
     {
       //debugger;
-      //console.log(localStorage.getItem('token'));
+      
       this.baseService.GET<any>(this.URL+"TblShift/GetAll").subscribe(response=>{
         console.log("GET Response:", response);
         this.objshift = response.data;
@@ -147,9 +163,10 @@ export class shiftComponent implements OnInit {
 
     editshift(shift: any) {
       this.selectedshiftId = shift.shiftId;
-      this.isShowList = false; //showList
-      this.shiftfmGroup.patchValue({
-        ShiftId: shift.shiftId, // ID
+      this.isShowList = false;          //showList
+      this.shiftfmGroup.patchValue
+      ({
+        ShiftId: shift.shiftId,         // ID
         Shiftname: shift.shiftname      // NAME
       });
     }
@@ -178,6 +195,8 @@ export class shiftComponent implements OnInit {
 
 
     onDelete(shiftId: number){
+      
+
       this.baseService.DELETE(this.URL+"TblShift/Delete?id=" + shiftId).subscribe({
         next: (response: any) => {
           if (response.statusCode === 200) {

@@ -2,17 +2,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component,inject,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
-
 import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule,  } from '@angular/common';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
-
 import { ToastrService } from 'ngx-toastr';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PermissionService } from 'src/app/services/permission.service';
 
 
 @Component({
@@ -23,14 +21,20 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./facilitytype.component.scss']
 })
 export class FacilityTypeComponent implements OnInit{
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+      actionButtons = [];
   lstFacilitytype:any[]=[];
   paginatedList: any[] = []; // Paginated data
   isShowList:boolean=true;
   selectedfacilityTypeId: number | null = null;  // Store selected hospital ID for update
-
-
-
- 
   http=inject(HttpClient)
 
 
@@ -47,15 +51,30 @@ export class FacilityTypeComponent implements OnInit{
     { label: 'Is Active', key: 'isActive' }
   ];
 
-  constructor(private baseService: BaseService,
-    private toastr: ToastrService) {}
+  constructor
+  (
+    private baseService: BaseService,
+    private toastr: ToastrService,
+    private permissionService: PermissionService
+  )
+     {
+      this.permission = this.permissionService.getPermissions("FacilityType");
+      }
 
   // life cycle event
   ngOnInit() {
      this.createFormGroup();
      this.getFacilityTypes();
-     //this.AddFacilityTypes();
+     this.setPermissions = this.permissionService.getPermissions("FacilityType");
+     this.actionButtons = [];
 
+     if (this.setPermissions.isEdit === true) {
+       this.actionButtons.push("edit");
+     }
+   
+     if (this.setPermissions.isDelete === true) {
+       this.actionButtons.push("delete");
+     }
     }
   
     facilityTypeFormGroup:FormGroup

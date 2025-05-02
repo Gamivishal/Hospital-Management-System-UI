@@ -216,6 +216,14 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item'
       },
       {
+        id: 'medicinedieseasemapping',
+        title: 'Medicine Diesease Mapping',
+        type: 'item',
+        url: '/medicinedieseasemapping',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
         id: 'billing',
         title: 'Billing',
         type: 'item',

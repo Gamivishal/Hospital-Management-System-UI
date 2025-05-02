@@ -1,6 +1,5 @@
 import { Component,inject,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
-
 import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -8,7 +7,7 @@ import { CommonModule, NgIfContext } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
-
+import { PermissionService } from 'src/app/services/permission.service';
 
 
 
@@ -21,23 +20,23 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./diseasetype.component.scss']
 })
 export class DiseaseTypeComponent implements OnInit{
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+      actionButtons = [];
+
   diseasetypelist:any[]=[];
   paginatedList: any[] = []; // Paginated data
   isShowList:boolean=true;
   selecteddieseaseTypeID: number | null = null;  // Store selected hospital ID for update
   
 
-  
-  // medicinetypepost:any={
-  //   "createBy":0,
-  //   "cretedOn":"",
-  //   "updateBy":0,
-  //   "updateOn":"",
-  //   "isActive": true,
-  //   "versionNo":0,
-  //   "medicineTypeID":0,
-  //   "typeName":"",
-  // }
   http=inject(HttpClient)
 
   tableHeaders = [
@@ -53,16 +52,35 @@ export class DiseaseTypeComponent implements OnInit{
 
   showPopup = false;
   dieseaseTypeIDDelete: number | null = null;
-
-  constructor(private baseService: BaseService, private toastr: ToastrService) {}
+  // Define permissions
+    
+    
+    
+  constructor
+  (
+    private baseService: BaseService,
+     private toastr: ToastrService,
+     private permissionService: PermissionService
+    ) 
+    
+     {
+      this.permission = this.permissionService.getPermissions("DiseaseType");
+     }
  
   // life cycle event
-  ngOnInit() {
+  ngOnInit() 
+    {
      this.createFormGroup();
      this.getDieseaseTypes();
-     //this.AddDieseaseTypes();
-     
+     this.setPermissions = this.permissionService.getPermissions("DiseaseType");
+     if (this.setPermissions.isEdit === true) {
+      this.actionButtons.push("edit");
     }
+  
+    if (this.setPermissions.isDelete === true) {
+      this.actionButtons.push("delete");
+    }
+    } 
 
     dieseaseTypeFormGroup:FormGroup
     // Pagination properties

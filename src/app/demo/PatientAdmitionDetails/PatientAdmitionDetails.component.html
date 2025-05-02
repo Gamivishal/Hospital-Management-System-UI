@@ -3,8 +3,8 @@
     @if(isShowList){
     <div class="col-xl-12">
         <div class="d-flex justify-content-end mb-3 position-relative">
-            <button type="button" (click)="resetForm()" class="btn btn-primary add-master-button">
-            Add PatientAdmitionDetails
+            <button *ngIf="permission.isAdd" (click)="resetForm()" class="btn btn-primary add-master-button">
+            ADD
         </button>
         </div>
         <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
@@ -128,7 +128,7 @@
 
 
 
-                    <button type="button" class="btn btn-primary" [disabled]="PatientAdmitionDetailsformGroup.invalid" (click)="addPatientAdmitionDetails()">
+                    <button *ngIf="!selectedHospitalId" type="button" class="btn btn-primary" [disabled]="PatientAdmitionDetailsformGroup.invalid" (click)="addPatientAdmitionDetails()">
                     Submit
                   </button>
 

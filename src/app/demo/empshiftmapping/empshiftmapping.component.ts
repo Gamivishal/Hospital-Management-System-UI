@@ -9,7 +9,7 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
-
+import { PermissionService } from 'src/app/services/permission.service';
 
 
 
@@ -21,6 +21,18 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./empshiftmapping.component.scss']
 })
 export  class empshiftmapping implements OnInit {
+
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+	  actionButtons = [];
+
   lstempshiftmapping: any [] = [];
   isShowList:boolean=true;
   employeeshiftMappingId: number | null = null;
@@ -46,16 +58,29 @@ export  class empshiftmapping implements OnInit {
   ];
 
 
-  constructor(private baseService: BaseService,
-      private toastr: ToastrService) {}
+  constructor
+  (
+    private baseService: BaseService,
+      private toastr: ToastrService,
+      private permissionService: PermissionService
+    )
+     {
+      this.permission = this.permissionService.getPermissions("Employeeshift");
+     }
 
      ngOnInit() {
       this.createFormGroup();
       this.getShifts();
       this.getUserNames();
       this.getEmpShiftMapping();
-      // this.AddEmpShift();
-
+      this.setPermissions = this.permissionService.getPermissions("Employeeshift");
+      if (this.setPermissions.isEdit === true) {
+        this.actionButtons.push("edit");
+      }
+    
+      if (this.setPermissions.isDelete === true) {
+        this.actionButtons.push("delete");
+      }
      }
 
      empshiftmappingfmGroup:FormGroup;

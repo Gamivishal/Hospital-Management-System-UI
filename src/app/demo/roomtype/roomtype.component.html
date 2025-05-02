@@ -3,8 +3,8 @@
   <div class="col-xl-12">
 
     <div class="d-flex justify-content-end mb-3 position-relative">
-        <button type="button" (click)="resetForm()" class="btn btn-primary add-master-button">
-            Add 
+        <button *ngIf="permission.isAdd" (click)="isShowList=false;" class="btn btn-primary add-master-button">
+            ADD
     </button>
     </div>
       <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
@@ -13,7 +13,7 @@
           <app-datatable
           [tableHeaders]="tableHeaders"
           [tableData]="paginatedList"
-          [actionButtons]="['edit', 'delete']"
+          [actionButtons]="actionButtons"
           (actionClicked)="onTableAction($event)">
           </app-datatable>
             </table>

@@ -9,6 +9,9 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, RouterModule } from '@angular/router';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PermissionService } from 'src/app/services/permission.service';
+
+
 @Component({
   selector: 'app-hospitaltype',
   standalone: true,
@@ -18,6 +21,17 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./PatientAdmitionDetails.component.scss']
 })
 export  class PatientAdmitionDetailsComponent implements OnInit {
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+	  actionButtons = [];
+
   PatientAdmitionDetails: any [] = [];
           // PAGINATION
   paginatedList: any[] = [];
@@ -53,17 +67,29 @@ TreatmentDetailsCodelist:any[]=[];
 
 
   constructor(
-    private baseService: BaseService,private toastr: ToastrService,private router: Router ) {
-
-  }
+    private baseService: BaseService,
+    private toastr: ToastrService,
+    private router: Router,
+    private permissionService: PermissionService
+   ) 
+   {
+    this.permission = this.permissionService.getPermissions("AdmissionDetails");
+   }
 
     ngOnInit() {
       this.createFormGroup();
       this.getPatientAdmitionDetails();
       this.Roomame();
       this.TreatmentDetailsCodes();
-
-
+      this.setPermissions = this.permissionService.getPermissions("AdmissionDetails");
+      
+      if (this.setPermissions.isEdit === true) {
+        this.actionButtons.push("edit");
+      }
+    
+      if (this.setPermissions.isDelete === true) {
+        this.actionButtons.push("delete");
+      }
     }
      PatientAdmitionDetailsformGroup:FormGroup;
 

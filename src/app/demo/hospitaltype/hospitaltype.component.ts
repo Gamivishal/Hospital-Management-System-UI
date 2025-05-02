@@ -7,6 +7,8 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PermissionService } from 'src/app/services/permission.service';
+
 @Component({
   selector: 'app-hospitaltype',
   standalone: true,
@@ -16,6 +18,18 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./hospitaltype.component.scss']
 })
 export  class hospitaltypeComponent implements OnInit {
+  // Define permissions
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+      actionButtons = [];
+
   hospitallist: any [] = [];
           // PAGINATION
   paginatedList: any[] = [];
@@ -24,11 +38,14 @@ export  class hospitaltypeComponent implements OnInit {
   totalRecords: number = 0;
   itemsPerPage: number = AppConstant.RecordPerPage;
   pageNumbers: number[] = [];
-
-
   isShowList:boolean=true;
   selectedHospitalId: number | null = null;
- URL=AppConstant.url;
+  URL=AppConstant.url;
+  
+ 
+    
+
+// Define table headers
 
 
 
@@ -45,20 +62,32 @@ export  class hospitaltypeComponent implements OnInit {
 
 
 
-  constructor(
-    private baseService: BaseService,private toastr: ToastrService ) {
 
-  }
+
+
+
+  constructor(
+    private baseService: BaseService,
+    private toastr: ToastrService ,
+    private permissionService: PermissionService) 
+    {
+      this.permission = this.permissionService.getPermissions("HospitalType");
+    }
 
     ngOnInit() {
       this.createFormGroup();
       this.gethospitaltypelist();
-
-
-    }
-
-
-
+      this.actionButtons = [];
+      this.setPermissions = this.permissionService.getPermissions("HospitalType");
+      if (this.setPermissions.isEdit === true) {
+        this.actionButtons.push("edit");
+      }
+    
+      if (this.setPermissions.isDelete === true) {
+        this.actionButtons.push("delete");
+      }
+    }  
+    // Dynamically set permissions for buttons
      hospitalTypefmGroup:FormGroup;
 
      createFormGroup()

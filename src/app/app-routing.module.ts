@@ -162,6 +162,10 @@ const routes: Routes = [
         loadComponent: () => import('./demo/extra/sample-page/sample-page.component'),
         canActivate: [AuthGuard]
       },
+      {
+        path: 'medicinedieseasemapping',
+        loadComponent : () => import('./demo/medicinedieseasemapping/medicinedieseasemapping.component').then((c) => c.medicinedieseasemapping),canActivate: [AuthGuard]
+      },
 
       {
         path: 'MenuPermissionModel',

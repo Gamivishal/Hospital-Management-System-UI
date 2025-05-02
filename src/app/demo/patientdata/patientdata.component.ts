@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PermissionService } from 'src/app/services/permission.service';
 
 @Component({
   selector: 'app-patientdata',
@@ -33,6 +34,17 @@ export class PatientDataComponent implements OnInit {
   URL = AppConstant.url;
   http = inject(HttpClient);
 
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+      actionButtons = [];
+
   tableHeaders = [
     { label: 'Patient ID', key: 'patientId' },
     { label: 'Full Name', key: 'fullName' },
@@ -56,13 +68,36 @@ export class PatientDataComponent implements OnInit {
 
   constructor(
     private baseService: BaseService,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private permissionService: PermissionService
+  ) 
+  {
+    this.permission = this.permissionService.getPermissions("PatientData");
+  }
 
   ngOnInit() {
+    debugger
     this.getPatients();
     //this.patientFormGroup();
     this.getdropdown();
+    this.setPermissions = this.permissionService.getPermissions("PatientData");
+    this.actionButtons = [];
+    if (this.setPermissions.isEdit === true) {
+      this.actionButtons.push("edit");
+    }
+  
+    if (this.setPermissions.isDelete === true) {
+      this.actionButtons.push("delete");
+    }
+    // switch (true) {
+    //   case this.setPermissions.isEdit === true:
+    //     this.actionButtons.push("edit");
+    //     break;
+    //     // No break, so fall through
+    //   case this.setPermissions.isDelete === true:
+    //     this.actionButtons.push("delete");
+    //     break;
+    // }
 
   }
 

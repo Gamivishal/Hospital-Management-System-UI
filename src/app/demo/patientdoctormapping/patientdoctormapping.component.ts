@@ -9,6 +9,9 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
+import { PermissionService } from 'src/app/services/permission.service';
+
+
 @Component({
   selector: 'app-patientdoctormapping',
   standalone: true,
@@ -17,9 +20,28 @@ import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
   styleUrls: ['./patientdoctormapping.component.scss']
 })
 export class patientdoctormappingComponent implements OnInit {
+
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+	  actionButtons = [];
+
   router: any;
-  constructor(private baseService: BaseService,
-    private toastr: ToastrService) {}
+  constructor
+  (
+    private baseService: BaseService,
+    private toastr: ToastrService,
+    private permissionService: PermissionService
+  ) 
+  {
+    this.permission = this.permissionService.getPermissions("PatientData");
+  }
   isShowList:boolean=true;
   selectedTreatmentName: string = '';
   doctorList: any[] = [];
@@ -57,17 +79,14 @@ export class patientdoctormappingComponent implements OnInit {
       this.getpatient();
       this.getTreatmentcode();
       this.selectedTreatmentName = '';
-      //this.onDelete();
-
-      // this.shiftfmGroup.patchValue({
-      //   HospitalType:'Naitik',
-      //   HospitalTypeID:1
-      // });
-
-      // this.petientdoctorfmGroup.get('TreatmentDetailsId')?.valueChanges.subscribe((id: number) => {
-      //   const selected = this.TreatmentcodeList.find(item => item.id === id);
-      //   this.selectedTreatmentName = selected ? selected.name : '';
-      // });
+      this.setPermissions = this.permissionService.getPermissions("PatientData");
+      if (this.setPermissions.isEdit === true) {
+        this.actionButtons.push("edit");
+      }
+    
+      if (this.setPermissions.isDelete === true) {
+        this.actionButtons.push("delete");
+      }
 
     }
     petientdoctorfmGroup:FormGroup;
@@ -91,10 +110,7 @@ pageNumbers: number[] = [];//list
       //IsActive: new FormControl(true)
 
       
-       // lastName: new FormControl('', []),
-       // address: new FormControl('', []),
-       // age: new FormControl('', []),
-       // income: new FormControl('', [])
+      
      })
     }
 
