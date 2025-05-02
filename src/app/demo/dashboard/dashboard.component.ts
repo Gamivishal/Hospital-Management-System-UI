@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // angular import
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -22,6 +24,7 @@ import mapColor from 'src/fake-data/map-color-data.json';
 import { BaseService } from 'src/app/services/base.service';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 
+
 @Component({
   selector: 'app-dashboard',
   imports: [CommonModule, SharedModule],
@@ -44,6 +47,7 @@ export class DashboardComponent implements OnInit {
 
     this.getAllDashboardCardDetails();
     this. getGetFeedbackCardDetails();
+    this.getallforcountlist();
 
     // this.baseService.GET("https://jsonplaceholder.typicode.com/todos/1").subscribe(response => {
     //   console.log("GET Response:", response);
@@ -322,15 +326,32 @@ export class DashboardComponent implements OnInit {
     ];
   }
 
-  // public method
+  // // for DoctorCount
 
+  // getallforcountlist() {
+  //   this.baseService.GET<any>(this.URL+"DashboardCardDetail/GetAllforcount").subscribe(response => {
+  //     this.countoftotaldoctorlist = response.data || [];
+  //   });
+
+  // }
+
+  getallforcountlist() {
+    this.baseService.GET<any>(this.URL + "DashboardCardDetail/GetAllforcount").subscribe(response => {
+      //this.card[0].number= response.data?.[0]?.countofdoctor;
+
+this.card[0].number=response.data?.[0]?.totalDoctorCount;
+this.card[1].number=response.data?.[1]?.totalDoctorCount;
+    });
+  }
 
   card = [
     {
       design: 'border-bottom',
-      number: '235',
-      text: 'TOTAL IDEAS',
+      number:1233333333333333,
+      text: 'Total Doctor',
       icon: 'icon-zap text-c-green'
+
+
     },
     {
       number: '26',
@@ -380,7 +401,7 @@ export class DashboardComponent implements OnInit {
       progress_bg_2: 'progress-c-theme2'
     }
   ];
-  
+
   getGetFeedbackCardDetails() {
     this.baseService.GET<any>(this.URL + "DashboardCardDetail/GetFeedbackCardDetails")
       .subscribe(response => {
@@ -388,13 +409,13 @@ export class DashboardComponent implements OnInit {
           this.progressing = response.data.map(item => ({
             number: item.comments || '',
             amount: item.fullName || '',
-            progress: 100, 
+            progress: 100,
             progress_bg: 'progress-c-theme'
           }));
         }
       });
   }
-  
+
   progressing = [
     {
       number: '5',
