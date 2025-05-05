@@ -2,17 +2,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component,inject,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
-
 import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule,  } from '@angular/common';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
-
 import { ToastrService } from 'ngx-toastr';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PermissionService } from 'src/app/services/permission.service';
 
 
 @Component({
@@ -23,23 +21,22 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./medicinetype.component.scss']
 })
 export class MedicineTypeComponent implements OnInit{
+  permissionService: any;
+
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+      actionButtons = [];
   medicinetypelist:any[]=[];
   paginatedList: any[] = []; // Paginated data
   isShowList:boolean=true;
   selectedmedicineTypeId: number | null = null;  // Store selected hospital ID for update
-
-
-
-  // medicinetypepost:any={
-  //   "createBy":0,
-  //   "cretedOn":"",
-  //   "updateBy":0,
-  //   "updateOn":"",
-  //   "isActive": true,
-  //   "versionNo":0,
-  //   "medicineTypeID":0,
-  //   "typeName":"",
-  // }
   http=inject(HttpClient)
 
   tableHeaders = [
@@ -63,8 +60,15 @@ export class MedicineTypeComponent implements OnInit{
   ngOnInit() {
      this.createFormGroup();
      this.getMedicineTypes();
-   //  this.AddMedicineTypes();
-
+     this.setPermissions = this.permissionService.getPermissions("MedicineType");
+     
+     if (this.setPermissions.isEdit === true) {
+      this.actionButtons.push("edit");
+    }
+  
+    if (this.setPermissions.isDelete === true) {
+      this.actionButtons.push("delete");
+    }
     }
 
     medicineTypeFormGroup:FormGroup

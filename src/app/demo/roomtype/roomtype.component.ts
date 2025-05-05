@@ -1,17 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component,OnInit } from '@angular/core';
+import { Component,inject,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
-
 import { ToastrService } from 'ngx-toastr';
 import { ViewChild } from '@angular/core';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PermissionService } from 'src/app/services/permission.service';
 
 @Component({
   selector: 'app-roomtypeess',
@@ -21,11 +20,24 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./roomtype.component.scss']
 })
 export  class RoomTypesComponent implements OnInit {
+
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+	  actionButtons = [];
+
   lstroomtype: any [] = [];
   paginatedList: any[] = [];
   isShowList:boolean=true;
   selectedRoomTypeId: number | null = null;
   URL=AppConstant.url
+  http=inject(HttpClient)
 
 
 //   @ViewChild('deleteModal') deleteModal!: PopUpComponent;
@@ -46,28 +58,27 @@ showPopup = false;
     { label: 'Is Active', key: 'isActive' }
   ];
 
-//   roomtypepost : any ={
-//       "createBy": 0,
-//       "createdOn": "",
-//       "updateBy": 0,
-//       "updateOn": "",
-//       "isActive": true,
-//       "versionNo": 0,
-//       "roomTypeId": 0,
-//       "roomType": ""
-//  }
-//  lstroomtype: any
-  // http=inject(HttpClient)
-
-  // roomTypeId: number = null;
-
-  constructor(private baseService: BaseService,
-    private toastr: ToastrService) {}
+  constructor
+  (
+    private baseService: BaseService,
+    private toastr: ToastrService,
+    private permissionService: PermissionService
+  )
+ {
+  this.permission = this.permissionService.getPermissions("RoomType");
+ }
 
      ngOnInit() {
       this.createFormGroup();
       this.getRoomType();
-
+      this.setPermissions = this.permissionService.getPermissions("RoomType");
+      if (this.setPermissions.isEdit === true) {
+        this.actionButtons.push("edit");
+      }
+    
+      if (this.setPermissions.isDelete === true) {
+        this.actionButtons.push("delete");
+      }
      }
 
      roomTypefmGroup:FormGroup;

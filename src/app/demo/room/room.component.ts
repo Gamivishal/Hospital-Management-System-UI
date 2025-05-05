@@ -8,14 +8,14 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AppConstant } from '../baseservice/baseservice.service';
-// import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PermissionService } from 'src/app/services/permission.service';
 
 
 
-// ... Imports remain same
+
 
 @Component({
   selector: 'app-rooms',
@@ -24,13 +24,27 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   templateUrl:'./room.component.html',
   styleUrls: ['./room.component.scss']
 })
+
 export class room implements OnInit {
+
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+	  actionButtons = [];
+
   lstroom: any[] = [];
   paginatedList: any[] = [];
   isShowList: boolean = true;
   lstRoomName: any[] = [];
   lstroomnumber: any[] = [];
   roomID: number | null = null;
+  http=inject(HttpClient)
 
   roomfmGroup: FormGroup;
 
@@ -57,14 +71,29 @@ export class room implements OnInit {
   
 
 
-   constructor(private baseService: BaseService,
-      private toastr: ToastrService) {}
+   constructor
+   (
+      private baseService: BaseService,
+      private toastr: ToastrService,
+      private permissionService: PermissionService
+    )
+   {
+    this.permission = this.permissionService.getPermissions("Room");
+   }
 
   ngOnInit() {
     this.createFormGroup();
     this.getroomname();
     this.getroom();
     this.getroomnumber();
+    this.setPermissions = this.permissionService.getPermissions("Room");
+    if (this.setPermissions.isEdit === true) {
+      this.actionButtons.push("edit");
+    }
+  
+    if (this.setPermissions.isDelete === true) {
+      this.actionButtons.push("delete");
+    }
   }
 
   createFormGroup() {
@@ -109,23 +138,7 @@ export class room implements OnInit {
     });
   }
 
-  // Addroom() {
-  //   this.baseService.POST(this.URL + "TblRoom/Add", this.roomfmGroup.getRawValue()).subscribe({
-  //     next: (response: any) => {
-  //       if (response.statusCode === 200) {
-  //         this.toastr.success(response.message, 'Success');
-  //         this.getroom();
-  //         this.roomfmGroup.reset();
-  //         this.isShowList = true;
-  //       } else {
-  //         this.toastr.error(response.message, 'Error');
-  //       }
-  //     },
-  //     error: () => {
-  //       this.toastr.error('Failed to Add', 'Error');
-  //     }
-  //   });
-  // }
+  
   Addroom() {
     const formValues = this.roomfmGroup.getRawValue();
     console.log("Form Values Before Add:", formValues); // Debugging log
@@ -152,38 +165,7 @@ export class room implements OnInit {
       }
     });
   }
-  // Addroom() {
-  //   if (this.roomfmGroup.invalid) {
-  //     this.toastr.error('Please fill all required fields', 'Error');
-  //     return;
-  //   }
   
-  //   const formValues = this.roomfmGroup.getRawValue();
-  
-  //   const payload = {
-  //     tblRoom: {
-  //       roomNumber: formValues.roomNumber,
-  //       roomTypeID: +formValues.roomTypeID
-  //     }
-  //   };
-  
-  //   this.baseService.POST(this.URL + "TblRoom/Add", payload).subscribe({
-  //     next: (response: any) => {
-  //       if (response.statusCode === 200) {
-  //         this.toastr.success(response.message, 'Success');
-  //         this.getroom();
-  //         this.roomfmGroup.reset();
-  //         this.isShowList = true;
-  //       } else {
-  //         this.toastr.error(response.message, 'Error');
-  //       }
-  //     },
-  //     error: (error) => {
-  //       console.error("POST Error:", error);
-  //       this.toastr.error('Failed to Add', 'Error');
-  //     }
-  //   });
-  // }
   
 
   editroom(item: any) {

@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
-
+import { PermissionService } from 'src/app/services/permission.service';
 
 
 @Component({
@@ -18,6 +18,17 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./hospitaldepartment.component.scss']
 })
 export class hospitaldepartmentComponent implements OnInit {
+
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+	  actionButtons = [];
 hospitaldepartments: any[]=[];
 // PAGINATION
 paginatedList: any[] = [];
@@ -48,15 +59,26 @@ tableHeaders = [
 ];
 
 
-constructor(
+constructor
+(
   private baseService: BaseService,
-  private toastr: ToastrService
-) {}
+  private toastr: ToastrService,
+  private permissionService: PermissionService
+) 
+{
+  this.permission = this.permissionService.getPermissions("HospitalDepartment");
+}
    ngOnInit() {
     this.getDept();
     this.createFormGroup();
-    //this.addHospital();
-
+    this.setPermissions = this.permissionService.getPermissions("HospitalDepartment");
+    if (this.setPermissions.isEdit === true) {
+      this.actionButtons.push("edit");
+    }
+  
+    if (this.setPermissions.isDelete === true) {
+      this.actionButtons.push("delete");
+    }
    }
    hospitaldeptfmGroup:FormGroup;
 

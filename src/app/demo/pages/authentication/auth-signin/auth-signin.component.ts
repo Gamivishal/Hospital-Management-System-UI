@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 //* eslint-disable @typescript-eslint/no-unused-vars */
 import { Component } from '@angular/core';
@@ -18,7 +19,7 @@ import { CommonModule } from '@angular/common';
 })
 export default class AuthSigninComponent {
   constructor(private baseService: BaseService,private router: Router,private toastr: ToastrService) {}
-
+  MenuPermissionList:any []=[]
   isOtpScreen: boolean = false;
   email: string = '';
   password: string = '';
@@ -121,10 +122,13 @@ export default class AuthSigninComponent {
   //     this.objlogin = response.data;
 
 
-  //     if(response?.data  && response.statusCode === 200){
-  //       //localStorage.setItem('data', response?.data || '');
-  //       localStorage.setItem('data',JSON.stringify(response?.data));
-  //       console.log("Token stored in localstorage:", response?.data);
+      // if(response?.data  && response.statusCode === 200){
+      //   debugger
+
+      //   //localStorage.setItem('data', response?.data || '');
+      //   localStorage.setItem('data',JSON.stringify(response?.data));
+      //   console.log("Token stored in localstorage:", response?.data);
+      //   this.getMenuPermissionList()
 
 
   //       this.router.navigate(['/dashboard']);
@@ -140,22 +144,24 @@ export default class AuthSigninComponent {
       this.toastr.warning('Please enter OTP.');
       return;
     }
-  
+
     const encryptedPassword = this.encryptPassword(this.password);
     const validateUserUrl = this.URL + `TblUser/ValidateCredential?email=${encodeURIComponent(this.email)}&password=${encodeURIComponent(encryptedPassword)}`;
-  
+
     this.baseService.GET<any>(validateUserUrl).subscribe(userResponse => {
       if (userResponse?.data && userResponse.statusCode === 200) {
         const userId = userResponse.data.userId;
         const verifyOtpUrl = `https://localhost:7272/api/TblOTP/VerifyOtp?userId=${userId}&otpCode=${this.otp}`;
-  
+
         // Verify OTP using POST
         this.baseService.POST<any>(verifyOtpUrl, {}).subscribe(otpResponse => {
           if (otpResponse.statusCode === 200) {
             // OTP verified successfully
             localStorage.setItem('data', JSON.stringify(userResponse.data));
             this.toastr.success('Login successful!');
-            this.router.navigate(['/dashboard']);
+            this.getMenuPermissionList();
+
+           //this.router.navigate(['/dashboard']);
           } else {
             // OTP verification failed
             this.toastr.error(otpResponse.message || 'Invalid OTP');
@@ -164,7 +170,7 @@ export default class AuthSigninComponent {
           this.toastr.error('OTP Verification failed');
           console.error('OTP Error:', otpError);
         });
-  
+
       } else {
         // User validation failed
         this.toastr.error(userResponse.message || 'Invalid email or password');
@@ -172,9 +178,35 @@ export default class AuthSigninComponent {
     }, error => {
       this.toastr.error('Login API error');
       console.error('Login Error:', error);
+
     });
+
+
+debugger
   }
-  
+// getMenuPermissionList() {
+//   this.baseService.GET<any>(this.URL + "TblMenuPermission/GetAll").subscribe(response => {
+//     this.MenuPermissionList = response.data || [];
+//     localStorage.setItem('MenuPermission', JSON.stringify(response?.data));
+//     console.log("Token stored in localstorage:", response?.data);
+
+//   });
+// }
+getMenuPermissionList() {
+  debugger
+  const userData = localStorage.getItem('data');
+  const parsedData = userData ? JSON.parse(userData) : null;
+  const roleId = parsedData?.roleid;
+
+  this.baseService.GET<any>(`${this.URL}TblMenuPermission/GetAll?roleId=${roleId}`)
+    .subscribe(response => {
+      this.MenuPermissionList = response.data || [];
+      localStorage.setItem('MenuPermission', JSON.stringify(response?.data));
+    this.router.navigate(['/dashboard']);
+      console.log("Menu permissions stored in localStorage:", response?.data);
+    });
+}
+
   onCancel() {
     this.isOtpScreen = false;
     this.otp = '';

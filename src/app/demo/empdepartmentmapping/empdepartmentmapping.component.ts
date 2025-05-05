@@ -10,6 +10,7 @@ import { AppConstant } from '../baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PermissionService } from 'src/app/services/permission.service';
 
 
 
@@ -21,6 +22,17 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./empdepartmentmapping.component.scss']
 })
 export  class EmpDepartmentMapping implements OnInit {
+
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+	  actionButtons = [];
   lstempdeptmapping: any [] = [];
   paginatedList: any[] = [];
   isShowList:boolean=true;
@@ -43,15 +55,29 @@ export  class EmpDepartmentMapping implements OnInit {
   ];
 
 
-   constructor(private baseService: BaseService,
-      private toastr: ToastrService) {}
+   constructor
+   (
+      private baseService: BaseService,
+      private toastr: ToastrService,
+      private permissionService: PermissionService
+    ) 
+    {
+      this.permission = this.permissionService.getPermissions("EmployeeDepartment");
+    }
 
      ngOnInit() {
       this.createFormGroup();
       this.getUserNames();
       this.getDepartmentNames();
       this.getEmpDeptMapping();
+      this.setPermissions = this.permissionService.getPermissions("EmployeeDepartment");
+      if (this.setPermissions.isEdit === true) {
+        this.actionButtons.push("edit");
+      }
     
+      if (this.setPermissions.isDelete === true) {
+        this.actionButtons.push("delete");
+      }
      }
 
      empdepartmentmappingfmGroup:FormGroup;

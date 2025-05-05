@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component,inject,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
-
 import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -10,10 +9,11 @@ import { CommonModule,  } from '@angular/common';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { RouterModule } from '@angular/router';
-
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import { PermissionService } from 'src/app/services/permission.service';
+
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 
 @Component({
@@ -26,6 +26,18 @@ import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 })
 
 export class TreatmentdetailsComponent implements OnInit{
+
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+	  actionButtons = [];
+
   treatmentdetailslist:any[]=[];
   paginatedList: any[] = []; // Paginated data
   isShowList:boolean=true;
@@ -45,17 +57,7 @@ export class TreatmentdetailsComponent implements OnInit{
   ];
 
    
-  // medicinetypepost:any={
-  //   "createBy":0,
-  //   "cretedOn":"",
-  //   "updateBy":0,
-  //   "updateOn":"",
-  //   "isActive": true,
-  //   "versionNo":0,
-  //   "medicineTypeID":0,
-  //   "typeName":"",
-
-  // }
+ 
 
    
   http=inject(HttpClient)
@@ -65,8 +67,15 @@ export class TreatmentdetailsComponent implements OnInit{
   showPopup = false
   treatmentDetailsIdDelete: number | null = null
 
-  constructor(private baseService: BaseService,
-    private toastr: ToastrService) {}
+  constructor
+  (
+    private baseService: BaseService,
+    private toastr: ToastrService,
+    private permissionService: PermissionService
+  )
+ {
+  this.permission = this.permissionService.getPermissions("TreatmentDetails");
+ }
 
   // life cycle event
   ngOnInit() {
@@ -74,9 +83,14 @@ export class TreatmentdetailsComponent implements OnInit{
      this.gettreatmentdetails();
      this.getdisease();
      this.getpateint();
-     
-     
-
+     this.setPermissions = this.permissionService.getPermissions("TreatmentDetails");
+     if (this.setPermissions.isEdit === true) {
+      this.actionButtons.push("edit");
+    }
+  
+    if (this.setPermissions.isDelete === true) {
+      this.actionButtons.push("delete");
+    }
     }
  
   

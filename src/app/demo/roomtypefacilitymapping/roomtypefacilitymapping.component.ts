@@ -8,11 +8,10 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AppConstant } from '../baseservice/baseservice.service';
-// import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
-
+import { PermissionService } from 'src/app/services/permission.service';
 
 
 @Component({
@@ -23,6 +22,17 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   styleUrls: ['./roomtypefacilitymapping.component.scss']
 })
 export  class roomtypefacilitymapping implements OnInit {
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+	  actionButtons = [];
+
   lstroomtypefacilitymapping: any [] = [];
   paginatedList: any[] = [];
   isShowList:boolean=true;
@@ -56,15 +66,29 @@ export  class roomtypefacilitymapping implements OnInit {
   
 
 
-   constructor(private baseService: BaseService,
-      private toastr: ToastrService) {}
+   constructor
+   (
+      private baseService: BaseService,
+      private toastr: ToastrService,
+      private permissionService: PermissionService
+    ) 
+    {
+      this.permission = this.permissionService.getPermissions("RoomFacility");
+    }
 
      ngOnInit() {
       this.createFormGroup();
       this.getroomname();
       this.getfacilityname();
       this.getroomtypefacilitymapping();
-
+      this.setPermissions = this.permissionService.getPermissions("RoomFacility");
+      if (this.setPermissions.isEdit === true) {
+        this.actionButtons.push("edit");
+      }
+    
+      if (this.setPermissions.isDelete === true) {
+        this.actionButtons.push("delete");
+      }
      }
 
 
@@ -72,7 +96,8 @@ export  class roomtypefacilitymapping implements OnInit {
      createFormGroup() {
 
       this.roomtypefacilitymappingfmGroup = new FormGroup({
-        roomtypefacilitymappingid: new FormControl(0),
+        roomTypeFacilityMappingID: new FormControl(0, [Validators.required]),
+        // roomtypefacilitymappingid: new FormControl(0),
         roomID: new FormControl(null, Validators.required),
         facilityID: new FormControl(null, Validators.required),
 
@@ -168,6 +193,7 @@ export  class roomtypefacilitymapping implements OnInit {
       //edit roomtypefacilitymapping
 
       editroomtypefacilitymapping(item: any) {
+        debugger;
         this.roomfacID = item.roomTypeFacilityMappingID;
         this.isShowList = false;
         this.roomtypefacilitymappingfmGroup.patchValue({
@@ -204,12 +230,31 @@ export  class roomtypefacilitymapping implements OnInit {
 
 
       //delete roomtypefacilitymapping
-      onDelete(id: number) {
-        this.baseService.DELETE(this.URL + "TblRoomTypeFacilityMapping/Delete?id=" + id)
-          .subscribe(response => {
-            this.toastr.success("Deleted successfully");
-            this.getroomtypefacilitymapping();
-          });
+      // onDelete(roomtypefacilitymappingid: number) {
+      //   this.baseService.DELETE(this.URL + "TblRoomTypeFacilityMapping/Delete?id=" + id)
+      //     .subscribe(response => {
+      //       this.toastr.success("Deleted successfully");
+      //       this.getroomtypefacilitymapping();
+      //     });
+      // }
+
+      onDelete(roomtypefacilitymappingid: number){
+        this.baseService.DELETE(this.URL+"TblHospitalType/Delete?id=" + roomtypefacilitymappingid)
+        .subscribe({
+          next: (response: any) => {
+            if (response.statusCode === 200) {
+              this.toastr.success(response.message, 'Success');
+          console.log("DELETE Response:", response);
+          this.getroomtypefacilitymapping();
+          this.isShowList = true;
+        } else {
+          this.toastr.error(response.message, 'Error');
+        }
+      },
+      error: () => {
+        this.toastr.error('Failed to delete ', 'Error');
+      }
+    });
       }
 
 

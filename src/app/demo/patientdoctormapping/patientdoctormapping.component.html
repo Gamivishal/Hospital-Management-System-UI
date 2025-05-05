@@ -3,8 +3,9 @@
   @if(isShowList){
   <div class="col-xl-12" *ngIf="isShowList">
       <div class="d-flex justify-content-end mb-3 position-relative">
-        <button type="button" (click)="isShowList=false;" class="btn btn-primary add-shift-button">
-          Add PetientDoctor
+        <!-- <button type="button" (click)="isShowList=false;" class="btn btn-primary add-shift-button"> -->
+          <button *ngIf="permission.isAdd" (click)="isShowList=false;" class="btn btn-primary add-shift-button">
+          ADD 
         </button>
       </div>
       <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
@@ -13,7 +14,7 @@
         <app-datatable
         [tableHeaders]="tableHeaders"
         [tableData]="paginatedList"
-        [actionButtons]="['edit', 'delete']"
+        [actionButtons]="actionButtons"
         (actionClicked)="onTableAction($event)">
         </app-datatable>
           </table>
@@ -152,26 +153,3 @@
         </app-card>
     </div>
   }
-
-
-
-
-
-
-
-
-<!-- 
-  <div class="form-group">
-    <label for="treatmentCode">Treatment Code</label>
-    <select formControlName="TreatmentDetailsId" name="treatmentCode" class="form-control" required>
-      <option value="">This is patient</option>
-      <option *ngFor="let Treatment of TreatmentcodeList" [value]="Treatment.id">{{ Treatment.name }}</option>
-    </select>
-
-    <span *ngIf="checkRequired('TreatmentDetailsId')" class="error-span">
-      TreatmentCode is required
-    </span>
-
-    <span *ngIf="checkRequired('Name')" class="error-span">This Field Is Required</span><br>
-    <span *ngIf="checkminlength('Shiftname')" class="error-span">Minimum 3 character required</span>
-  </div> -->

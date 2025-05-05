@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-debugger */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // angular import
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, output, OnInit, OnChanges, SimpleChange, SimpleChanges, Input} from '@angular/core';
 import { Location } from '@angular/common';
 
 // project import
@@ -8,13 +11,14 @@ import { NavigationItem, NavigationItems } from '../navigation';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { NavGroupComponent } from './nav-group/nav-group.component';
 
+
 @Component({
   selector: 'app-nav-content',
   imports: [SharedModule, NavGroupComponent],
   templateUrl: './nav-content.component.html',
   styleUrls: ['./nav-content.component.scss']
 })
-export class NavContentComponent {
+export class NavContentComponent implements OnInit, OnChanges {
   private location = inject(Location);
 
   // public method
@@ -22,16 +26,87 @@ export class NavContentComponent {
   title = 'Demo application for version numbering';
   currentApplicationVersion = environment.appVersion;
 
-  navigations!: NavigationItem[];
+  // navigations!: NavigationItem[];
   wrapperWidth: number;
   windowWidth = window.innerWidth;
 
   NavCollapsedMob = output();
-
+  // menuPermissions: any[] = [];
+  visibleMenus: any[] = [];
   // constructor
-  constructor() {
-    this.navigations = NavigationItems;
+
+  @Input() menuPermissions: any[] = [];
+@Input() navigations: NavigationItem[] = [];
+
+  // ngOnInit() {
+  //   debugger
+  //   this.permissionbasedonIsview(this.navigations);
+
+  // }
+
+  // ngOnChanges(changes: SimpleChanges) {
+  //   debugger
+  //   const Permissionforviwe = localStorage.getItem('MenuPermission');
+  //   this.menuPermissions = Permissionforviwe ? JSON.parse(Permissionforviwe) : [];
+  //   this.navigations = NavigationItems;
+  //   this.permissionbasedonIsview(this.navigations);
+  // }
+
+  ngOnChanges(changes: SimpleChanges) {
+    debugger;
+    if (changes['menuPermissions'] || changes['navigations']) {
+      this.permissionbasedonIsview(this.navigations);
+    }
   }
+
+
+  // constructor() {
+  //   // optional: move this to ngOnInit if you prefer
+  //   const storedPermissions = localStorage.getItem('MenuPermission');
+  //   this.menuPermissions = storedPermissions ? JSON.parse(storedPermissions) : [];
+  //   this.navigations = NavigationItems;
+  // }
+
+  constructor() {
+    // debugger;
+    // const Permissionforviwe = localStorage.getItem('MenuPermission');
+    // this.menuPermissions = Permissionforviwe ? JSON.parse(Permissionforviwe) : [];
+    // this.navigations = NavigationItems;
+    // this.permissionbasedonIsview(this.navigations);
+  }
+  ngOnInit() {
+    debugger;
+    const Permissionforviwe = localStorage.getItem('MenuPermission');
+    this.menuPermissions = Permissionforviwe ? JSON.parse(Permissionforviwe) : [];
+    this.navigations = NavigationItems;
+    this.permissionbasedonIsview(this.navigations);
+  }
+  permissionbasedonIsview(items: NavigationItem[]) {
+    items.forEach(item => {
+    if (item.children?.length) {
+
+  this.permissionbasedonIsview(item.children);
+     }
+
+      if (item.menuId) {
+        const permission = this.menuPermissions.find(p => p.menuID === item.menuId);
+
+        if (permission) {
+          item.hidden = !permission.isView;
+        } else {
+          item.hidden = true;
+        }
+      }
+    });
+  }
+
+  // verifyIsView(NavigationItems:NavigationItem[])
+  // {
+  //   NavigationItems.forEach(x=>x.menuId&&this.menuPermissions.find(x=>x.menuId)==7 also add Isview permission)
+  // }
+
+
+
 
   fireOutClick() {
     let current_url = this.location.path();

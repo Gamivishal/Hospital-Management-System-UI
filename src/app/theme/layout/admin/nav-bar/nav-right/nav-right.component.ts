@@ -39,7 +39,7 @@ export class NavRightComponent {
   }
 
   logout(): void {
-    localStorage.removeItem('data');
+    localStorage.clear();
     this.router.navigate(['/auth/signin']);
   }
 

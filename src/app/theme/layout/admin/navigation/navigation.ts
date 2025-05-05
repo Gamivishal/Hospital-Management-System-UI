@@ -2,6 +2,7 @@
 
 export interface NavigationItem {
   id: string;
+  menuId?:number;
   title: string;
   type: 'item' | 'collapse' | 'group';
   translate?: string;
@@ -58,6 +59,7 @@ export const NavigationItems: NavigationItem[] = [
     children: [
       {
         id: 'shift',
+        menuId:10,
         title: 'Shift Type',
         type: 'item',
         url: '/shift',
@@ -66,6 +68,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'hospitaltype',
+        menuId:7,
         title: 'Hospital Type',
         type: 'item',
         url: '/hospitaltype',
@@ -74,6 +77,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'medicinetype',
+        menuId:12,
         title: 'Medicine Type',
         type: 'item',
         url: '/medicinetype',
@@ -83,6 +87,7 @@ export const NavigationItems: NavigationItem[] = [
 
       {
         id: 'hospitaldepartment',
+        menuId:8,
         title: 'Hospital Department',
         type: 'item',
         url: '/hospitaldepartment',
@@ -100,6 +105,7 @@ export const NavigationItems: NavigationItem[] = [
 
       {
         id: 'room type',
+        menuId:13,
         title: 'Room Type',
         type: 'item',
         url: '/roomtype',
@@ -108,6 +114,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'room',
+        menuId:16,
         title: 'Room',
         type: 'item',
         url: '/room',
@@ -116,6 +123,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'Roles',
+        menuId:9,
         title: 'Roles',
         type: 'item',
         url: '/roles',
@@ -124,6 +132,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'Facility Type',
+        menuId:14,
         title: 'Facility Type',
         type: 'item',
         url: '/facilitytype',
@@ -133,6 +142,7 @@ export const NavigationItems: NavigationItem[] = [
 
       {
         id: 'diseasetype',
+        menuId:11,
         title: 'Disease Type',
         type: 'item',
         url: '/diseasetype',
@@ -152,6 +162,7 @@ export const NavigationItems: NavigationItem[] = [
       {
         id: 'patientdata',
         title: 'Patient Data',
+        menuId:20,
         type: 'item',
         url: '/patientdata',
         icon: 'feather icon-home',
@@ -159,6 +170,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'Empshiftmapping',
+        menuId:15,
         title: 'Employee Shift Mapping',
         type: 'item',
         url: '/empshiftmapping',
@@ -167,6 +179,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'Empdepartmentmapping',
+        menuId:19,
         title: 'Employee Department',
         type: 'item',
         url: '/empdepartmentmapping',
@@ -175,6 +188,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'patientdoctormapping',
+        //menuId:,
         title: 'Patient Doctor Mapping',
         type: 'item',
         url: '/patientdoctormapping',
@@ -183,6 +197,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'medicinedetails',
+        menuId:22,
         title: 'Medicine Details',
         type: 'item',
         url: '/medicinedetails',
@@ -191,6 +206,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'roomTypeFacilityMapping',
+        menuId:18,
         title: 'Roomtype Facility',
         type: 'item',
         url: '/roomTypeFacilityMapping',
@@ -199,6 +215,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'PatientAdmitionDetails',
+        menuId:23,
         title: 'Patient Admition Details',
         type: 'item',
         url: '/PatientAdmitionDetails',
@@ -209,6 +226,7 @@ export const NavigationItems: NavigationItem[] = [
 
       {
         id: 'treatmentdetails',
+        menuId:21,
         title: 'Treatment Details',
         type: 'item',
         url: '/treatmentdetails',
@@ -216,7 +234,16 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item'
       },
       {
+        id: 'medicinedieseasemapping',
+        title: 'Medicine Diesease Mapping',
+        type: 'item',
+        url: '/medicinedieseasemapping',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+      {
         id: 'billing',
+        menuId:24,
         title: 'Billing',
         type: 'item',
         url: '/billing',
@@ -238,6 +265,7 @@ export const NavigationItems: NavigationItem[] = [
   {
     id: 'ui-element',
     title: 'UI ELEMENT',
+    menuId:0,
     type: 'group',
     icon: 'icon-ui',
     children: [
@@ -291,6 +319,7 @@ export const NavigationItems: NavigationItem[] = [
     id: 'forms',
     title: 'Forms & Tables',
     type: 'group',
+    menuId:0,
     icon: 'icon-group',
     children: [
       {
@@ -314,6 +343,7 @@ export const NavigationItems: NavigationItem[] = [
   {
     id: 'chart-maps',
     title: 'Chart',
+    menuId:0,
     type: 'group',
     icon: 'icon-charts',
     children: [
@@ -330,6 +360,7 @@ export const NavigationItems: NavigationItem[] = [
   {
     id: 'pages',
     title: 'Pages',
+    menuId:0,
     type: 'group',
     icon: 'icon-pages',
     children: [

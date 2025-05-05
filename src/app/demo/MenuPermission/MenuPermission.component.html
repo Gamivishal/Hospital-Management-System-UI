@@ -1,67 +1,65 @@
 <div class="row" *ngIf="TblMenuPermissionlist">
-    <div *ngIf="isShowList">
-        <div class="col-xl-12">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div style="width: 250px;">
-                    <select id="dieseaseTypeID" class="form-control" [(ngModel)]="selectedRoleId" (change)="getMenuPermissionlist()">
+    <div class="col-xl-12">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div style="width: 250px;">
+                <select id="dieseaseTypeID" class="form-control" [(ngModel)]="selectedRoleId" (change)="getMenuPermissionlist()">
                 <option value="" disabled>Select Role</option>
                 <option *ngFor="let diesease of MenuPermissionlist" [value]="diesease.id">
                   {{diesease.name}}
                 </option>
               </select>
-                </div>
-
-                <button class="btn btn-success" (click)="submitMenuPermissions()">Submit All</button>
             </div>
 
-            <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
-                <div class="table-responsive">
-                    <table class="table table-striped">
+            <button class="btn btn-success" (click)="submitMenuPermissions()">Submit All</button>
+        </div>
 
-                        <thead>
-                            <tr>
+        <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
+            <div class="table-responsive">
+                <table class="table table-striped">
 
-                                <th>ID</th>
-                                <th>RoleName</th>
+                    <thead>
+                        <tr>
 
-                                <th>Menu Name</th>
-                                <th>Edit</th>
-                                <th>Add</th>
-                                <th>Delete</th>
-                                <th>View</th>
+                            <th>ID</th>
+                            <th>RoleName</th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of TblMenuPermissionlist">
-                                <td>{{ item.menuRoleMappingID }}</td>
-                                <td>{{ item.roleName }}</td>
+                            <th>Menu Name</th>
+                            <th>Edit</th>
+                            <th>Add</th>
+                            <th>Delete</th>
+                            <th>View</th>
 
-                                <td>{{ item.menuName }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of TblMenuPermissionlist">
+                            <td>{{ item.menuRoleMappingID }}</td>
+                            <td>{{ item.roleName }}</td>
 
-                                <td>
-                                    <input type="checkbox" [(ngModel)]="item.isEdit" (change)="onCheckboxChange(item, 'isEdit')" />
-                                </td>
-                                <td>
-                                    <input type="checkbox" [(ngModel)]="item.isAdd" (change)="onCheckboxChange(item, 'isAdd')" />
-                                </td>
-                                <td>
-                                    <input type="checkbox" [(ngModel)]="item.isDelete" (change)="onCheckboxChange(item, 'isDelete')" />
-                                </td>
-                                <td>
-                                    <input type="checkbox" [(ngModel)]="item.isView" (change)="onCheckboxChange(item, 'isView')" />
-                                </td>
-                            </tr>
-                        </tbody>
+                            <td>{{ item.menuName }}</td>
 
-                    </table>
-                </div>
+                            <td>
+                                <input type="checkbox" [(ngModel)]="item.isEdit" (change)="onCheckboxChange(item, 'isEdit')" />
+                            </td>
+                            <td>
+                                <input type="checkbox" [(ngModel)]="item.isAdd" (change)="onCheckboxChange(item, 'isAdd')" />
+                            </td>
+                            <td>
+                                <input type="checkbox" [(ngModel)]="item.isDelete" (change)="onCheckboxChange(item, 'isDelete')" />
+                            </td>
+                            <td>
+                                <input type="checkbox" [(ngModel)]="item.isView" (change)="onCheckboxChange(item, 'isView')" />
+                            </td>
+                        </tr>
+                    </tbody>
 
-            </app-card>
-
-            <div class="d-flex justify-content-end mt-3">
-                <button class="btn btn-success" (click)="submitMenuPermissions()">Submit All</button>
+                </table>
             </div>
+
+        </app-card>
+
+        <div class="d-flex justify-content-end mt-3">
+            <button class="btn btn-success" (click)="submitMenuPermissions()">Submit All</button>
         </div>
     </div>
 </div>
