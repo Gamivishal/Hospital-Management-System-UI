@@ -66,6 +66,11 @@ const routes: Routes = [
         loadComponent : () => import ('./demo/billing/billing.component').then((c) => c.billingComponent),canActivate: [AuthGuard]
       },
       {
+        path: 'feedback',
+        loadComponent : () => import ('./demo/feedback/feedback.component').then((c) => c.feedbackComponent),canActivate: [AuthGuard]
+      },
+
+      {
         path: 'roles',
         loadComponent : () => import('./demo/Roles/Roles.component').then((c) => c.RolesComponent),
         canActivate: [AuthGuard]

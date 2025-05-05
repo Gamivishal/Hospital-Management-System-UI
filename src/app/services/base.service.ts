@@ -35,7 +35,7 @@ export class BaseService {
     return this.http.put<T>(url, body,{headers : this.getAuthHeaders()});
   }
 
-  DELETE<T>(url: string): Observable<T> {
+  DELETE<T>(url: string, data: any): Observable<T> {
     return this.http.delete<T>(url,{headers : this.getAuthHeaders()});
   }
 }

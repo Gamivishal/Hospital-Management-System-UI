@@ -222,7 +222,16 @@ export const NavigationItems: NavigationItem[] = [
         url: '/billing',
         icon: 'feather icon-home',
         classes: 'nav-item'
-      }
+      },
+      {
+        id: 'feedback',
+        title: 'Feedback',
+        type: 'item',
+        url: '/feedback',
+        icon: 'feather icon-home',
+        classes: 'nav-item'
+      },
+
     ]
   },
 
