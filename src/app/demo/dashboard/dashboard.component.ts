@@ -325,7 +325,6 @@ export class DashboardComponent implements OnInit {
       }
     ];
   }
-
   getallforcountlist() {
     this.baseService.GET<any>(this.URL + "DashboardCardDetail/GetAllforcount").subscribe(response => {
 this.card[0].number=response.data?.[0]?.totalDoctorCount;
