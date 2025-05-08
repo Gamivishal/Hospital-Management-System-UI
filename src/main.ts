@@ -7,11 +7,28 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
 import { provideToastr } from 'ngx-toastr';
+import { EncryptionIntrerceptorService } from './app/services/encryption-intrerceptor.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { APP_INITIALIZER } from '@angular/core';
+import { ConfigService, initializeApp } from './app/services/config.service';
 
 if (environment.production) {
   enableProdMode();
 }
 
 bootstrapApplication(AppComponent, {
-  providers: [importProvidersFrom(BrowserModule, AppRoutingModule), provideAnimations(), provideToastr()]
+  providers: [
+    importProvidersFrom(BrowserModule, AppRoutingModule),
+    provideAnimations(),
+    provideToastr(),
+    //EncryptionInterceptor
+    { provide: HTTP_INTERCEPTORS, useClass: EncryptionIntrerceptorService, multi: true },
+    ConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [ConfigService],
+      multi: true
+    }
+  ]
 }).catch((err) => console.error(err));

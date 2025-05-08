@@ -6,7 +6,6 @@ import { Router, RouterModule } from '@angular/router';
 import { BaseService } from 'src/app/services/base.service';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
-import * as CryptoJS from 'crypto-js';  // Import CryptoJS
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -17,35 +16,30 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./auth-signin.component.scss']
 })
 export default class AuthSigninComponent {
-  constructor(private baseService: BaseService,private router: Router,private toastr: ToastrService) {}
+  constructor(private baseService: BaseService,
+    private router: Router,
+    private toastr: ToastrService) { }
 
   isOtpScreen: boolean = false;
   email: string = '';
   password: string = '';
+  objlogin: any;
+  URL = AppConstant.url
   otp: string = '';
-  objlogin:any;
-  URL=AppConstant.url
+
 
   timer: number = 180;
   showResend: boolean = false;
   intervalId: any;
 
-  // AES 256
-  encryptPassword(password: string): string {
-    const key = CryptoJS.enc.Utf8.parse('12345678901234567890123456789012');
-    const iv = CryptoJS.enc.Utf8.parse('1234567890123456');
-    return CryptoJS.AES.encrypt(password, key, { iv }).toString();
-  }
-
 
   onNext() {
-    const encryptedPassword = this.encryptPassword(this.password);
     if (!this.email || !this.password) {
       this.toastr.warning('Please enter email and password.');
       return;
     }
 
-    const apiurl = this.URL + `TblUser/ValidateCredential?email=${encodeURIComponent(this.email)}&password=${encodeURIComponent(encryptedPassword)}`;
+    const apiurl = this.URL + `TblUser/ValidateCredential?email=${this.email}&password=${this.password}`;
 
     this.baseService.GET<any>(apiurl).subscribe(response => {
       if (response?.data && response.statusCode === 200) {
@@ -55,7 +49,7 @@ export default class AuthSigninComponent {
         const userId = this.objlogin?.userId;
         const otpUrl = `https://localhost:7272/api/TblOTP/GenerateOtp?userId=${userId}`;
 
-        this.baseService.POST<any>(otpUrl, {}).subscribe(otpResponse => {
+        this.baseService.GET<any>(otpUrl).subscribe(otpResponse => {
           if (otpResponse.statusCode === 200) {
             this.toastr.success(otpResponse.message, 'OTP Sent');
             this.isOtpScreen = true;
@@ -96,7 +90,7 @@ export default class AuthSigninComponent {
   onResendOtp() {
     const userId = this.objlogin?.userId;
     const otpUrl = `https://localhost:7272/api/TblOTP/GenerateOtp?userId=${userId}`;
-    this.baseService.POST<any>(otpUrl, {}).subscribe(otpResponse => {
+    this.baseService.GET<any>(otpUrl).subscribe(otpResponse => {
       if (otpResponse.statusCode === 200) {
         this.toastr.success('OTP resent successfully');
         this.startTimer(); // Restart timer
@@ -140,17 +134,16 @@ export default class AuthSigninComponent {
       this.toastr.warning('Please enter OTP.');
       return;
     }
-  
-    const encryptedPassword = this.encryptPassword(this.password);
-    const validateUserUrl = this.URL + `TblUser/ValidateCredential?email=${encodeURIComponent(this.email)}&password=${encodeURIComponent(encryptedPassword)}`;
-  
+
+    const validateUserUrl = this.URL + `TblUser/ValidateCredential?email=${this.email}&password=${this.password}`;
+
     this.baseService.GET<any>(validateUserUrl).subscribe(userResponse => {
       if (userResponse?.data && userResponse.statusCode === 200) {
         const userId = userResponse.data.userId;
         const verifyOtpUrl = `https://localhost:7272/api/TblOTP/VerifyOtp?userId=${userId}&otpCode=${this.otp}`;
-  
+
         // Verify OTP using POST
-        this.baseService.POST<any>(verifyOtpUrl, {}).subscribe(otpResponse => {
+        this.baseService.GET<any>(verifyOtpUrl).subscribe(otpResponse => {
           if (otpResponse.statusCode === 200) {
             // OTP verified successfully
             localStorage.setItem('data', JSON.stringify(userResponse.data));
@@ -164,7 +157,7 @@ export default class AuthSigninComponent {
           this.toastr.error('OTP Verification failed');
           console.error('OTP Error:', otpError);
         });
-  
+
       } else {
         // User validation failed
         this.toastr.error(userResponse.message || 'Invalid email or password');
@@ -174,7 +167,7 @@ export default class AuthSigninComponent {
       console.error('Login Error:', error);
     });
   }
-  
+
   onCancel() {
     this.isOtpScreen = false;
     this.otp = '';
