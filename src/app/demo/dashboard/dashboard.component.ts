@@ -3,6 +3,11 @@
 // angular import
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {Chart,registerables,LinearScale,CategoryScale,BarController,BarElement,Tooltip,Legend} from 'chart.js';
+
+Chart.register(...registerables); // or manually register only the required ones:
+Chart.register(LinearScale, CategoryScale, BarController, BarElement, Tooltip, Legend);
+
 
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
@@ -31,21 +36,28 @@ import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit 
+{
   constructor(private baseService: BaseService) {
+    
 
   }
+  lstDaysAmount: any[] = [];
+  lstWeekAmount: any[] = [];
   URL = AppConstant.url;
   globalVarTotalPatientsVisitedToday: number = 100;
   globalVarTotalMedicineStock: number = 100;
   globalVarTotalAmountOfBillGeneratedToday: number = 100;
   sales: any[] = [];
-  lstFeedback: any[] = [];
+    lstFeedback: any[] = [];
 
+  totalWeekAmount: number = 0;
   // life cycle event
   ngOnInit() {
 
     this.getAllDashboardCardDetails();
+    this.gettotaldays();
+    this.getTotalWeekAmount();
     this. getGetFeedbackCardDetails();
     this.getallforcountlist();
 
@@ -117,162 +129,59 @@ export class DashboardComponent implements OnInit {
           value: value
         });
       }
+      const chartLabels = this.lstDaysAmount.map(x => x.day);
+const chartData = this.lstDaysAmount.map(x => x.value);
 
-      //world-low chart
-      AmCharts.makeChart('world-low', {
-        type: 'map',
-        projection: 'eckert6',
-
-        dataProvider: {
-          map: 'worldLow',
-          images: images
-        },
-        export: {
-          enabled: true
-        }
-      });
-
-      const chartDatac = [
-        {
-          day: 'Mon',
-          value: 60
-        },
-        {
-          day: 'Tue',
-          value: 45
-        },
-        {
-          day: 'Wed',
-          value: 70
-        },
-        {
-          day: 'Thu',
-          value: 55
-        },
-        {
-          day: 'Fri',
-          value: 70
-        },
-        {
-          day: 'Sat',
-          value: 55
-        },
-        {
-          day: 'Sun',
-          value: 70
-        }
-      ];
-
-      // widget-line-chart
-      AmCharts.makeChart('widget-line-chart', {
-        type: 'serial',
-        addClassNames: true,
-        defs: {
-          filter: [
-            {
-              x: '-50%',
-              y: '-50%',
-              width: '200%',
-              height: '200%',
-              id: 'blur',
-              feGaussianBlur: {
-                in: 'SourceGraphic',
-                stdDeviation: '30'
-              }
-            },
-            {
-              id: 'shadow',
-              x: '-10%',
-              y: '-10%',
-              width: '120%',
-              height: '120%',
-              feOffset: {
-                result: 'offOut',
-                in: 'SourceAlpha',
-                dx: '0',
-                dy: '20'
-              },
-              feGaussianBlur: {
-                result: 'blurOut',
-                in: 'offOut',
-                stdDeviation: '10'
-              },
-              feColorMatrix: {
-                result: 'blurOut',
-                type: 'matrix',
-                values: '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0'
-              },
-              feBlend: {
-                in: 'SourceGraphic',
-                in2: 'blurOut',
-                mode: 'normal'
-              }
-            }
-          ]
-        },
-        fontSize: 15,
-        dataProvider: chartDatac,
-        autoMarginOffset: 0,
-        marginRight: 0,
-        categoryField: 'day',
-        categoryAxis: {
-          color: '#fff',
-          gridAlpha: 0,
-          axisAlpha: 0,
-          lineAlpha: 0,
-          offset: -20,
-          inside: true
-        },
-        valueAxes: [
-          {
-            fontSize: 0,
-            inside: true,
-            gridAlpha: 0,
-            axisAlpha: 0,
-            lineAlpha: 0,
-            minimum: 0,
-            maximum: 100
-          }
-        ],
-        chartCursor: {
-          valueLineEnabled: false,
-          valueLineBalloonEnabled: false,
-          cursorAlpha: 0,
-          zoomable: false,
-          valueZoomable: false,
-          cursorColor: '#fff',
-          categoryBalloonColor: '#51b4e6',
-          valueLineAlpha: 0
-        },
-        graphs: [
-          {
-            id: 'g1',
-            type: 'line',
-            valueField: 'value',
-            lineColor: '#ffffff',
-            lineAlpha: 1,
-            lineThickness: 3,
-            fillAlphas: 0,
-            showBalloon: true,
-            balloon: {
-              drop: true,
-              adjustBorderColor: false,
-              color: '#222',
-              fillAlphas: 0.2,
-              bullet: 'round',
-              bulletBorderAlpha: 1,
-              bulletSize: 5,
-              hideBulletsCount: 50,
-              lineThickness: 2,
-              useLineColorForBulletBorder: true,
-              valueField: 'value',
-              balloonText: '<span style="font-size:18px;">[[value]]</span>'
-            }
-          }
-        ]
-      });
-    }, 1000);
+new Chart('myBarChart', {
+  type: 'bar',
+  data: {
+    labels: chartLabels,
+    datasets: [{
+      label: 'Daily Earnings', 
+      data: chartData,
+      backgroundColor: 'white',
+      borderColor: 'rgb(230, 234, 240)',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    animation: false,
+    responsive: true,
+    maintainAspectRatio: false, // Set this carefully based on your layout
+    scales: {
+      y: {
+        type: 'linear',
+        beginAtZero: true
+      }
+    }
   }
+});
+   
+    },1000);
+  
+  }
+
+  
+
+
+
+  gettotaldays() {
+    this.baseService.GET<any>(this.URL + "DashboardCardDetail/GetTotalEarningsByDate").subscribe(response => {
+      console.log("Days Amount", response);
+      this.lstDaysAmount = response.data;
+    });
+  }
+
+
+  getTotalWeekAmount() {
+    this.baseService.GET<any>(this.URL + "DashboardCardDetail/GetTotalEarningsWeek").subscribe(response => {
+      console.log("Total Week Amount", response);
+      this.lstWeekAmount = response.data;
+    })
+  }
+
+ 
+  
 
 
   dashboardCarDetailsArray: any[] = [];
