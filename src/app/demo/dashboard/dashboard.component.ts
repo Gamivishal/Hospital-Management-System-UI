@@ -326,19 +326,8 @@ export class DashboardComponent implements OnInit {
     ];
   }
 
-  // // for DoctorCount
-
-  // getallforcountlist() {
-  //   this.baseService.GET<any>(this.URL+"DashboardCardDetail/GetAllforcount").subscribe(response => {
-  //     this.countoftotaldoctorlist = response.data || [];
-  //   });
-
-  // }
-
   getallforcountlist() {
     this.baseService.GET<any>(this.URL + "DashboardCardDetail/GetAllforcount").subscribe(response => {
-      //this.card[0].number= response.data?.[0]?.countofdoctor;
-
 this.card[0].number=response.data?.[0]?.totalDoctorCount;
 this.card[1].number=response.data?.[1]?.totalDoctorCount;
     });
@@ -355,7 +344,7 @@ this.card[1].number=response.data?.[1]?.totalDoctorCount;
     },
     {
       number: '26',
-      text: 'TOTAL LOCATIONS',
+      text: 'Available Doctor',
       icon: 'icon-map-pin text-c-blue'
     }
   ];
