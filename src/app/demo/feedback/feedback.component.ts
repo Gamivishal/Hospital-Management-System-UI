@@ -123,7 +123,7 @@ export class feedbackComponent implements OnInit {
   delete(row: any) {
     const id = row.feedbackId;
 
-    this.baseService.DELETE(this.URL + "TblFeedback/Delete?id=" + id, {}).subscribe({
+    this.baseService.DELETE(this.URL + "TblFeedback/Delete?id=" + id).subscribe({
       next: (response: any) => {
         if (response.statusCode === 200) {
           this.toastr.success(response.message, 'Success');
