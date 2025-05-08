@@ -37,6 +37,7 @@ export const NavigationItems: NavigationItem[] = [
   {
     id: 'MenuPermissionModel',
     title: 'Menu Permission',
+    menuId:25,
     type: 'group',
     icon: 'icon-navigation',
     children: [
@@ -44,6 +45,7 @@ export const NavigationItems: NavigationItem[] = [
         id: 'patientdata',
         title: 'Menu Permission',
         type: 'item',
+
         url: '/MenuPermissionModel',
         icon: 'feather icon-home',
         classes: 'nav-item'
