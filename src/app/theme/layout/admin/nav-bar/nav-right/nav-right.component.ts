@@ -8,6 +8,7 @@ import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { TranslationService } from 'src/app/translate.service';
 
 @Component({
   selector: 'app-nav-right',
@@ -19,11 +20,21 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 export class NavRightComponent {
   ;
   userName: string = '';
+  showLogoutPopup = false;
+
+  languages = [
+    { code: 'Ek', label: 'English' },
+    { code: 'Gk', label: 'ગુજરાતી' },
+    { code: 'hk', label: 'हिन्दी' }
+  ];
+  selectedLang = 'Ek';
   private router = inject(Router);
+
+  private translationService = inject(TranslationService);
   // public props
 
 
-  showLogoutPopup = false;
+  
   // constructor
   constructor() {
     const config = inject(NgbDropdownConfig);
@@ -36,6 +47,12 @@ export class NavRightComponent {
       this.userName = parsedata?.useName || '';
     }
 
+    this.translationService.load(this.selectedLang);
+  }
+
+  changeLanguage(langCode: string) {
+    this.selectedLang = langCode;
+    this.translationService.load(langCode); 
   }
 
   logout(): void {
