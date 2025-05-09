@@ -161,7 +161,7 @@ export default class AuthSigninComponent {
             this.toastr.success('Login successful!');
             this.getMenuPermissionList();
 
-           //this.router.navigate(['/dashboard']);
+           this.router.navigate(['/dashboard']);
           } else {
             // OTP verification failed
             this.toastr.error(otpResponse.message || 'Invalid OTP');
@@ -202,7 +202,7 @@ getMenuPermissionList() {
     .subscribe(response => {
       this.MenuPermissionList = response.data || [];
       localStorage.setItem('MenuPermission', JSON.stringify(response?.data));
-    this.router.navigate(['/dashboard']);
+   // this.router.navigate(['/dashboard']);
       console.log("Menu permissions stored in localStorage:", response?.data);
     });
 }

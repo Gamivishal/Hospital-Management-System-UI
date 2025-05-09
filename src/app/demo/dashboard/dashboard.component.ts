@@ -28,18 +28,22 @@ import dataJson from 'src/fake-data/map_data';
 import mapColor from 'src/fake-data/map-color-data.json';
 import { BaseService } from 'src/app/services/base.service';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
-
+import { DatePipe } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { Router, RouterModule } from '@angular/router';
+import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
+import * as jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, SharedModule,RouterModule,DatatableComponent],
+  providers: [DatePipe],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit 
-{
-  constructor(private baseService: BaseService) {
-    
+export class DashboardComponent implements OnInit {
+  tableData: any[] = [];
+  constructor(private baseService: BaseService,private datePipe: DatePipe,private router: Router,private toastr: ToastrService) {
 
   }
   lstDaysAmount: any[] = [];
@@ -56,6 +60,7 @@ export class DashboardComponent implements OnInit
   ngOnInit() {
 
     this.getAllDashboardCardDetails();
+    this.getPatientTableDetails();
     this.gettotaldays();
     this.getTotalWeekAmount();
     this. getGetFeedbackCardDetails();
@@ -101,6 +106,8 @@ export class DashboardComponent implements OnInit
           max = value;
         }
       }
+
+      
 
       const maxSquare = maxBulletSize * maxBulletSize * 2 * Math.PI;
       const minSquare = minBulletSize * minBulletSize * 2 * Math.PI;
@@ -202,6 +209,36 @@ new Chart('myBarChart', {
 
       });
   }
+
+
+  getPatientTableDetails(): void {
+    this.baseService.GET<any>('https://localhost:7272/api/DashboardCardDetail/GetPatientTableDetails')
+      .subscribe({
+        next: (response: any) => { 
+          console.log('API Response:', response); 
+          if (Array.isArray(response.data)) {
+            this.tableData = response.data.map((item: any) => ({
+              treatmentDetailsId: item.treatmentDetailsId,
+              totalAmount: item.totalAmount,
+              paymentMethod: item.paymentMethod,
+              src: item.gender === 'F'
+              ? 'assets/images/user/avatar-1.jpg' : 'assets/images/user/avatar-2.jpg',
+              title: item.patientName,
+              text: item.docterName,
+              time: this.datePipe.transform(item.finalDate, 'dd-MM-yyyy'),
+              color: item.dateSource === 0
+              ? 'text-c-green' : 'text-c-red'
+            }));
+          } else {
+            console.error('Data is not an array:', response.data);
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching patient table data:', err);
+        }
+      });
+  }
+  
 
   updateSalesArrayData() {
     this.sales = [
@@ -346,41 +383,78 @@ this.card[1].number=response.data?.[1]?.totalDoctorCount;
     }
   ];
 
-  tables = [
-    {
-      src: 'assets/images/user/avatar-1.jpg',
-      title: 'Isabella Christensen',
-      text: 'Requested account activation',
-      time: '11 MAY 12:56',
-      color: 'text-c-green'
-    },
-    {
-      src: 'assets/images/user/avatar-2.jpg',
-      title: 'Ida Jorgensen',
-      text: 'Pending document verification',
-      time: '11 MAY 10:35',
-      color: 'text-c-red'
-    },
-    {
-      src: 'assets/images/user/avatar-3.jpg',
-      title: 'Mathilda Andersen',
-      text: 'Completed profile setup',
-      time: '9 MAY 17:38',
-      color: 'text-c-green'
-    },
-    {
-      src: 'assets/images/user/avatar-1.jpg',
-      title: 'Karla Soreness',
-      text: 'Requires additional information',
-      time: '19 MAY 12:56',
-      color: 'text-c-red'
-    },
-    {
-      src: 'assets/images/user/avatar-2.jpg',
-      title: 'Albert Andersen',
-      text: 'Approved and verified account',
-      time: '21 July 12:56',
-      color: 'text-c-green'
+  // tables = [
+  //   {
+  //     src: 'assets/images/user/avatar-1.jpg',
+  //     title: 'Isabella Christensen',
+  //     text: 'Requested account activation',
+  //     time: '11 MAY 12:56',
+  //     color: 'text-c-green'
+  //   },
+  //   {
+  //     src: 'assets/images/user/avatar-2.jpg',
+  //     title: 'Ida Jorgensen',
+  //     text: 'Pending document verification',
+  //     time: '11 MAY 10:35',
+  //     color: 'text-c-red'
+  //   },
+  //   {
+  //     src: 'assets/images/user/avatar-3.jpg',
+  //     title: 'Mathilda Andersen',
+  //     text: 'Completed profile setup',
+  //     time: '9 MAY 17:38',
+  //     color: 'text-c-green'
+  //   },
+  //   {
+  //     src: 'assets/images/user/avatar-1.jpg',
+  //     title: 'Karla Soreness',
+  //     text: 'Requires additional information',
+  //     time: '19 MAY 12:56',
+  //     color: 'text-c-red'
+  //   },
+  //   {
+  //     src: 'assets/images/user/avatar-2.jpg',
+  //     title: 'Albert Andersen',
+  //     text: 'Approved and verified account',
+  //     time: '21 July 12:56',
+  //     color: 'text-c-green'
+  //   }
+  // ];
+
+  
+  onTableAction(event: { action: string, row: any }) {
+    const actionHandlers: { [key: string]: () => void } = {
+      bill: () => this.router.navigate(['/billing', event.row.treatmentDetailsId]),
+      download: () => this.downloadRowAsPDF(event.row),
+    };
+  
+    const actionKey = event.action.toLowerCase();
+  
+    if (actionHandlers[actionKey]) {
+      actionHandlers[actionKey]();
+    } else {
+      this.toastr.warning('Unknown action', 'Warning');
     }
+  }
+  
+  
+  downloadRowAsPDF(row: any) {
+  const doc = new jsPDF('p', 'pt', 'a4');
+
+  const data = [
+    `Full Name: ${row.title || 'N/A'}`,
+    `Total Amount: ${row.totalAmount || 'N/A'}`,
+    `Payment Method: ${row.paymentMethod || 'N/A'}`,
+    `Bill Date: ${row.time || 'N/A'}`
   ];
+
+  let y = 40;
+  doc.setFontSize(12);
+  data.forEach(line => {
+    doc.text(line, 40, y);
+    y += 20;
+  });
+
+  doc.save(`${row.patientName || 'Bill'}.pdf`);
+}
 }

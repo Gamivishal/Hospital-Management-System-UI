@@ -18,39 +18,47 @@
             </div>
         </app-card>
     </div>
-    }
-    <div class="col-xl-12 col-md-12">
-        <app-card cardTitle="Recent Users" cardClass="Recent-Users table-card" blockClass="p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <tbody>
-                        @for (table of tables; track table) {
-                        <tr class="unread">
-                            <td>
-                                <img class="rounded-circle" style="width: 40px" src="{{ table.src }}" alt="activity-user" />
-                            </td>
-                            <td>
-                                <h6 class="mb-1">{{ table.title }}</h6>
-                                <p class="m-0">{{ table.text }}</p>
-                            </td>
-                            <td>
-                                <h6 class="text-muted">
-                                    <i class="fas fa-circle {{ table.color }} f-10 m-r-15"></i> {{ table.time }}
-                                </h6>
-                            </td>
-                            <td>
-                                <a href="javascript:" class="badge me-2 theme-bg2 text-white f-12">Reject</a>
-                                <a href="javascript:" class="badge me-2 theme-bg text-white f-12">Approve</a>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </app-card>
-    </div>
-
-    <!-- <div class="col-xl-8 col-md-6">
+  }
+  <div class="col-xl-12 col-md-12">
+    <app-card cardTitle="Recent Users" cardClass="Recent-Users table-card" blockClass="p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <tbody>
+            @for (table of tableData; track table) {
+              <tr class="unread">
+                <td>
+                  <img class="rounded-circle" style="width: 40px" src="{{ table.src }}" alt="activity-user" />
+                </td>
+                <td>
+                  <h6 class="mb-1">{{ table.title }}</h6>
+                  <p class="m-0">{{ table.text }}</p>
+                </td>
+                <td>
+                  <h6 class="text-muted">
+                    <i class="fas fa-circle {{ table.color }} f-10 m-r-15"></i>
+                    {{ table.time }}
+                  </h6>
+                </td>
+                <td>
+                  <!-- <a href="javascript:" class="badge me-2 theme-bg2 text-white f-12">Reject</a>
+                  <a href="javascript:" class="badge me-2 theme-bg text-white f-12">Approve</a> -->
+                <app-datatable 
+                  [tableData]="[table]"
+                  [showOnlyButtons]="true"
+                  [actionButtons]="['bill', 'download']"
+                  (actionClicked)="onTableAction($event)">
+                </app-datatable>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+  
+  
+  <!-- <div class="col-xl-8 col-md-6">
     <app-card cardTitle="Users From United States">
       <div id="world-low" style="height: 450px; display: none;"></div>
     </app-card>
@@ -176,36 +184,37 @@
         <!-- <div id="widget-line-chart" class="WidgetlineChart2 ChartShadow" style="height: 180px"></div> -->
       </div>
     </div>
-    <div class="col-xl-8 col-md-6 " style="display: none;">
-        <app-card cardTitle="Recent Users" cardClass="Recent-Users table-card;" blockClass="p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <tbody>
-                        @for (table of tables; track table) {
-                        <tr class="unread">
-                            <td>
-                                <img class="rounded-circle" style="width: 40px" src="{{ table.src }}" alt="activity-user" />
-                            </td>
-                            <td>
-                                <h6 class="mb-1">{{ table.title }}</h6>
-                                <p class="m-0">{{ table.text }}</p>
-                            </td>
-                            <td>
-                                <h6 class="text-muted">
-                                    <i class="fas fa-circle {{ table.color }} f-10 m-r-15"></i> {{ table.time }}
-                                </h6>
-                            </td>
-                            <td>
-                                <a href="javascript:" class="badge me-2 theme-bg2 text-white f-12">Reject</a>
-                                <a href="javascript:" class="badge me-2 theme-bg text-white f-12">Approve</a>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </app-card>
-    </div>
+  <div class="col-xl-8 col-md-6 " style="display: none;">
+    <app-card cardTitle="Recent Users" cardClass="Recent-Users table-card;" blockClass="p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <tbody>
+            @for (table of tableData; track table) {
+              <tr class="unread">
+                <td>
+                  <img class="rounded-circle" style="width: 40px" src="{{ table.src }}" alt="activity-user" />
+                </td>
+                <td>
+                  <h6 class="mb-1">{{ table.title }}</h6>
+                  <p class="m-0">{{ table.text }}</p>
+                </td>
+                <td>
+                  <h6 class="text-muted">
+                    <i class="fas fa-circle {{ table.color }} f-10 m-r-15"></i>
+                    {{ table.time }}
+                  </h6>
+                </td>
+                <td>
+                  <a href="javascript:" class="badge me-2 theme-bg2 text-white f-12">Reject</a>
+                  <a href="javascript:" class="badge me-2 theme-bg text-white f-12">Approve</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
 </div>
  <div class="row">
   <!-- Earnings card -->

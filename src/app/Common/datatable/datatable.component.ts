@@ -18,6 +18,8 @@ export class DatatableComponent {
   //@Output() edit = new EventEmitter<any>();
   //@Output() delete = new EventEmitter<any>();
   @Output() actionClicked = new EventEmitter<{ action: string, row: any }>();
+  @Input() showOnlyButtons: boolean = false;
+
 
 
   displayedColumns: string[] = [];

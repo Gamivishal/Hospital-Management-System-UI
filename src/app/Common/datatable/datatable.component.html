@@ -1,4 +1,19 @@
-<div class="col-xl-12">
+<div *ngIf="showOnlyButtons">
+  <div *ngFor="let row of tableData">
+    <button *ngIf="actionButtons?.includes('bill')"
+            (click)="onButtonClick('bill', row)"
+            style="margin-left: 5px; padding: 4px 8px; border-radius: 4px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
+      Bill
+    </button>
+    <button *ngIf="actionButtons?.includes('download')" 
+            (click)="onButtonClick('download', row)"
+            style="margin-left: 5px; padding: 4px 8px; border-radius: 4px; background-color: #007bff; color: white; border: none; cursor: pointer;">
+      Download
+    </button>
+  </div>
+</div>
+
+<div *ngIf="!showOnlyButtons" class="col-xl-12">
     <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
         <div class="table-responsive">
 <table class="table table-striped">
@@ -42,3 +57,11 @@
 </app-card>
 </div>
   
+
+
+
+
+
+
+
+
