@@ -15,6 +15,7 @@ import { ConfigService, initializeApp } from './app/services/config.service';
 if (environment.production) {
   enableProdMode();
 }
+//Hello 
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -23,7 +24,7 @@ bootstrapApplication(AppComponent, {
     provideToastr(),
     //EncryptionInterceptor
     { provide: HTTP_INTERCEPTORS, useClass: EncryptionIntrerceptorService, multi: true },
-    ConfigService,
+    ConfigService, //config.json file uploader
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,

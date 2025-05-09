@@ -19,7 +19,7 @@ export class EncryptionIntrerceptorService implements HttpInterceptor {
     this.encryptionEnabled = this.configService.encryptionEnabled;
   }
 
-  //This method is capable of encrypting any kind of url data
+  //This method will enccrypt any url
   extractValueAfterEqualAndEncryptTillEndOfUrl(url: string): string {
     console.log("*****************************");
     console.log('General get encryption function');

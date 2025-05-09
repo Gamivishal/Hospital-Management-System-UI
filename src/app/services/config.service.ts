@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ConfigService {
-
+  //change
   constructor(private http: HttpClient) { }
 
   public encryptionEnabled: boolean = false;
