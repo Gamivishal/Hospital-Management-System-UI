@@ -3,7 +3,7 @@
   @if(isShowList){
   <div class="col-xl-12">
     <div class="d-flex justify-content-end mb-3 position-relative">
-      <button *ngIf="permission.isAdd" (click)="isShowList=false;" class="btn btn-primary add-shift-button">
+      <button *ngIf="permission?.isAdd" (click)="isShowList=false;" class="btn btn-primary add-shift-button">
         ADD
       </button>
     </div>

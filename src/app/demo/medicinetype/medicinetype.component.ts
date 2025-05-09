@@ -21,7 +21,7 @@ import { PermissionService } from 'src/app/services/permission.service';
   styleUrls: ['./medicinetype.component.scss']
 })
 export class MedicineTypeComponent implements OnInit{
-  permissionService: any;
+  
 
   submitForm() {
     throw new Error('Method not implemented.');
@@ -32,7 +32,7 @@ export class MedicineTypeComponent implements OnInit{
       canDelete: boolean = false;
       canView : boolean = false;
       permission :any;
-      actionButtons = [];
+	  actionButtons = [];
   medicinetypelist:any[]=[];
   paginatedList: any[] = []; // Paginated data
   isShowList:boolean=true;
@@ -54,7 +54,8 @@ export class MedicineTypeComponent implements OnInit{
   medicineTypeIDDelete: number | null = null
 
   constructor(private baseService: BaseService,
-    private toastr: ToastrService) {}
+    private toastr: ToastrService,
+    private permissionService: PermissionService) {}
 
   // life cycle event
   ngOnInit() {
