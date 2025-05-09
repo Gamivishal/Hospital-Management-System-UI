@@ -142,6 +142,16 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item'
       },
 
+      // {
+      //   id: 'diseasetype',
+      //   menuId:11,
+      //   title: 'Disease Type',
+      //   type: 'item',
+      //   url: '/diseasetype',
+      //   icon: 'feather icon-disc',
+      //   classes: 'nav-item'
+      // },
+      
       {
         id: 'diseasetype',
         menuId:11,
@@ -151,6 +161,17 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-disc',
         classes: 'nav-item'
       },
+
+      {
+        id: 'facility',
+         menuId:1,
+        title: 'Facility',
+        type: 'item',
+        url: '/facility',
+        icon: 'feather icon-disc',
+        classes: 'nav-item'
+      },
+
     ]
 
   },

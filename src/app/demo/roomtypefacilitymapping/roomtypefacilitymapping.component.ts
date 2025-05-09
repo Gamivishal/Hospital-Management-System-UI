@@ -129,13 +129,7 @@ export  class roomtypefacilitymapping implements OnInit {
           this.lstRoomName = response.data;
         });
     }
-    // getroomname() {
-    //   this.baseService.GET<any>(this.URL+"GetDropDownList/FillRoomtype")
-    //     .subscribe(response => {
-    //       console.log("Room Name:", response);
-    //       this.lstRoomName = response.data;
-    //     });
-    // }
+    
 
     //get facilityname
 
@@ -229,33 +223,26 @@ export  class roomtypefacilitymapping implements OnInit {
 
 
 
-      //delete roomtypefacilitymapping
-      // onDelete(roomtypefacilitymappingid: number) {
-      //   this.baseService.DELETE(this.URL + "TblRoomTypeFacilityMapping/Delete?id=" + id)
-      //     .subscribe(response => {
-      //       this.toastr.success("Deleted successfully");
-      //       this.getroomtypefacilitymapping();
-      //     });
-      // }
+      
 
-      onDelete(roomtypefacilitymappingid: number){
-        this.baseService.DELETE(this.URL+"TblHospitalType/Delete?id=" + roomtypefacilitymappingid)
-        .subscribe({
-          next: (response: any) => {
-            if (response.statusCode === 200) {
-              this.toastr.success(response.message, 'Success');
-          console.log("DELETE Response:", response);
-          this.getroomtypefacilitymapping();
-          this.isShowList = true;
-        } else {
-          this.toastr.error(response.message, 'Error');
-        }
-      },
-      error: () => {
-        this.toastr.error('Failed to delete ', 'Error');
+    onDelete(roomtypefacilitymappingid: number){
+      this.baseService.DELETE(this.URL+"TblHospitalType/Delete?id=" + roomtypefacilitymappingid)
+      .subscribe({
+        next: (response: any) => {
+          if (response.statusCode === 200) {
+            this.toastr.success(response.message, 'Success');
+        console.log("DELETE Response:", response);
+        this.getroomtypefacilitymapping();
+        this.isShowList = true;
+      } else {
+        this.toastr.error(response.message, 'Error');
       }
-    });
-      }
+    },
+    error: () => {
+      this.toastr.error('Failed to delete ', 'Error');
+    }
+  });
+    }
 
 
     
@@ -324,5 +311,6 @@ private cleanupPopup() {
             }
           }
       
-}
+        }
+      
 
