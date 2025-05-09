@@ -8,7 +8,7 @@
             "HK": "लॉगिन"
         },
         {
-            "key": "Email",
+            "key": "Email", //LOGIN
             "EK": "Email",
             "GK": "ઇમેઇલ",
             "HK": "ईमेल"
