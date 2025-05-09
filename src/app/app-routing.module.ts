@@ -144,6 +144,11 @@ const routes: Routes = [
        canActivate: [AuthGuard]
       },
       {
+        path: 'facility',
+       loadComponent : () => import('./demo/facility/facility.component').then((c) => c.facility),
+       canActivate: [AuthGuard]
+      },
+      {
         path: 'basic',
         loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then((m) => m.UiBasicModule),
         canActivate: [AuthGuard]
