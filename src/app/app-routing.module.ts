@@ -66,6 +66,11 @@ const routes: Routes = [
         loadComponent : () => import ('./demo/billing/billing.component').then((c) => c.billingComponent),canActivate: [AuthGuard]
       },
       {
+        path: 'feedback',
+        loadComponent : () => import ('./demo/feedback/feedback.component').then((c) => c.feedbackComponent),canActivate: [AuthGuard]
+      },
+
+      {
         path: 'roles',
         loadComponent : () => import('./demo/Roles/Roles.component').then((c) => c.RolesComponent),
         canActivate: [AuthGuard]
@@ -139,6 +144,11 @@ const routes: Routes = [
        canActivate: [AuthGuard]
       },
       {
+        path: 'facility',
+       loadComponent : () => import('./demo/facility/facility.component').then((c) => c.facility),
+       canActivate: [AuthGuard]
+      },
+      {
         path: 'basic',
         loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then((m) => m.UiBasicModule),
         canActivate: [AuthGuard]
@@ -161,6 +171,10 @@ const routes: Routes = [
         path: 'sample-page',
         loadComponent: () => import('./demo/extra/sample-page/sample-page.component'),
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'medicinedieseasemapping',
+        loadComponent : () => import('./demo/medicinedieseasemapping/medicinedieseasemapping.component').then((c) => c.medicinedieseasemapping),canActivate: [AuthGuard]
       },
 
       {

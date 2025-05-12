@@ -34,9 +34,9 @@ export class BaseService {
   PUT<T>(url: string, body: any): Observable<T> {
     return this.http.put<T>(url, body,{headers : this.getAuthHeaders()});
   }
-
   DELETE<T>(url: string): Observable<T> {
-    return this.http.delete<T>(url,{headers : this.getAuthHeaders()});
+    return this.http.delete<T>(url, { headers: this.getAuthHeaders() });
   }
+
 }
 

@@ -3,8 +3,8 @@
   @if(isShowList){
   <div class="col-xl-12">
     <div class="d-flex justify-content-end mb-3 position-relative">
-      <button type="button" (click)="add()" class="btn btn-primary add-shift-button">
-        Add  dieseaseName
+      <button *ngIf="permission.isAdd" (click)="isShowList=false;" class="btn btn-primary add-disease-button">
+        ADD 
       </button>
     </div>
     <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
@@ -13,7 +13,7 @@
       <app-datatable
       [tableHeaders]="tableHeaders"
       [tableData]="paginatedList"
-      [actionButtons]="['edit']"
+      [actionButtons]="actionButtons"
       (actionClicked)="onTableAction($event)">
       </app-datatable>
         </table>
@@ -97,11 +97,7 @@
 
                       </div>
                       <div class="mt-3">
-                          <!-- <button type="button" class="btn btn-primary" [disabled]="medicineTypeFormGroup.invalid" (click)="AddMedicineTypes();">Submit</button> -->
-                          <!-- <button type="button" class="btn btn-primary" (click)="AddMedicineTypes();">Submit</button> -->
-                          <!-- [disabled]="hospitalTypefmGroup.invalid"  -->
-
-                          <!-- <button type="button" class="btn btn-primary" [disabled]="hospitalTypefmGroup.invalid" (click)="addHospital()">Submit</button> -->
+                          <!-- Submit Button: Only show if user has permission to add -->
                           <button *ngIf="!selecteddieseaseTypeID" type="button" class="btn btn-primary" [disabled]="dieseaseTypeFormGroup.invalid" (click)="AddDieseaseTypes()">Submit</button>
                           <button *ngIf="selecteddieseaseTypeID" type="button" class="btn btn-success" [disabled]="dieseaseTypeFormGroup.invalid" (click)="updatedieseaseTypes()">Update</button>
 

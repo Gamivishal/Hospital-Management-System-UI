@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-debugger */
+//* eslint-disable no- */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @angular-eslint/component-class-suffix */
 import { Component, OnInit } from '@angular/core';
@@ -18,26 +18,20 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class MenuPermission implements OnInit {
   TblMenuPermissionlist: any[] = [];
-  MenuPermissionlist : any []=[];
+  MenuPermissionlist: any[] = [];
   selectedRoleId: number | null = null;
-  // paginatedList: any[] = [];
-  // currentPage: number = 1;
-  // totalPages: number = 1;
-  // totalRecords: number = 0;
-  // itemsPerPage: number = AppConstant.RecordPerPage;
-  // pageNumbers: number[] = [];
-  isShowList: boolean = true;
+
+  formChanged: boolean = false;
   selectedHospitalId: number | null = null;
   URL = AppConstant.url;
 
 
 
-  constructor(private baseService: BaseService, private toastr: ToastrService) {}
+  constructor(private baseService: BaseService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    //this.createFormGroup();
     this.getMenuPermissionlist();
-    this.getdisease()
+    this.getrolename()
   }
 
   // Submit all menu permissions to backend
@@ -47,7 +41,7 @@ export class MenuPermission implements OnInit {
         next: (response: any) => {
           if (response.statusCode === 200) {
             this.toastr.success(response.message, 'Success');
-           // this.isShowList=true;
+            this.formChanged = false; // for submit button
           } else {
             this.toastr.error(response.message, 'Error');
           }
@@ -58,29 +52,8 @@ export class MenuPermission implements OnInit {
       });
   }
 
-  // createFormGroup() {
-  //   this.hospitalTypefmGroup = new FormGroup({
-  //     HospitalTypeID: new FormControl(0, [Validators.required]),
-  //     HospitalType: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-  //     isActive: new FormControl(false)  // Binding the checkbox to this form control
-  //   });
-  // }
-
-  // checkRequired(controlName: any) {
-  //   return (
-  //     this.hospitalTypefmGroup.controls[controlName].touched &&
-  //     this.hospitalTypefmGroup.controls[controlName].errors?.['required']
-  //   );
-  // }
-
-  // checkminlength(controlName: any) {
-  //   return (
-  //     this.hospitalTypefmGroup.controls[controlName].touched &&
-  //     this.hospitalTypefmGroup.controls[controlName].errors?.['minlength']
-  //   );
-  // }
-  getdisease(){
-    this.baseService.GET<any>(this.URL+"GetDropDownList/FillRoles").subscribe(response => {
+  getrolename() {
+    this.baseService.GET<any>(this.URL + "GetDropDownList/FillRoles").subscribe(response => {
       console.log("GET Response:", response);
       this.MenuPermissionlist = response.data;
       this.selectedRoleId = this.MenuPermissionlist[0]?.id;
@@ -88,14 +61,6 @@ export class MenuPermission implements OnInit {
     })
   }
 
-
-  // getMenuPermissionlist() {
-  //   this.baseService.GET<any>(this.URL + "TblMenuPermission/GetAll").subscribe(response => {
-  //     this.TblMenuPermissionlist = response.data || [];
-
-
-  //   });
-  // }
   getMenuPermissionlist() {
     const roleIdParam = this.selectedRoleId ? `?roleId=${this.selectedRoleId}` : '';
     this.baseService.GET<any>(`${this.URL}TblMenuPermission/GetAll${roleIdParam}`)
@@ -104,17 +69,13 @@ export class MenuPermission implements OnInit {
       });
   }
 
-
-
-
-  //checkbox
   onCheckboxChange(item: any, field: string) {
+    this.formChanged = true; // for submit
     const updatePayload = {
       menuRoleMappingID: item.menuRoleMappingID,
       roleID: item.roleID,
       menuID: item.menuID,
-      [field]: item[field], // dynamic key
-      // Optional: add other permission values if your API expects them
+      [field]: item[field],
       isEdit: item.isEdit,
       isAdd: item.isAdd,
       isDelete: item.isDelete,

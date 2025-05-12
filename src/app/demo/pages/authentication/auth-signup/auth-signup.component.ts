@@ -1,4 +1,4 @@
-/* eslint-disable no-debugger */
+/* eslint-disable no- */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -18,7 +18,7 @@ import { EncryptionService } from 'src/app/services/encryption.service';
     FormsModule,
     CommonModule,
     RouterModule,
-    HttpClientModule,
+    HttpClientModule
   ],
 })
 export class SignupComponent implements OnInit {

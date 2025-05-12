@@ -1,136 +1,87 @@
 <div class="row" *ngIf="hospitallist">
 
-    @if(isShowList){
-    <div class="col-xl-12">
-        <div class="d-flex justify-content-end mb-3 position-relative">
-            <button type="button" (click)="isShowList=false;" class="btn btn-primary add-master-button">
-            Add Hospital
-        </button>
-        </div>
-        <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
-            <div class="table-responsive">
-                <table class="table table-striped">
-              <app-datatable
-              [tableHeaders]="tableHeaders"
-              [tableData]="paginatedList"
-              [actionButtons]="['edit', 'delete']"
-              (actionClicked)="onTableAction($event)">
-              </app-datatable>
-                </table>
-              </div>
-            <!-- <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
+  <!-- Check if we are in the list view and user has permission to view -->
 
-                            <th>Hospital Type</th>
-                            <th>Created By</th>
-                            <th>Created On</th>
-                            <th>Updated By</th>
-                            <th>Updated On</th>
-                            <th>Status</th>
-                            <th>Version No</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of paginatedList">
-                            <td>{{ item.hospitalType }}</td>
-                            <td>{{ item.createdBy }}</td>
-                            <td>{{item.createdOn | date:'dd-MM-yyyy hh:mm:ss a':'UTC+5:30'}}</td>
-                            <td>{{item.updatedBy}}</td>
-                            <td>{{item.updatedOn | date:'dd-MM-yyyy hh:mm:ss a':'UTC+5:30'}}</td>
-                            <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
-                            <td>{{ item.versionNo }}</td>
+  <div class="col-xl-12" *ngIf="isShowList">
+    <div class="d-flex justify-content-end mb-3 position-relative">
 
-                            <td>
+      <!-- Add Hospital Button: Only show if user has permission to add -->
 
-
-                                <svg style="cursor: pointer;" (click)="editHospital(item)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-                              </svg>
-
-
-                                <svg style="cursor: pointer;" (click)="openDeleteModal(item.hospitalTypeID)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="15" x2="9" y1="9" y2="15" />
-                    <line x1="9" x2="15" y1="9" y2="15" />
-                  </svg>
-
-
-                    <app-pop-up 
-                        *ngIf="showPopup"
-                        [message]="'Are you sure you want to delete this hospitalType? '"
-                        [show]="showPopup"
-                        (confirmDelete)="confirmDelete()"
-                        (cancelDelete)="cancelDelete()">
-                    </app-pop-up>
-
-
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> -->
-          <app-pop-up 
-            *ngIf="showPopup"
-            [message]="'Are you sure you want to delete this hospitalType? '"
-            [show]="showPopup"
-            (confirmDelete)="confirmDelete()"
-            (cancelDelete)="cancelDelete()">
-           </app-pop-up>
-
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item" [class.disabled]="currentPage === 1">
-                        <a class="page-link" href="javascript:void(0)" (click)="nextpage(currentPage - 1)">Previous</a>
-                    </li>
-
-                    <li class="page-item" *ngFor="let page of pageNumbers">
-                        <a class="page-link" href="javascript:void(0)" (click)="nextpage(page)" [class.active]="currentPage === page">{{ page }}</a>
-                    </li>
-
-                    <li class="page-item" [class.disabled]="currentPage === totalPages">
-                        <a class="page-link" href="javascript:void(0)" (click)="nextpage(currentPage + 1)">Next</a>
-                    </li>
-                </ul>
-            </nav>
-
-
-
-        </app-card>
-
+      <button *ngIf="permission.isAdd" (click)="isShowList=false;" class="btn btn-primary add-master-button">
+        {{'ADD' | translate}}
+      </button>
     </div>
 
+    <app-card cardTitle="Striped Table" [options]="false" blockClass="table-border-style">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <app-datatable [tableHeaders]="tableHeaders" [tableData]="paginatedList" [actionButtons]="actionButtons"
+            (actionClicked)="onTableAction($event)">
+          </app-datatable>
+        </table>
+      </div>
+      <app-pop-up *ngIf="showPopup" [message]="'Areyousureyouwanttodeletethis' | translate" [show]="showPopup"
+        (confirmDelete)="confirmDelete()" (cancelDelete)="cancelDelete()">
+      </app-pop-up>
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-end">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" href="javascript:void(0)" (click)="nextpage(currentPage - 1)">{{'Previous' |
+              translate}}</a>
+          </li>
 
+          <li class="page-item" *ngFor="let page of pageNumbers">
+            <a class="page-link" href="javascript:void(0)" (click)="nextpage(page)"
+              [class.active]="currentPage === page">{{ page }}</a>
+          </li>
 
-    } @if(!isShowList){
-    <div class="col-sm-12">
-        <app-card cardTitle="Basic Component" [options]="false">
-            <h5>Form controls</h5>
-            <hr />
-            <div class="row">
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" href="javascript:void(0)" (click)="nextpage(currentPage + 1)">{{'Next' |
+              translate}}</a>
+          </li>
+        </ul>
+      </nav>
+    </app-card>
+  </div>
 
-                <div class="col-md-6">
-                    <form [formGroup]="hospitalTypefmGroup" action="javascript:">
+  <!-- Hospital Form Section: Show form when isShowList is false -->
 
-                        <div class="form-group">
-                            <label for="hospitalType">Hospital Type</label>
-                            <input type="text" formControlName="HospitalType" name="hospitalType" class="form-control" placeholder="Enter Hospital Type" required/>
-                            <span *ngIf="checkRequired('HospitalType')" class="error-span">This Field Is Required</span><br>
-                            <span *ngIf="checkminlength('HospitalType')" class="error-span">Minimum 3 character required</span>
-                        </div>
-                        <div class="mt-3">
+  <div class="col-sm-12" *ngIf="!isShowList">
+    <app-card cardTitle="Basic Component" [options]="false">
+      <h5>{{'Formcontrols' | translate}}</h5>
+      <hr />
+      <div class="row">
+        <div class="col-md-6">
+          <form [formGroup]="hospitalTypefmGroup">
 
-                            <button *ngIf="!selectedHospitalId" type="button" class="btn btn-primary" [disabled]="hospitalTypefmGroup.invalid" (click)="addHospital()">Submit</button>
-                            <button *ngIf="selectedHospitalId" type="button" class="btn btn-primary" [disabled]="hospitalTypefmGroup.invalid" (click)="updateHospital()">Update</button>
-
-
-                        </div>
-                    </form>
-                </div>
+            <div class="form-group">
+              <label for="hospitalType">{{'HospitalType' | translate}}</label>
+              <input type="text" formControlName="HospitalType" class="form-control"
+                [attr.placeholder]='"EnterHospitalType" | translate' required />
+              <span *ngIf="checkRequired('HospitalType')" class="error-span">{{'ThisFieldIsRequired' |
+                translate}}</span><br>
+              <span *ngIf="checkminlength('HospitalType')" class="error-span">{{'Minimum3charactersarerequired' |
+                translate}}</span>
             </div>
-        </app-card>
-    </div>
-    }
+
+            <div class="mt-3">
+              <!-- Submit Button: Only show if user has permission to add -->
+
+              <button *ngIf="!selectedHospitalId" type="button" class="btn btn-primary"
+                [disabled]="hospitalTypefmGroup.invalid" (click)="addHospital()">{{'Submit' | translate}}</button>
+
+              <!-- Update Button: Only show if user has permission to edit -->
+
+              <button *ngIf="selectedHospitalId" type="button" class="btn btn-primary"
+                [disabled]="hospitalTypefmGroup.invalid" (click)="updateHospital()">{{'Update' | translate}}</button>
+
+
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </app-card>
+  </div>
+
+</div>

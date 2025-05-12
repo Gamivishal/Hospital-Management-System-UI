@@ -8,10 +8,11 @@ import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { TranslationService } from 'src/app/translate.service';
 
 @Component({
   selector: 'app-nav-right',
-  imports: [SharedModule,PopUpComponent],
+  imports: [SharedModule, PopUpComponent],
   templateUrl: './nav-right.component.html',
   styleUrls: ['./nav-right.component.scss'],
   providers: [NgbDropdownConfig]
@@ -19,11 +20,21 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 export class NavRightComponent {
   ;
   userName: string = '';
+  showLogoutPopup = false;
+
+  languages = [
+    { code: 'EK', label: 'English' },
+    { code: 'GK', label: 'ગુજરાતી' },
+    { code: 'HK', label: 'हिन्दी' }
+  ];
+  selectedLang = 'EK';
   private router = inject(Router);
+
+  private translationService = inject(TranslationService);
   // public props
 
 
-  showLogoutPopup = false;
+
   // constructor
   constructor() {
     const config = inject(NgbDropdownConfig);
@@ -31,37 +42,43 @@ export class NavRightComponent {
     config.placement = 'bottom-right';
 
     const userdata = localStorage.getItem('data');
-    if(userdata){
+    if (userdata) {
       const parsedata = JSON.parse(userdata);
       this.userName = parsedata?.useName || '';
     }
 
+    this.translationService.load(this.selectedLang);
+  }
+
+  changeLanguage(langCode: string) {
+    this.selectedLang = langCode;
+    this.translationService.load(langCode);
   }
 
   logout(): void {
-    localStorage.removeItem('data');
+    localStorage.clear();
     this.router.navigate(['/auth/signin']);
   }
 
 
 
-  
 
-openLogoutModal() {
-  this.showLogoutPopup = true;
-}
 
-confirmLogout() {
-  this.logout();
-  this.cleanupLogoutPopup();
-}
+  openLogoutModal() {
+    this.showLogoutPopup = true;
+  }
 
-cancelLogout() {
-  this.cleanupLogoutPopup();
-}
+  confirmLogout() {
+    this.logout();
+    this.cleanupLogoutPopup();
+  }
 
-private cleanupLogoutPopup() {
-  this.showLogoutPopup = false;
-}
+  cancelLogout() {
+    this.cleanupLogoutPopup();
+  }
+
+  private cleanupLogoutPopup() {
+    this.showLogoutPopup = false;
+  }
 
 }

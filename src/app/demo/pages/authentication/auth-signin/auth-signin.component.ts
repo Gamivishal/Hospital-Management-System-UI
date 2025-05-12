@@ -1,4 +1,4 @@
-/* eslint-disable no-debugger */
+/* eslint-disable no- */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 //* eslint-disable @typescript-eslint/no-unused-vars */
 import { Component } from '@angular/core';
@@ -115,7 +115,7 @@ export default class AuthSigninComponent {
 
 
   // if(response?.data  && response.statusCode === 200){
-  //   debugger
+  //   
 
   //   //localStorage.setItem('data', response?.data || '');
   //   localStorage.setItem('data',JSON.stringify(response?.data));
@@ -173,7 +173,7 @@ export default class AuthSigninComponent {
     });
 
 
-    // debugger
+    // 
   }
   // getMenuPermissionList() {
   //   this.baseService.GET<any>(this.URL + "TblMenuPermission/GetAll").subscribe(response => {
@@ -184,7 +184,7 @@ export default class AuthSigninComponent {
   //   });
   // }
   getMenuPermissionList() {
-    debugger
+
     const userData = localStorage.getItem('data');
     const parsedData = userData ? JSON.parse(userData) : null;
     const roleId = parsedData?.roleid;

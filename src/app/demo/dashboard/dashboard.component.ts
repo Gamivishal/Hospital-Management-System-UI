@@ -243,7 +243,7 @@ export class DashboardComponent implements OnInit {
   updateSalesArrayData() {
     this.sales = [
       {
-        title: 'Patients paid visit today',
+        title: 'Patientspaidvisittoday',
         icon: 'icon-arrow-up text-c-green',
         amount: this.globalVarTotalPatientsVisitedToday,
         percentage: '67%',
@@ -252,7 +252,7 @@ export class DashboardComponent implements OnInit {
         progress_bg: 'progress-c-theme'
       },
       {
-        title: 'Medicine stock',
+        title: 'Medicinestock',
         icon: 'icon-arrow-down text-c-red',
         amount: this.globalVarTotalMedicineStock,
         percentage: '36%',
@@ -261,7 +261,7 @@ export class DashboardComponent implements OnInit {
         progress_bg: 'progress-c-theme2'
       },
       {
-        title: 'Total amount of bills generated today',
+        title: 'Totalamountofbillgeneratedtoday',
         icon: 'icon-arrow-up text-c-green',
         amount: this.globalVarTotalAmountOfBillGeneratedToday,
         percentage: '80%',

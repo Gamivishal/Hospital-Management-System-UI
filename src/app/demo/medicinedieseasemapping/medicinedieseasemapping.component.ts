@@ -9,7 +9,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AppConstant } from '../baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
 import { PermissionService } from 'src/app/services/permission.service';
 
@@ -17,11 +16,14 @@ import { PermissionService } from 'src/app/services/permission.service';
 @Component({
   selector: 'app-roomtypeess',
   standalone: true,
-  imports: [SharedModule, PopUpComponent, DatatableComponent],
-  templateUrl: './roomtypefacilitymapping.component.html',
-  styleUrls: ['./roomtypefacilitymapping.component.scss']
+  imports: [SharedModule, DatatableComponent],
+  templateUrl: './medicinedieseasemapping.component.html',
+  styleUrls: ['./medicinedieseasemapping.component.scss']
 })
-export class roomtypefacilitymapping implements OnInit {
+export class medicinedieseasemapping implements OnInit {
+  medicinetype: any;
+  medicinediseaseID: any;
+
   submitForm() {
     throw new Error('Method not implemented.');
   }
@@ -33,14 +35,14 @@ export class roomtypefacilitymapping implements OnInit {
   permission: any;
   actionButtons = [];
 
-  lstroomtypefacilitymapping: any[] = [];
+  lstmedicinedieseasemapping: any[] = [];
   paginatedList: any[] = [];
   isShowList: boolean = true;
-  lstRoomName: any[] = [];
-  lstFacilityName: any[] = [];
-  roomfacID: number | null = null;
-  facility: any;
-  roomtypefacilitymappingfmGroup: FormGroup;
+  lstdiseasename: any[] = [];
+  lstmedicinename: any[] = [];
+  selectedmedicinediseaseID: number | null = null;
+  diseaselist: any[] = [];
+  medicinedieseasemappingfmGroup: FormGroup;
 
   // Page NAvigation
   currentPage: number = 1; //currect page number
@@ -49,14 +51,9 @@ export class roomtypefacilitymapping implements OnInit {
   pageNumbers: number[] = [];//list
   URL = AppConstant.url
 
-
-
-  showPopup = false
-  idDelete: number | null = null;
   tableHeaders = [
-    { label: 'Room Number', key: 'roomNumber' },
-    { label: 'RoomType', key: 'roomType' },
-    { label: 'Facility Name', key: 'facilityName' },
+    { label: 'Medicine Name', key: 'typeName' },
+    { label: ' Diesease Name', key: 'dieseaseName' },
     { label: 'Created By', key: 'createdBy' },
     { label: 'Created On', key: 'createdOn' },
     { label: 'Updated By', key: 'updatedBy' },
@@ -72,15 +69,15 @@ export class roomtypefacilitymapping implements OnInit {
       private toastr: ToastrService,
       private permissionService: PermissionService
     ) {
-    this.permission = this.permissionService.getPermissions("RoomFacility");
+    this.permission = this.permissionService.getPermissions("MedicineDisease");
   }
 
   ngOnInit() {
     this.createFormGroup();
-    this.getroomname();
-    this.getfacilityname();
-    this.getroomtypefacilitymapping();
-    this.setPermissions = this.permissionService.getPermissions("RoomFacility");
+    this.getdisease();
+    this.getmedicinetypename();
+    this.getmedicinedieseasemapping();
+    this.setPermissions = this.permissionService.getPermissions("MedicineDisease");
     if (this.setPermissions.isEdit === true) {
       this.actionButtons.push("edit");
     }
@@ -94,11 +91,10 @@ export class roomtypefacilitymapping implements OnInit {
 
   createFormGroup() {
 
-    this.roomtypefacilitymappingfmGroup = new FormGroup({
-      roomTypeFacilityMappingID: new FormControl(0, [Validators.required]),
-      // roomtypefacilitymappingid: new FormControl(0),
-      roomID: new FormControl(null, Validators.required),
-      facilityID: new FormControl(null, Validators.required),
+    this.medicinedieseasemappingfmGroup = new FormGroup({
+      medicineDiseaseMappingID: new FormControl(0),
+      dieseaseTypeID: new FormControl(null, [Validators.required]),
+      medicineTypeID: new FormControl(null, Validators.required),
 
     });
 
@@ -107,67 +103,67 @@ export class roomtypefacilitymapping implements OnInit {
 
 
   checkRequired(controlName: any) {
-    return this.roomtypefacilitymappingfmGroup.controls[controlName].errors?.['required'];
+    return this.medicinedieseasemappingfmGroup.controls[controlName].errors?.['required'];
   }
 
 
   checkminlength(controlName: any) {
-    return this.roomtypefacilitymappingfmGroup.controls[controlName].errors?.['minlength']
+    return this.medicinedieseasemappingfmGroup.controls[controlName].errors?.['minlength']
   }
 
 
 
 
-  //get roomname
-  getroomname() {
-    this.baseService.GET<any>(this.URL + "GetDropDownList/FillRoomtype")
+  //get medicinetypename
+  getmedicinetypename() {
+    this.baseService.GET<any>(this.URL + "GetDropDownList/FillMedicineTypeName")
       .subscribe(response => {
-        console.log("Room Name Response:", response); // Debugging log
-        this.lstRoomName = response.data;
+        console.log("Medicine Type Response:", response); // Debugging log
+        this.lstmedicinename = response.data;
       });
   }
 
 
-  //get facilityname
+  //get diseasename
 
-  getfacilityname() {
-    this.baseService.GET<any>(this.URL + "GetDropDownList/FillFacilityName")
-      .subscribe(response => {
-        console.log("Facility Name:", response);
-        this.lstFacilityName = response.data;
-      });
-  }
-
-
-  //get roomtypefacilitymapping
-
-
-  getroomtypefacilitymapping() {
-
-    this.baseService.GET<any>(this.URL + "TblRoomTypeFacilityMapping/GetAll").subscribe(response => {
+  getdisease() {
+    this.baseService.GET<any>(this.URL + "GetDropDownList/FillDiseaseName").subscribe(response => {
       console.log("GET Response:", response);
-      this.lstroomtypefacilitymapping = response.data;
-      this.totalPages = Math.ceil(this.lstroomtypefacilitymapping.length / this.itemsPerPage);
+      this.diseaselist = response.data;
+      console.log("disease", this.diseaselist);
+    })
+  }
+
+
+  //get medicinedieseasemapping
+
+
+  getmedicinedieseasemapping() {
+
+    this.baseService.GET<any>(this.URL + "TblMedicineDiseaseMapping/GetAll").subscribe(response => {
+      console.log("GET Response:", response);
+      this.lstmedicinedieseasemapping = response.data;
+      this.totalPages = Math.ceil(this.lstmedicinedieseasemapping.length / this.itemsPerPage);
       this.Paginationrecord();
       this.PageNumber();
     });
   }
 
 
-  //add roomtypefacilitymapping
+  //add medicinedieseasemapping
 
-  Addroomtypefacilitymapping() {
+  Addmedicinedieseasemapping() {
 
     // console.log(this.roomtypefacilitymappingfmGroup.getRawValue())
-    this.baseService.POST(this.URL + "TblRoomTypeFacilityMapping/Add", this.roomtypefacilitymappingfmGroup.getRawValue())
+    this.baseService.POST(this.URL + "TblMedicineDiseaseMapping/Add", this.medicinedieseasemappingfmGroup.getRawValue())
       .subscribe({
         next: (response: any) => {
           if (response.statusCode === 200) {
             this.toastr.success(response.message, 'Success');
-            this.getroomtypefacilitymapping();
+            this.getmedicinedieseasemapping();
             this.Paginationrecord();
             this.isShowList = true;
-            this.roomtypefacilitymappingfmGroup.reset();
+            this.medicinedieseasemappingfmGroup.reset();
           }
           else {
             this.toastr.error(response.message, 'Error');
@@ -182,32 +178,31 @@ export class roomtypefacilitymapping implements OnInit {
 
 
 
-  //edit roomtypefacilitymapping
+  //edit medicinedieseasemapping
 
-  editroomtypefacilitymapping(item: any) {
-    ;
-    this.roomfacID = item.roomTypeFacilityMappingID;
+  editmedicinedieseasemapping(item: any) {
+    this.medicinediseaseID = item.medicinediseaseID;
     this.isShowList = false;
-    this.roomtypefacilitymappingfmGroup.patchValue({
-      roomtypefacilitymappingid: item.roomTypeFacilityMappingID,
-      roomID: item.roomID,
-      facilityID: item.facilityID
+    this.medicinedieseasemappingfmGroup.patchValue({
+      medicinediseaseid: item.medicinediseaseID,
+      dieseaseTypeID: item.dieseaseTypeID,
+      medicineTypeID: item.medicineTypeID
     });
   }
 
-  //update roomtypefacilitymapping
+  //update medicinedieseasemapping
 
-  updateroomtypefacilitymapping() {
-    this.baseService.PUT(this.URL + "TblRoomTypeFacilityMapping/Update", this.roomtypefacilitymappingfmGroup.getRawValue())
+  updatemedicinedieseasemapping() {
+    this.baseService.PUT(this.URL + "TblMedicineDiseaseMapping/Update", this.medicinedieseasemappingfmGroup.getRawValue())
       .subscribe({
         next: (response: any) => {
           if (response.statusCode === 200) {
             this.toastr.success(response.message, 'Success');
             console.log("PUT Response", response)
-            this.getroomtypefacilitymapping();
+            this.getmedicinedieseasemapping();
             this.isShowList = true;
-            this.roomfacID = null;
-            this.roomtypefacilitymappingfmGroup.reset();
+            this.medicinediseaseID = null;
+            this.medicinedieseasemappingfmGroup.reset();
           }
           else {
             this.toastr.error(response.message, 'Error');
@@ -222,16 +217,26 @@ export class roomtypefacilitymapping implements OnInit {
 
 
 
+  //delete medicinedieseasemapping
 
+  // onDelete(id: number) {
+  //   this.baseService.DELETE(this.URL + "TblMedicineDiseaseMapping/DeleteByID?Id=" + id)
+  //     .subscribe(response => {
+  //       if (response.statusCode === 200) {
+  //       this.toastr.success("Deleted successfully");
+  //       this.getmedicinedieseasemapping();
+  //     });
 
-  onDelete(roomtypefacilitymappingid: number) {
-    this.baseService.DELETE(this.URL + "TblHospitalType/Delete?id=" + roomtypefacilitymappingid)
+  // }
+  onDelete(medicineDiseaseMappingID: number) {
+
+    this.baseService.DELETE(this.URL + "TblMedicineDiseaseMapping/DeleteByID?Id=" + medicineDiseaseMappingID)
       .subscribe({
         next: (response: any) => {
           if (response.statusCode === 200) {
             this.toastr.success(response.message, 'Success');
             console.log("DELETE Response:", response);
-            this.getroomtypefacilitymapping();
+            this.getmedicinedieseasemapping();
             this.isShowList = true;
           } else {
             this.toastr.error(response.message, 'Error');
@@ -245,39 +250,11 @@ export class roomtypefacilitymapping implements OnInit {
 
 
 
-
-
-
-  openDeleteModal(id: number) {
-    this.idDelete = id;
-    this.showPopup = true;
-  }
-
-  confirmDelete() {
-    if (this.idDelete !== null) {
-      this.onDelete(this.idDelete);
-    }
-    this.cleanupPopup();
-  }
-
-
-  cancelDelete() {
-    this.cleanupPopup();
-  }
-
-  // hide the modal  and reset the ID 
-  private cleanupPopup() {
-    this.idDelete = null;
-    this.showPopup = false;
-  }
-
-
-
   //PAGINATION STOP
   Paginationrecord() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedList = this.lstroomtypefacilitymapping.slice(startIndex, endIndex);
+    this.paginatedList = this.lstmedicinedieseasemapping.slice(startIndex, endIndex);
   }
 
   //page number
@@ -297,8 +274,8 @@ export class roomtypefacilitymapping implements OnInit {
 
   onTableAction(event: { action: string; row: any }) {
     const actionHandlers: { [key: string]: () => void } = {
-      edit: () => this.editroomtypefacilitymapping(event.row),
-      delete: () => this.openDeleteModal(event.row.roomTypeFacilityMappingID),
+      edit: () => this.editmedicinedieseasemapping(event.row),
+      delete: () => this.onDelete(event.row.medicineDiseaseMappingID),
     };
 
     const actionKey = event.action.toLowerCase();
@@ -311,5 +288,4 @@ export class roomtypefacilitymapping implements OnInit {
   }
 
 }
-
 

@@ -1,6 +1,5 @@
 import { Component,inject,OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
-
 import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -10,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PopUpComponent } from 'src/app/Common/pop-up/pop-up.component';
 import { Router, RouterModule } from '@angular/router';
 import { DatatableComponent } from 'src/app/Common/datatable/datatable.component';
-
+import { PermissionService } from 'src/app/services/permission.service';
 
 
 
@@ -24,6 +23,17 @@ import { DatatableComponent } from 'src/app/Common/datatable/datatable.component
   
 })
 export class medicinedetails implements OnInit{
+  submitForm() {
+    throw new Error('Method not implemented.');
+    }
+      setPermissions: any;
+      canAdd: boolean = false;
+      canEdit: boolean = false;
+      canDelete: boolean = false;
+      canView : boolean = false;
+      permission :any;
+	  actionButtons = [];
+
   medicinedetailslist:any[]=[];
   isShowList:boolean=true;
  // medicineDetailsID: number | null = null;
@@ -52,6 +62,18 @@ export class medicinedetails implements OnInit{
   ];
 
   
+
+
+  constructor
+  (
+  private baseService: BaseService,
+  private toastr: ToastrService,
+   private router: Router,
+   private permissionService: PermissionService
+  ) 
+  {
+    this.permission = this.permissionService.getPermissions("MedicineDetails");
+  }
   // medicinetypepost:any={
   //   "createBy":0,
   //   "cretedOn":"",
@@ -68,17 +90,16 @@ export class medicinedetails implements OnInit{
   medicineDetailsIDDelete: number | null = null;
 
 
-  constructor(private baseService: BaseService,private toastr: ToastrService, private router: Router) {}
+  
 
  
   // life cycle event
   ngOnInit() {
      this.createFormGroup();
      this.getmedicinedetails();
-    //  this.Addmedicinedetails();
      this.getmedicinetype();
      this.gettreatmentdetailsidwithname();
-    //  this.getdisease();
+     this.setPermissions = this.permissionService.getPermissions("MedicineDetails");
      
     }
 
@@ -95,8 +116,6 @@ export class medicinedetails implements OnInit{
         medicinedetailsID:new FormControl(0,[Validators.required]),
         treatmentDetailsId :new FormControl(null,[Validators.required]),
         medicineTypeID:new FormControl(0,[Validators.required]),
-       // medicinetype:new FormControl(0),
-      //  dieseaseName:new FormControl(0),
         dosage :new FormControl(''),
         frequency :new FormControl(''),
         duration:new FormControl(''),
