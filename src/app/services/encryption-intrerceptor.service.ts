@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
 import { ConfigService } from './config.service';
+import { AppConstant } from '../demo/baseservice/baseservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ import { ConfigService } from './config.service';
 export class EncryptionIntrerceptorService implements HttpInterceptor {
 
   private encryptionEnabled: boolean;
+  private baseUrl = AppConstant.url;
 
   constructor(private encryptionService: EncryptionService,
     private configService: ConfigService) { }
@@ -24,6 +26,9 @@ export class EncryptionIntrerceptorService implements HttpInterceptor {
     console.log("*****************************");
     console.log('General get encryption function');
     console.log("url in generic get function before encryption : " + url);
+
+    url = url.startsWith(this.baseUrl) ? url.slice(this.baseUrl.length) : url;
+
     const countOfEquals = (url.match(/=/g) || []).length; //Count number of equal sign
     console.log("Count of equals in the GET url from interceptor : " + countOfEquals);
     if (countOfEquals >= 1) {
@@ -55,6 +60,7 @@ export class EncryptionIntrerceptorService implements HttpInterceptor {
         url = url.replace(extractedValuesArray[indexForIteration], this.encryptionService.getEncryptedData(extractedValuesArray[indexForIteration]));
         indexForIteration += 1;
       }
+      url = this.baseUrl + url;
       console.log("Generic method encrypted url : " + url);
     }
     return url;
