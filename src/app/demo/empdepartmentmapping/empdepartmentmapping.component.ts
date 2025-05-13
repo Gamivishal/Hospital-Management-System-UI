@@ -225,6 +225,7 @@ export  class EmpDepartmentMapping implements OnInit {
               this.toastr.success(response.message, 'Success');
             console.log("PUT Response", response)
               this.getEmpDeptMapping();
+              this.resetForm();
               this.isShowList = true;
               this.EmpDeptId = null;
               this.currentPage = 1;

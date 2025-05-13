@@ -106,24 +106,18 @@ export class empshiftmapping implements OnInit {
     });
   }
 
-
-  // resetForm() {
-  //   this.empshiftmappingfmGroup.reset();
-  //   this.empshiftmappingfmGroup.patchValue({ employeeshiftMappingId: 0 });
-  //   this.employeeshiftMappingId = null;
-  // }
-
-  resetForm() {
-    this.isShowList = false;
-    this.createFormGroup();
-    this.employeeshiftMappingId = null;
-  }
+    resetForm(){
+      this.isShowList = false;
+      this.createFormGroup();
+      this.employeeshiftMappingId = null;
+    }
 
 
 
-  checkRequired(controlName: any) {
-    return this.empshiftmappingfmGroup.controls[controlName].touched && this.empshiftmappingfmGroup.controls[controlName].errors?.['required'];
-  }
+     checkRequired(controlName:any)
+    {
+     return this.empshiftmappingfmGroup.controls[controlName].touched && this.empshiftmappingfmGroup.controls[controlName].errors?.['required'];
+    }
 
 
   checkminlength(controlName: any) {
@@ -243,6 +237,7 @@ export class empshiftmapping implements OnInit {
           if (response.statusCode === 200) {
             console.log("PUT Response:", response);
             this.getEmpShiftMapping();
+            this.resetForm();
             this.isShowList = true;
             this.currentPage = 1;
             this.toastr.success(' Updated Successfully!', 'Success');

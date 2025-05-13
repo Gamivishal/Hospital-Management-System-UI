@@ -206,8 +206,10 @@ showPopup = false;
                 this.toastr.success(response.message, 'Success');
             console.log("PUT Response:", response);
             this.getRoomType();
+            this.resetForm();
             this.isShowList = true;
             this.currentPage = 1;
+            
           } else {
             this.toastr.error(response.message, 'Error');
           }
