@@ -182,6 +182,12 @@ const routes: Routes = [
         loadComponent: () => import('./demo/MenuPermission/MenuPermission.component').then((c) => c.MenuPermission),
         canActivate: [AuthGuard]
 
+      },
+      {
+        path: 'UserPermissoin',
+        loadComponent: () => import('./demo/user/user.component').then((c) =>c.userComponent ),
+        canActivate: [AuthGuard]
+
       }
 
     ]
