@@ -49,10 +49,18 @@ export class NavRightComponent {
 
     this.translationService.load(this.selectedLang);
   }
-
+async ngOnInit() {
+  const storedLang = localStorage.getItem('selectedLang');
+  if (storedLang) {
+    this.selectedLang = storedLang;
+  }
+  await this.translationService.load(this.selectedLang);
+}
   changeLanguage(langCode: string) {
     this.selectedLang = langCode;
-    this.translationService.load(langCode);
+    console.log("data");
+    localStorage.setItem('selectedLang', langCode); 
+    this.translationService.load(langCode); 
   }
 
   logout(): void {

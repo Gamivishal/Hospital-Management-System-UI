@@ -13,10 +13,11 @@ export class TranslationService {
 
   constructor(private http: HttpClient) { }
 
-  async load(lang: string): Promise<void> {
-    try {
-      const data: any = await firstValueFrom(this.http.get('assets/translate.JSON'));
-      this.translations = {};
+  async load(lang: string) {
+    //this.currentLang = lang;
+    const data: any = await this.http.get('assets/translate.JSON').toPromise();
+    this.translations = {};
+
 
       for (const entry of data.label) {
         if (entry.key && entry[lang]) {
