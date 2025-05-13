@@ -30,7 +30,7 @@ export class TranslationService {
     catch (error) {
       console.error('Error loading translation file:', error);
     }
-  }
+  
 
   translate(key: string): string {
     return this.translations[key] || key;

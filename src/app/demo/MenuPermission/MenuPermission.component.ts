@@ -8,11 +8,12 @@ import { BaseService } from 'src/app/services/base.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppConstant } from 'src/app/demo/baseservice/baseservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { TranslatePipe } from 'src/app/translate.pipe';
 
 @Component({
   selector: 'app-hospitaltype',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule,TranslatePipe],
   templateUrl: './MenuPermission.component.html',
   styleUrls: ['./MenuPermission.component.scss']
 })

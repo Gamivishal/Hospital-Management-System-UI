@@ -152,7 +152,7 @@ export default class AuthSigninComponent {
             this.toastr.success('Login successful!');
             this.getMenuPermissionList();
 
-            // this.router.navigate(['/dashboard']);
+             this.router.navigate(['/dashboard']);
           } else {
             // OTP verification failed
             this.toastr.error(otpResponse.message || 'Invalid OTP');
