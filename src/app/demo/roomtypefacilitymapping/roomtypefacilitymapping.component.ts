@@ -54,14 +54,14 @@ export class roomtypefacilitymapping implements OnInit {
   showPopup = false
   idDelete: number | null = null;
   tableHeaders = [
-    { label: 'Room Number', key: 'roomNumber' },
+    { label: 'RoomNumber', key: 'roomNumber' },
     { label: 'RoomType', key: 'roomType' },
-    { label: 'Facility Name', key: 'facilityName' },
-    { label: 'Created By', key: 'createdBy' },
-    { label: 'Created On', key: 'createdOn' },
-    { label: 'Updated By', key: 'updatedBy' },
-    { label: 'Updated On', key: 'updatedOn' },
-    { label: 'Is Active', key: 'isActive' }
+    { label: 'FacilityName', key: 'facilityName' },
+    { label: 'CreatedBy', key: 'createdBy' },
+    { label: 'CreatedOn', key: 'createdOn' },
+    { label: 'UpdatedBy', key: 'updatedBy' },
+    { label: 'UpdatedOn', key: 'updatedOn' },
+    { label: 'IsActive', key: 'isActive' }
   ];
 
 

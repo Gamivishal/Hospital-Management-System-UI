@@ -1,4 +1,4 @@
-import { Component,inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { BaseService } from 'src/app/services/base.service';
 import { HttpClient } from '@angular/common/http';
@@ -37,17 +37,17 @@ export class feedbackComponent implements OnInit {
 
   tableHeaders = [
     { label: 'Sr.N', key: 'srno' },
-    { label: 'Patient Name', key: 'fullName' },
+    { label: 'PatientName', key: 'fullName' },
     { label: 'Comments', key: 'comments' },
     { label: 'Rating', key: 'rating' },
-    { label: 'Feedback Date', key: 'feedbackDate' }
+    { label: 'FeedbackDate', key: 'feedbackDate' }
   ];
 
   constructor(
     private baseService: BaseService,
     private toastr: ToastrService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getfeedback();
@@ -79,23 +79,23 @@ export class feedbackComponent implements OnInit {
 
   getfeedback() {
     this.baseService.GET<any>(this.URL + "TblFeedback/GetAll")
-.subscribe({
-      next: (response) => {
-        console.log("GET Response:", response);
-        this.feedbacks = response.data.map((x: any, i: number) => ({
-          ...x,
-          srno: i + 1
-        }));
-        this.totalRecords = this.feedbacks.length;
-        this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
-        this.PageNumber();
-        this.Paginationrecord();
-      },
-      error: (err) => {
-        this.toastr.error('Failed to fetch feedback', 'Error');
-        console.error("GET Error:", err);
-      }
-    });
+      .subscribe({
+        next: (response) => {
+          console.log("GET Response:", response);
+          this.feedbacks = response.data.map((x: any, i: number) => ({
+            ...x,
+            srno: i + 1
+          }));
+          this.totalRecords = this.feedbacks.length;
+          this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
+          this.PageNumber();
+          this.Paginationrecord();
+        },
+        error: (err) => {
+          this.toastr.error('Failed to fetch feedback', 'Error');
+          console.error("GET Error:", err);
+        }
+      });
   }
 
   addfeedback() {

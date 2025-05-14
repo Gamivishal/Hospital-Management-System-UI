@@ -60,13 +60,13 @@ export class facility implements OnInit {
   showPopup = false
   facilityidDelete: number | null = null;
   tableHeaders = [
-    { label: 'Facility Name', key: 'facilityName' },
-    { label: 'Facility Type', key: 'facilityName' },
-    { label: 'Created By', key: 'createdBy' },
-    { label: 'Created On', key: 'createdOn' },
-    { label: 'Updated By', key: 'updatedBy' },
-    { label: 'Updated On', key: 'updatedOn' },
-    { label: 'Is Active', key: 'isActive' }
+    { label: 'FacilityName', key: 'facilityName' },
+    { label: 'FacilityType', key: 'facilityName' },
+    { label: 'CreatedBy', key: 'createdBy' },
+    { label: 'CreatedOn', key: 'createdOn' },
+    { label: 'UpdatedBy', key: 'updatedBy' },
+    { label: 'UpdatedOn', key: 'updatedOn' },
+    { label: 'IsActive', key: 'isActive' }
   ];
 
 

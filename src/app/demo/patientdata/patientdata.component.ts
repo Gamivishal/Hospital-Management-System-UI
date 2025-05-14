@@ -46,19 +46,19 @@ export class PatientDataComponent implements OnInit {
   actionButtons = [];
 
   tableHeaders = [
-    { label: 'Patient ID', key: 'patientId' },
-    { label: 'Full Name', key: 'fullName' },
+    { label: 'PatientID', key: 'patientId' },
+    { label: 'FullName', key: 'fullName' },
     { label: 'DOB', key: 'dob' },
     { label: 'Gender', key: 'gender' },
     { label: 'Address', key: 'address' },
-    { label: 'Blood Group', key: 'blood_Group' },
-    { label: 'Emergency Contact', key: 'emergency_Contact' },
-    { label: 'Medical History', key: 'medical_History' },
-    { label: 'Created By', key: 'createdBy' },
-    { label: 'Created On', key: 'createdOn' },
-    { label: 'Updated By', key: 'updatedBy' },
-    { label: 'Updated On', key: 'updatedOn' },
-    { label: 'Is Active', key: 'isActive' }
+    { label: 'BloodGroup', key: 'blood_Group' },
+    { label: 'EmergencyContact', key: 'emergency_Contact' },
+    { label: 'MedicalHistory', key: 'medical_History' },
+    { label: 'CreatedBy', key: 'createdBy' },
+    { label: 'CreatedOn', key: 'createdOn' },
+    { label: 'UpdatedBy', key: 'updatedBy' },
+    { label: 'UpdatedOn', key: 'updatedOn' },
+    { label: 'IsActive', key: 'isActive' }
   ];
 
 

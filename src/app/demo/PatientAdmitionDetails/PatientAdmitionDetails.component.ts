@@ -54,15 +54,15 @@ export class PatientAdmitionDetailsComponent implements OnInit {
   URL = AppConstant.url;
 
   tableHeaders = [
-    { label: 'patientName', key: 'patientName' },
+    { label: 'PatientName', key: 'patientName' },
     { label: 'DieseaseName', key: 'dieseaseName' },
-    { label: 'admisionDate', key: 'admisionDate' },
-    { label: 'roomNumber', key: 'roomNumber' },
-    { label: 'Created By', key: 'createdBy' },
-    { label: 'Created On', key: 'createdOn' },
-    { label: 'Updated By', key: 'updatedBy' },
-    { label: 'Updated On', key: 'updatedOn' },
-    { label: 'Is Active', key: 'isActive' }
+    { label: 'AdmisionDate', key: 'admisionDate' },
+    { label: 'RoomNumber', key: 'roomNumber' },
+    { label: 'CreatedBy', key: 'createdBy' },
+    { label: 'CreatedOn', key: 'createdOn' },
+    { label: 'UpdatedBy', key: 'updatedBy' },
+    { label: 'UpdatedOn', key: 'updatedOn' },
+    { label: 'IsActive', key: 'isActive' }
   ];
 
 

@@ -46,15 +46,15 @@ export class empshiftmapping implements OnInit {
 
 
   tableHeaders = [
-    { label: 'fullName', key: 'fullName' },
-    { label: 'shiftname', key: 'shiftname' },
+    { label: 'FullName', key: 'fullName' },
+    { label: 'ShiftName', key: 'shiftname' },
     { label: 'StartingDate', key: 'employeeshiftMappingStartingDate' },
     { label: 'EndingDate', key: 'employeeshiftMappingStartingDate' },
-    { label: 'Created By', key: 'createdBy' },
-    { label: 'Created On', key: 'createdOn' },
-    { label: 'Updated By', key: 'updatedBy' },
-    { label: 'Updated On', key: 'updatedOn' },
-    { label: 'Is Active', key: 'isActive' }
+    { label: 'CreatedBy', key: 'createdBy' },
+    { label: 'CreatedOn', key: 'createdOn' },
+    { label: 'UpdatedBy', key: 'updatedBy' },
+    { label: 'UpdatedOn', key: 'updatedOn' },
+    { label: 'IsActive', key: 'isActive' }
   ];
 
 
@@ -106,18 +106,17 @@ export class empshiftmapping implements OnInit {
     });
   }
 
-    resetForm(){
-      this.isShowList = false;
-      this.createFormGroup();
-      this.employeeshiftMappingId = null;
-    }
+  resetForm() {
+    this.isShowList = false;
+    this.createFormGroup();
+    this.employeeshiftMappingId = null;
+  }
 
 
 
-     checkRequired(controlName:any)
-    {
-     return this.empshiftmappingfmGroup.controls[controlName].touched && this.empshiftmappingfmGroup.controls[controlName].errors?.['required'];
-    }
+  checkRequired(controlName: any) {
+    return this.empshiftmappingfmGroup.controls[controlName].touched && this.empshiftmappingfmGroup.controls[controlName].errors?.['required'];
+  }
 
 
   checkminlength(controlName: any) {

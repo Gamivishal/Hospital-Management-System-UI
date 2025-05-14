@@ -55,13 +55,13 @@ export const NavigationItems: NavigationItem[] = [
 
   {
     id: 'UserPermissionModel',
-    title: 'User Permission',
+    title: 'UserPermission',
     type: 'group',
     icon: 'icon-navigation',
     children: [
       {
         id: 'patientdata',
-        title: 'User Permission',
+        title: 'UserPermission',
         type: 'item',
         url: '/UserPermissoin',
         icon: 'feather icon-home',
@@ -305,7 +305,7 @@ export const NavigationItems: NavigationItem[] = [
   {
     id: 'ui-element',
     title: 'UI ELEMENT',
-    menuId:100,
+    menuId: 100,
     type: 'group',
     icon: 'icon-ui',
     children: [
@@ -359,7 +359,7 @@ export const NavigationItems: NavigationItem[] = [
     id: 'forms',
     title: 'Forms & Tables',
     type: 'group',
-    menuId:100,
+    menuId: 100,
     icon: 'icon-group',
     children: [
       {
@@ -400,7 +400,7 @@ export const NavigationItems: NavigationItem[] = [
   {
     id: 'pages',
     title: 'Pages',
-    menuId:100,
+    menuId: 100,
     type: 'group',
     icon: 'icon-pages',
     children: [

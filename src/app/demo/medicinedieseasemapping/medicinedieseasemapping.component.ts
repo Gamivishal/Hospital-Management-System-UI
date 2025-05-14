@@ -52,13 +52,13 @@ export class medicinedieseasemapping implements OnInit {
   URL = AppConstant.url
 
   tableHeaders = [
-    { label: 'Medicine Name', key: 'typeName' },
-    { label: ' Diesease Name', key: 'dieseaseName' },
-    { label: 'Created By', key: 'createdBy' },
-    { label: 'Created On', key: 'createdOn' },
-    { label: 'Updated By', key: 'updatedBy' },
-    { label: 'Updated On', key: 'updatedOn' },
-    { label: 'Is Active', key: 'isActive' }
+    { label: 'MedicineName', key: 'typeName' },
+    { label: ' DieseaseName', key: 'dieseaseName' },
+    { label: 'CreatedBy', key: 'createdBy' },
+    { label: 'CreatedOn', key: 'createdOn' },
+    { label: 'UpdatedBy', key: 'updatedBy' },
+    { label: 'UpdatedOn', key: 'updatedOn' },
+    { label: 'IsActive', key: 'isActive' }
   ];
 
 

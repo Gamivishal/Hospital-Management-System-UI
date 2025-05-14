@@ -437,6 +437,114 @@
       "EK": "Enter Hospital department",
       "GK": "દવાખાના વિભાગ દર્જ કરો",
       "HK": "अस्पताल विभाग दर्ज करें"
+    },
+    {
+      "key": "FacilityName",
+      "EK": "Facility Name",
+      "GK": "સુવિધાનું નામ",
+      "HK": "सुविधा का नाम"
+    },
+    {
+      "key": "SelectRoom",
+      "EK": "Select Room",
+      "GK": "રૂમ પસંદ કરો",
+      "HK": "कक्ष का चयन करें"
+    },
+    {
+      "key": "RoomNumber",
+      "EK": "Room Number",
+      "GK": "રૂમ નંબર",
+      "HK": "रूम नंबर"
+    },
+    {
+      "key": "RoomTypename",
+      "EK": "Room type name",
+      "GK": "રૂમના પ્રકારનું નામ",
+      "HK": "कमरे के प्रकार का नाम"
+    },
+    {
+      "key": "RoleName",
+      "EK": "Role Name",
+      "GK": "ભૂમિકાનું નામ",
+      "HK": "भूमिका का नाम"
+    },
+    {
+      "key": "SelectFacilityName",
+      "EK": "Select Facility Name",
+      "GK": "સુવિધાનું નામ પસંદ કરો",
+      "HK": "सुविधा का नाम चुनें"
+    },
+    {
+      "key": "Selectfacilitytype",
+      "EK": "Select facility type",
+      "GK": "સુવિધાનો પ્રકાર પસંદ કરો",
+      "HK": "सुविधा प्रकार का चयन करें"
+    },
+    {
+      "key": "DieseaseName",
+      "EK": "Disease Name",
+      "GK": "રોગનું નામ",
+      "HK": "रोग का नाम"
+    },
+    {
+      "key": "PatientID",
+      "EK": "Patient ID",
+      "GK": "દર્દી ID",
+      "HK": "मरीज आईडी"
+    },
+    {
+      "key": "FullName",
+      "EK": "Full Name",
+      "GK": "પૂરું નામ",
+      "HK": "पूरा नाम"
+    },
+    {
+      "key": "DateOfBirth",
+      "EK": "Date Of Birth",
+      "GK": "જન્મ તારીખ",
+      "HK": "जन्म तिथि"
+    },
+    {
+      "key": "Gender",
+      "EK": "Gender",
+      "GK": "જાતિ",
+      "HK": "जाती"
+    },
+    {
+      "key": "Address",
+      "EK": "Address",
+      "GK": "સરનામું",
+      "HK": "पता"
+    },
+    {
+      "key": "UserPermission",
+      "EK": "User Permission",
+      "GK": "ઉપયોગકાર્તા પરવાનગી",
+      "HK": "उपयोगकर्ता की अनुमति"
+    },
+    {
+      "key": "Total Earnings of this week",
+      "EK": "Total Earnings of this week",
+      "GK": "આ અઠવાડિયાની કુલ કમાણી",
+      "HK": "सप्ताह की कुल कमाई"
+    },
+    {
+      "key": "PatientFeedback",
+      "EK": "Patient Feedback",
+      "GK": "દર્દી પ્રતિભાવ",
+      "HK": "मरीज प्रतिक्रिया"
+    },
+    {
+      "key": "Bill",
+      "EK": "Bill",
+      "GK": "રસીદ",
+      "HK": "रसीद"
+    },
+    {
+      "key": "Download",
+      "EK": "Download",
+      "GK": "ડાઉનલોડ કરો",
+      "HK": "डाउनलोड करें"
     }
   ]
 }
